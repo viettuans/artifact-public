@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Got It · Demo luồng quét QR thanh toán voucher</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --red:#E8322A; --red-dark:#C0231C; --ink:#131313; --muted:#8A8F98;
+    --line:#EDEEF0; --teal:#00A3A1; --green:#12A150;
+    --panel:#171B22; --panel-2:#1F242D;
+    --font:"Be Vietnam Pro",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  body{margin:0;padding:28px 20px 60px;font-family:var(--font);
+    background:radial-gradient(1200px 700px at 50% -10%,#1C222B,#0E1116 60%);color:#E7EAF0;min-height:100vh}
+  h1,h2,h3,h4,p{margin:0}
+  button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit}
+  svg{display:block}
+
+  .head{max-width:1180px;margin:0 auto 22px;text-align:center}
+  .head h1{font-size:22px;font-weight:800;letter-spacing:-.02em}
+  .head p{font-size:13.5px;color:#98A1AE;margin-top:6px}
+  .steps{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:18px}
+  .step{display:flex;align-items:center;gap:8px;padding:8px 14px;border-radius:999px;background:var(--panel);
+    border:1px solid #262C36;font-size:12.5px;color:#8892A0;transition:.25s}
+  .step b{width:19px;height:19px;border-radius:50%;background:#2A313C;color:#98A1AE;display:grid;place-items:center;
+    font-size:11px;font-weight:700;transition:.25s}
+  .step.on{background:rgba(232,50,42,.13);border-color:rgba(232,50,42,.5);color:#FFCFCC}
+  .step.on b{background:var(--red);color:#fff}
+  .step.done{color:#6FCF97;border-color:rgba(18,161,80,.35)}
+  .step.done b{background:var(--green);color:#fff}
+
+  .stage{max-width:1180px;margin:26px auto 0;display:grid;grid-template-columns:minmax(0,1fr) 412px minmax(0,1fr);gap:26px;align-items:start}
+  @media(max-width:1080px){.stage{grid-template-columns:1fr;max-width:420px}
+    .stage>.col-pos{order:2}.stage>.col-phone{order:1}.stage>.col-notes{order:3}}
+
+  .card{background:var(--panel);border:1px solid #262C36;border-radius:18px;padding:18px}
+  .card-title{font-size:11px;font-weight:700;letter-spacing:.11em;text-transform:uppercase;color:#6E7887;margin-bottom:14px}
+
+  .pos{background:linear-gradient(180deg,#12161C,#0B0E13);border:1px solid #2A313C;border-radius:14px;padding:18px;text-align:center}
+  .pos-brand{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+  .pos-logo{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:800;color:#C9D2DF}
+  .pos-logo i{width:22px;height:22px;border-radius:6px;background:#2F80ED;display:grid;place-items:center;font-style:normal;font-size:11px;font-weight:800;color:#fff}
+  .pos-status{font-size:10.5px;font-weight:700;padding:4px 9px;border-radius:999px;background:#2A313C;color:#98A1AE}
+  .pos-status.wait{background:rgba(245,165,36,.15);color:#F5A524}
+  .pos-status.live{background:rgba(47,128,237,.16);color:#68A8F5}
+  .pos-status.ok{background:rgba(18,161,80,.16);color:#4ADE80}
+  .pos-amount{font-size:30px;font-weight:800;letter-spacing:-.02em;color:#fff}
+  .pos-order{font-size:11.5px;color:#6E7887;margin-bottom:16px}
+  .qrbox{background:#fff;border-radius:12px;padding:12px;display:inline-block;position:relative}
+  .qrbox .qrlogo{position:absolute;inset:0;margin:auto;width:36px;height:36px;border-radius:9px;background:#fff;display:grid;place-items:center;box-shadow:0 0 0 3px #fff}
+  .qrlogo span{width:28px;height:28px;border-radius:7px;background:var(--red);color:#fff;display:grid;place-items:center;font-size:8.5px;font-weight:800;line-height:1.05}
+  .qr-hint{font-size:11.5px;color:#6E7887;margin-top:12px;line-height:1.5}
+  .pos-done{padding:26px 8px}
+  .pos-done .tick{width:52px;height:52px;border-radius:50%;background:rgba(18,161,80,.15);color:#4ADE80;display:grid;place-items:center;margin:0 auto 12px;font-size:26px}
+  .pos-done h4{font-size:15px;font-weight:700;color:#fff}
+  .pos-done p{font-size:12px;color:#7E8896;margin-top:6px}
+  .pos-line{display:flex;justify-content:space-between;font-size:12.5px;padding:7px 0;border-top:1px dashed #2A313C;color:#9AA4B2}
+  .pos-line b{color:#fff;font-weight:600}
+
+  .ctrl{display:flex;flex-direction:column;gap:8px}
+  .ctrl button{text-align:left;padding:11px 13px;border-radius:11px;background:var(--panel-2);border:1px solid #2A313C;font-size:12.5px;color:#B8C1CE;transition:.18s}
+  .ctrl button:hover{border-color:#3C4553;color:#fff}
+  .ctrl button.active{background:rgba(232,50,42,.13);border-color:rgba(232,50,42,.5);color:#FFCFCC}
+  .ctrl small{display:block;color:#6E7887;font-size:11px;margin-top:2px;font-weight:400}
+  .ctrl button.active small{color:#D89A96}
+  .note{font-size:12.5px;line-height:1.65;color:#98A1AE}
+  .note b{color:#E7EAF0;font-weight:600}
+  .note code{background:#232935;padding:1px 6px;border-radius:5px;font-size:11.5px;color:#8FD4C8}
+  .note ul{margin:8px 0 0;padding-left:17px}
+  .note li{margin-bottom:5px}
+
+  /* ================= PHONE ================= */
+  .col-phone{display:flex;flex-direction:column;align-items:center;gap:14px}
+  .phone{width:412px;height:846px;background:#000;border-radius:54px;padding:11px;box-shadow:0 40px 90px rgba(0,0,0,.6),0 0 0 1px #333;position:relative;flex:none}
+  @media(max-width:430px){.phone{width:100%;height:800px;border-radius:42px}}
+  .screen{width:100%;height:100%;background:#fff;border-radius:44px;overflow:hidden;position:relative;color:var(--ink);display:flex;flex-direction:column}
+  .notch{position:absolute;top:9px;left:50%;transform:translateX(-50%);width:118px;height:30px;background:#000;border-radius:999px;z-index:60}
+
+  .sbar{display:flex;justify-content:space-between;align-items:center;padding:17px 30px 2px;flex:none;z-index:50;position:relative}
+  .sbar .t{font-size:16px;font-weight:600;letter-spacing:.01em}
+  .sbar .r{display:flex;align-items:center;gap:6px}
+  .sbar.dark .t,.sbar.dark .r{color:#fff}
+  .batt{width:26px;height:14px;border-radius:4px;background:#31D158;display:grid;place-items:center;color:#0B3D1B;font-size:9px;font-weight:800}
+  .camdot{width:9px;height:9px;border-radius:50%;background:#31D158;position:absolute;top:22px;left:50%;transform:translateX(48px);z-index:61}
+
+  .view{flex:1;overflow-y:auto;overflow-x:hidden;position:relative}
+  .view::-webkit-scrollbar{width:0}
+
+  /* ---- Trang chủ ---- */
+  .balance{padding:12px 22px 0;display:flex;justify-content:space-between;align-items:flex-start}
+  .balance .amt{font-size:31px;font-weight:800;letter-spacing:-.025em;line-height:1.15}
+  .balance .sub{font-size:16px;color:#2C3138;margin-top:1px;font-weight:500}
+  .balance .sub b{font-weight:800;color:var(--ink)}
+
+  .searchrow{display:flex;gap:11px;padding:18px 22px 0;align-items:center}
+  .search{flex:1;height:45px;border:1.5px solid #E6E8EC;border-radius:13px;display:flex;align-items:center;gap:10px;padding:0 14px;color:#A9AEB6;font-size:14px}
+  .bell{width:45px;height:45px;border:1.5px solid #E6E8EC;border-radius:13px;display:grid;place-items:center;position:relative;flex:none}
+  .bell em{position:absolute;top:-7px;right:-7px;background:var(--red);color:#fff;font-style:normal;font-size:10px;font-weight:700;padding:2px 6px;border-radius:999px;border:2px solid #fff}
+
+  .quick{display:grid;grid-template-columns:repeat(4,1fr);padding:22px 14px 0;text-align:center}
+  .quick .q{font-size:12.5px;font-weight:700;line-height:1.32;color:var(--ink)}
+  .quick .q .ic{height:42px;display:grid;place-items:center;margin-bottom:8px}
+
+  .banner{margin:20px 22px 0;border-radius:13px;background:linear-gradient(160deg,#EE342C,#CF241D);color:#fff;padding:16px 14px 14px;text-align:center;position:relative;overflow:hidden}
+  .banner .deco{position:absolute;top:-40px;left:-40px;width:150px;height:150px;border-radius:50%;
+    background:repeating-radial-gradient(circle,transparent 0 6px,rgba(255,255,255,.16) 6px 7px);opacity:.9}
+  .banner h4{position:relative;font-size:19px;font-weight:800;letter-spacing:.01em;
+    background:linear-gradient(180deg,#FFF6D6 20%,#F6CF6E 55%,#D99B2E);-webkit-background-clip:text;background-clip:text;color:transparent;
+    filter:drop-shadow(0 2px 0 rgba(120,20,15,.55))}
+  .banner .brand{position:relative;font-size:19px;font-weight:800;margin:5px 0 9px;display:flex;align-items:center;justify-content:center;gap:6px}
+  .banner .row{position:relative;display:flex;justify-content:center;font-size:10.5px;font-weight:700;line-height:1.5}
+  .banner .row span{padding:0 13px}
+  .banner .row span+span{border-left:1px solid rgba(255,255,255,.4)}
+  .banner .white{position:relative;background:#fff;color:#111;border-radius:8px;padding:9px 10px;margin-top:11px;font-size:10.5px;line-height:1.55;font-weight:600}
+
+  .sec-title{font-size:19px;font-weight:800;padding:26px 22px 13px;letter-spacing:-.02em}
+
+  .ticket{position:relative;margin:0 22px;background:#fff;border:1px solid #ECEDF0;border-radius:14px;
+    box-shadow:0 3px 14px rgba(0,0,0,.05);display:flex;align-items:center;min-height:126px;overflow:hidden}
+  .ticket .best{position:absolute;top:0;right:0;background:linear-gradient(95deg,#00A3A1,#12B76A);color:#fff;
+    font-size:11px;font-weight:700;padding:6px 12px;border-radius:0 13px 0 13px}
+  .tk-left{width:130px;flex:none;text-align:center;padding:14px 8px}
+  .tk-left .thumb{width:88px;height:62px;margin:0 auto;border-radius:7px;
+    background:linear-gradient(135deg,#FFE3E0,#FFC0BA 60%,#FFA9A1);display:grid;place-items:center;position:relative}
+  .tk-left .thumb b{font-size:9px;font-weight:800;color:#C0231C;letter-spacing:.02em}
+  .tk-left .cap{font-size:12.5px;color:#5A616B;margin-top:9px}
+  .tk-div{position:absolute;left:130px;top:12px;bottom:12px;border-left:1.5px dashed #DEE0E4}
+  .tk-notch{position:absolute;left:130px;width:18px;height:18px;border-radius:50%;background:#fff;
+    border:1px solid #ECEDF0;transform:translateX(-50%)}
+  .tk-notch.t{top:-9px;clip-path:inset(50% 0 0 0)}
+  .tk-notch.b{bottom:-9px;clip-path:inset(0 0 50% 0)}
+  .tk-right{flex:1;padding:14px 16px 14px 20px}
+  .tk-right .tag{font-size:12.5px;color:#8A8F98}
+  .tk-right .nm{font-size:17px;font-weight:500;margin:3px 0 4px;letter-spacing:-.01em}
+  .tk-right .pr{font-size:23px;font-weight:800;letter-spacing:-.025em}
+  .tk-right .ex{font-size:12.5px;color:#7A808A;margin-top:5px}
+
+  .brands{display:grid;grid-template-columns:repeat(4,1fr);gap:11px;padding:0 22px 26px}
+  .brands div{height:70px;border:1px solid #EDEEF0;border-radius:13px;display:grid;place-items:center}
+
+  .nav{display:flex;border-top:1px solid #EFEFF1;background:#fff;padding:8px 0 24px;flex:none;z-index:40}
+  .nav button{flex:1;text-align:center;font-size:12px;font-weight:600;color:#8E949C}
+  .nav button .ic{height:26px;display:grid;place-items:center;margin-bottom:3px}
+  .nav button.on{color:var(--red)}
+
+  /* ---- Scanner ---- */
+  .scanner{position:absolute;inset:0;background:#15181D;z-index:70;display:flex;flex-direction:column;color:#fff}
+  .cam{position:absolute;inset:0;background:linear-gradient(112deg,#575D66,#2A2E35 50%,#464B54);overflow:hidden}
+  .cam .doc{position:absolute;top:9%;left:22%;right:-4%;color:#0F1114;opacity:.55;font-size:17px;line-height:2.05;font-weight:500;filter:blur(.5px)}
+  .cam .doc .big{font-size:30px;font-weight:600;margin-top:14px;display:block}
+  .cam .paper{position:absolute;top:5%;left:20%;right:-6%;bottom:0;background:#D8DADD}
+  .shade{position:absolute;inset:0;background:rgba(0,0,0,.52)}
+  .hole{position:absolute;left:50%;transform:translateX(-50%);width:264px;height:264px;border-radius:20px;
+    box-shadow:0 0 0 2000px rgba(0,0,0,.52);overflow:hidden}
+  .scan-top{position:relative;display:flex;justify-content:space-between;padding:52px 30px 0;z-index:3}
+  .scan-title{position:relative;text-align:center;font-size:17px;font-weight:500;margin-top:36px;z-index:3;text-shadow:0 2px 10px rgba(0,0,0,.7)}
+  .framewrap{position:relative;z-index:3;margin-top:24px;height:264px}
+  .corners{position:absolute;left:50%;top:0;transform:translateX(-50%);width:290px;height:264px;pointer-events:none}
+  .corners i{position:absolute;width:44px;height:44px;border:5px solid #F2F2F2}
+  .corners i:nth-child(1){top:0;left:0;border-right:0;border-bottom:0;border-radius:16px 0 0 0}
+  .corners i:nth-child(2){top:0;right:0;border-left:0;border-bottom:0;border-radius:0 16px 0 0}
+  .corners i:nth-child(3){bottom:0;left:0;border-right:0;border-top:0;border-radius:0 0 0 16px}
+  .corners i:nth-child(4){bottom:0;right:0;border-left:0;border-top:0;border-radius:0 0 16px 0}
+  .target{position:absolute;left:50%;top:0;transform:translateX(-50%);width:264px;height:264px;border-radius:20px;
+    overflow:hidden;cursor:pointer;transition:transform .16s}
+  .target:active{transform:translateX(-50%) scale(.97)}
+  .standee{position:absolute;inset:0;background:#EFEFEF;display:flex}
+  .standee .lft{width:38%;background:linear-gradient(180deg,#F2EEE9,#CFCAC4 70%,#3A3A3A)}
+  .standee .rgt{flex:1;background:#1B7FD4;position:relative;display:flex;align-items:center;justify-content:flex-end;padding-right:6px}
+  .standee .posapp{position:absolute;top:16px;left:-58px;color:#F5A524;font-size:26px;font-weight:800;font-style:italic;transform:rotate(-2deg);text-shadow:1px 1px 0 rgba(0,0,0,.15)}
+  .standee .qrcard{background:#fff;padding:7px 7px 3px;border-radius:3px;text-align:center}
+  .standee .qrnum{font-size:9px;font-weight:700;color:#222;margin-top:3px;letter-spacing:.02em}
+  .standee .pw{font-size:7px;color:#1B7FD4;font-weight:700}
+  .scanline{position:absolute;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.95),transparent);animation:sl 2.2s ease-in-out infinite;z-index:4}
+  @keyframes sl{0%,100%{top:16px}50%{top:246px}}
+  .tap-hint{position:relative;z-index:3;text-align:center;font-size:12.5px;color:rgba(255,255,255,.72);margin-top:20px}
+  .scan-bottom{position:relative;z-index:3;margin-top:auto;display:flex;justify-content:space-around;padding:0 26px 46px;font-size:14px;text-align:center}
+  .scan-bottom .ic{height:34px;display:grid;place-items:center;margin-bottom:6px}
+
+  /* ---- Payment screens ---- */
+  .topbar{display:flex;align-items:center;gap:12px;padding:8px 20px 14px;border-bottom:1px solid var(--line);flex:none}
+  .topbar h3{font-size:16.5px;font-weight:700}
+  .merchant{display:flex;gap:12px;align-items:center;padding:18px 22px 4px}
+  .mlogo{width:46px;height:46px;border-radius:12px;background:#0B6E4F;color:#fff;display:grid;place-items:center;font-size:12px;font-weight:800;flex:none}
+  .merchant .nm{font-size:15.5px;font-weight:700}
+  .merchant .ad{font-size:12px;color:var(--muted);margin-top:2px}
+  .bigamt{text-align:center;padding:14px 22px 18px}
+  .bigamt .lb{font-size:13px;color:var(--muted)}
+  .bigamt .vl{font-size:37px;font-weight:800;letter-spacing:-.03em;margin-top:4px}
+  .bigamt .oid{font-size:11.5px;color:var(--muted);margin-top:6px}
+
+  .block{margin:0 22px 14px;border:1px solid var(--line);border-radius:14px;overflow:hidden}
+  .block-h{display:flex;justify-content:space-between;align-items:center;padding:12px 14px;background:#FAFAFB;border-bottom:1px solid var(--line)}
+  .block-h span{font-size:12.5px;font-weight:700;color:#4A505A}
+  .block-h button{font-size:12.5px;font-weight:700;color:var(--red)}
+  .vrow{display:flex;gap:12px;align-items:center;padding:13px 14px;border-bottom:1px solid var(--line)}
+  .vrow:last-child{border-bottom:none}
+  .vrow.dis{opacity:.42}
+  .chk{width:22px;height:22px;border-radius:7px;border:2px solid #D6D9DE;flex:none;display:grid;place-items:center;font-size:12px;color:#fff;transition:.15s;font-weight:700}
+  .vrow.sel .chk{background:var(--red);border-color:var(--red)}
+  .vmini{width:46px;height:33px;border-radius:6px;background:linear-gradient(135deg,#FFE3E0,#FFB3AE);flex:none;display:grid;place-items:center;font-size:8px;font-weight:800;color:#B4231C}
+  .vinfo{flex:1;min-width:0}
+  .vinfo .n{font-size:13.5px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .vinfo .s{font-size:11px;color:var(--muted);margin-top:3px;line-height:1.5}
+  .vamt{text-align:right;flex:none}
+  .vamt .a{font-size:14px;font-weight:800}
+  .vamt .u{font-size:10.5px;color:var(--green);font-weight:700;margin-top:2px}
+  .pill{display:inline-block;font-size:9.5px;font-weight:700;padding:2px 6px;border-radius:5px;margin-right:4px}
+  .pill.brand{background:#E7F6F5;color:var(--teal)}
+  .pill.split{background:#FFF3E0;color:#B26A00}
+  .pill.sug{background:#FDECEB;color:var(--red)}
+  .pill.no{background:#F1F2F4;color:#6B7280}
+  .sumrow{display:flex;justify-content:space-between;padding:9px 14px;font-size:13px;color:#4A505A}
+  .sumrow b{font-weight:700;color:var(--ink)}
+  .sumrow.big{border-top:1px dashed var(--line);margin-top:4px;padding-top:12px;font-size:14.5px}
+  .sumrow.big b{font-size:18px;font-weight:800;color:var(--red)}
+  .sumrow .green{color:var(--green);font-weight:700}
+  .warn{margin:0 22px 14px;background:#FFF8E6;border:1px solid #F7E2A8;border-radius:12px;padding:12px 13px;font-size:12px;line-height:1.6;color:#7A5A00}
+  .info{margin:0 22px 14px;background:#EDF7F6;border:1px solid #C3E7E4;border-radius:12px;padding:12px 13px;font-size:12px;line-height:1.6;color:#046B69}
+  .cta{padding:14px 22px 26px;border-top:1px solid var(--line);background:#fff;flex:none}
+  .btn{width:100%;height:52px;border-radius:14px;background:var(--red);color:#fff;font-size:15.5px;font-weight:700;display:grid;place-items:center;transition:.15s}
+  .btn:active{background:var(--red-dark)}
+  .btn.ghost{background:#fff;color:#4A505A;border:1.5px solid #E4E6EA;height:48px;font-size:14.5px;margin-top:9px}
+  .btn[disabled]{background:#E4E6EA;color:#A6ABB3;cursor:not-allowed}
+
+  /* ---- POPUP XÁC NHẬN ---- */
+  .modal{position:absolute;inset:0;background:rgba(10,12,16,.5);z-index:90;display:grid;place-items:center;padding:0 22px;animation:fade .2s ease}
+  @keyframes fade{from{opacity:0}}
+  .modal-in{width:100%;background:#fff;border-radius:22px;overflow:hidden;animation:pop2 .26s cubic-bezier(.2,1.2,.4,1);box-shadow:0 24px 60px rgba(0,0,0,.35)}
+  @keyframes pop2{from{transform:scale(.9);opacity:0}}
+  .m-head{padding:22px 22px 0;text-align:center}
+  .m-head .ic{width:54px;height:54px;border-radius:50%;background:#FDECEB;display:grid;place-items:center;margin:0 auto 12px}
+  .m-head h3{font-size:18px;font-weight:800;letter-spacing:-.01em}
+  .m-head p{font-size:12.5px;color:var(--muted);margin-top:6px;line-height:1.5}
+  .m-amt{text-align:center;padding:16px 22px 4px}
+  .m-amt .v{font-size:32px;font-weight:800;letter-spacing:-.03em;color:var(--red)}
+  .m-amt .l{font-size:12px;color:var(--muted);margin-top:2px}
+  .m-body{margin:14px 22px 0;border-top:1px dashed #E2E4E8;padding-top:12px}
+  .m-row{display:flex;justify-content:space-between;gap:12px;font-size:12.5px;color:#5A616B;padding:6px 0}
+  .m-row b{color:var(--ink);font-weight:600;text-align:right}
+  .m-row .g{color:var(--green);font-weight:700}
+  .m-note{margin:14px 22px 0;background:#F6F7F9;border-radius:11px;padding:11px 12px;font-size:11.5px;line-height:1.6;color:#5A616B}
+  .m-foot{display:flex;gap:10px;padding:18px 22px 22px}
+  .m-foot button{flex:1;height:50px;border-radius:14px;font-size:15px;font-weight:700}
+  .m-foot .cancel{background:#F2F3F5;color:#4A505A}
+  .m-foot .ok{background:var(--red);color:#fff;flex:1.4}
+  .m-foot .ok:active{background:var(--red-dark)}
+
+  .center{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0 36px;text-align:center}
+  .spin{width:46px;height:46px;border:3.5px solid #F0F1F3;border-top-color:var(--red);border-radius:50%;animation:sp .8s linear infinite}
+  @keyframes sp{to{transform:rotate(360deg)}}
+  .center h3{font-size:17px;font-weight:700;margin-top:20px}
+  .center p{font-size:13px;color:var(--muted);margin-top:8px;line-height:1.6}
+  .okmark{width:84px;height:84px;border-radius:50%;background:var(--green);color:#fff;display:grid;place-items:center;font-size:44px;animation:pop2 .4s cubic-bezier(.2,1.4,.4,1)}
+  .badmark{width:84px;height:84px;border-radius:50%;background:#FDECEB;color:var(--red);display:grid;place-items:center;font-size:40px}
+  .rcpt{width:100%;margin-top:24px;border:1px solid var(--line);border-radius:14px;padding:4px 0;text-align:left}
+  .rcpt .r{display:flex;justify-content:space-between;gap:10px;padding:10px 14px;font-size:12.5px;color:#5A616B}
+  .rcpt .r b{color:var(--ink);font-weight:600;text-align:right}
+</style>
+
+</head>
+<body>
+<div class="head">
+  <h1>Thanh toán voucher bằng QR — bản demo tương tác</h1>
+  <p>POS hiện mã QR · Khách quét bằng Got It App · Server xác thực &amp; trừ voucher</p>
+  <div class="steps" id="steps">
+    <div class="step" data-s="1"><b>1</b> Quầy hiện mã QR</div>
+    <div class="step" data-s="2"><b>2</b> Khách quét mã</div>
+    <div class="step" data-s="3"><b>3</b> App gợi ý voucher</div>
+    <div class="step" data-s="4"><b>4</b> Bấm xác nhận</div>
+  </div>
+</div>
+
+<div class="stage">
+  <div class="col-pos">
+    <div class="card"><div class="card-title">Màn hình quầy · POS</div><div class="pos" id="pos"></div></div>
+    <div class="card" style="margin-top:18px"><div class="card-title">Kịch bản demo</div><div class="ctrl" id="scenarios"></div></div>
+  </div>
+
+  <div class="col-phone">
+    <div class="phone"><div class="notch"></div><div class="screen" id="screen"></div></div>
+    <div style="display:flex;gap:9px;flex-wrap:wrap;justify-content:center">
+      <button style="font-size:12.5px;color:#7E8896;padding:9px 16px;border:1px solid #2A313C;border-radius:10px;background:#171B22" onclick="reset()">↺ Chạy lại từ đầu</button>
+      <button style="font-size:12.5px;color:#FFCFCC;padding:9px 16px;border:1px solid rgba(232,50,42,.5);border-radius:10px;background:rgba(232,50,42,.13)" onclick="showPopup()">Xem popup xác nhận</button>
+    </div>
+  </div>
+
+  <div class="col-notes">
+    <div class="card"><div class="card-title">Đang ở bước nào</div><div class="note" id="note"></div></div>
+    <div class="card" style="margin-top:18px">
+      <div class="card-title">Quy tắc chọn voucher</div>
+      <div class="note"><ul>
+        <li><b>Không cho chọn voucher có mệnh giá lớn hơn số tiền còn phải trả</b>, nếu voucher đó không tách được. Hàng bị làm mờ kèm lý do rõ ràng.</li>
+        <li>Voucher <b>tách dùng nhiều lần</b> chỉ trừ đúng phần cần trả, phần dư giữ nguyên trong kho quà.</li>
+        <li>Ưu tiên gợi ý voucher <b>đúng thương hiệu</b> của quầy, rồi tới voucher <b>sắp hết hạn</b>.</li>
+        <li>Voucher khoá thương hiệu khác vẫn hiện trong nhóm riêng, không ẩn đi.</li>
+        <li>Thiếu bao nhiêu, quầy thu tiếp bằng tiền mặt hoặc thẻ.</li>
+      </ul></div>
+    </div>
+    <div class="card" style="margin-top:18px">
+      <div class="card-title">Điểm cần chốt với kỹ thuật</div>
+      <div class="note"><ul>
+        <li>QR mang <code>order_token</code> có TTL ngắn, gắn cứng số tiền — không chứa mã voucher.</li>
+        <li>Xác nhận gửi kèm <code>Idempotency-Key</code>; trừ voucher chạy trong transaction, chặn double-spend ở tầng DB.</li>
+        <li>Server phải kiểm lại luật "voucher không lớn hơn số tiền" — không tin client.</li>
+        <li>Quét lại đơn đã trả trả về <code>ALREADY_PAID</code>, không tạo giao dịch mới.</li>
+      </ul></div>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ================= DỮ LIỆU ================= */
+const VOUCHERS = [
+  {id:'v1', name:'Quà Tặng Got It',        value:25000,  split:true,  exp:'04/09/2026', brand:'any'},
+  {id:'v2', name:'Got It eGift',           value:500000, split:true,  exp:'31/12/2026', brand:'any'},
+  {id:'v3', name:'Phúc Long eGift',        value:500000, split:true,  exp:'15/10/2026', brand:'phuclong'},
+  {id:'v4', name:'Got It eGift',           value:500000, split:false, exp:'20/11/2026', brand:'any'},
+  {id:'v5', name:'Highlands Coffee eGift', value:96000,  split:false, exp:'01/09/2026', brand:'highlands'},
+];
+const SCENARIOS = {
+  full:    {label:'Voucher đủ trả cả đơn', desc:'Đơn 358.000đ · gợi ý 1 voucher',            amount:358000,  err:null},
+  partial: {label:'Voucher không đủ',       desc:'Đơn 1.850.000đ · thiếu, trả thêm tại quầy', amount:1850000, err:null},
+  expired: {label:'QR đã hết hạn',          desc:'Mã quá 5 phút kể từ lúc quầy tạo đơn',      amount:358000,  err:'expired'},
+  paid:    {label:'Đơn đã được thanh toán', desc:'Khách quét lại mã cũ',                      amount:358000,  err:'paid'},
+};
+const MERCHANT = {name:'Phúc Long Coffee & Tea', addr:'Lê Lợi, Quận 1 · POS 02', code:'PL', brand:'phuclong'};
+const money = n => n.toLocaleString('vi-VN') + 'đ';
+const applicable = v => v.brand==='any' || v.brand===MERCHANT.brand;
+const toDate = s => {const[d,m,y]=s.split('/');return new Date(+y,+m-1,+d)};
+
+/* ================= ICON ================= */
+const I = {
+  search:'<svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#9AA0A8" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>',
+  bell:'<svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="#131313" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 01-3.4 0"/></svg>',
+  vip:'<svg width="42" height="42" viewBox="0 0 44 44" fill="none"><path d="M22 3l4.3 3.1 5.3-.5 1.7 5 4.6 2.7-1.3 5.2 2.6 4.6-3.7 3.8-.6 5.3-5.1 1.5-3.4 4.1L22 35.4l-4.4 2.4-3.4-4.1-5.1-1.5-.6-5.3L4.8 23l2.6-4.6-1.3-5.2 4.6-2.7 1.7-5 5.3.5z" stroke="#131313" stroke-width="2" stroke-linejoin="round"/><text x="22" y="25.5" text-anchor="middle" font-family="Be Vietnam Pro,sans-serif" font-size="11" font-weight="800" fill="#E8322A">VIP</text></svg>',
+  topup:'<svg width="42" height="42" viewBox="0 0 44 44" fill="none" stroke="#131313" stroke-width="2" stroke-linejoin="round"><rect x="11" y="5" width="22" height="34" rx="4"/><path d="M15 33h9" stroke-width="3" stroke-linecap="round"/><path d="M26 13h8M30 9v8" stroke="#E8322A" stroke-width="2.6" stroke-linecap="round"/></svg>',
+  bill:'<svg width="42" height="42" viewBox="0 0 44 44" fill="none" stroke="#131313" stroke-width="2" stroke-linejoin="round"><path d="M11 5h22v34l-5-3-6 3-6-3-5 3z"/><path d="M16 30h8" stroke-width="3" stroke-linecap="round"/><text x="22" y="22" text-anchor="middle" font-family="Be Vietnam Pro,sans-serif" font-size="14" font-weight="800" fill="#E8322A" stroke="none">$</text></svg>',
+  fuel:'<svg width="42" height="42" viewBox="0 0 44 44" fill="none" stroke="#131313" stroke-width="2" stroke-linejoin="round"><rect x="8" y="6" width="20" height="32" rx="3"/><path d="M12 30h12" stroke-width="3" stroke-linecap="round"/><path d="M28 14h5a3 3 0 013 3v14a2.5 2.5 0 01-5 0V24h-3"/><path d="M18 11c2.6 2.6 4 4.4 4 6a4 4 0 11-8 0c0-1.6 1.4-3.4 4-6z" fill="#E8322A" stroke="none"/></svg>',
+  home:'<svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round"><path d="M3 10.5L12 3.5l9 7V20a1.5 1.5 0 01-1.5 1.5h-15A1.5 1.5 0 013 20z"/></svg>',
+  gift:'<svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><rect x="2.5" y="8" width="19" height="13" rx="1.6"/><path d="M2.5 12.5h19M12 8v13"/><path d="M12 8S9.5 3 7.2 4.2 9 8 12 8zM12 8s2.5-5 4.8-3.8S15 8 12 8z"/></svg>',
+  scan:'<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8V5.5A2.5 2.5 0 015.5 3H8M16 3h2.5A2.5 2.5 0 0121 5.5V8M21 16v2.5a2.5 2.5 0 01-2.5 2.5H16M8 21H5.5A2.5 2.5 0 013 18.5V16"/><path d="M3 12h18"/></svg>',
+  phone:'<svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M5 3.5h3.5l2 5-2.2 1.5a13 13 0 005.7 5.7l1.5-2.2 5 2V19a2 2 0 01-2.2 2C10.6 20.3 3.7 13.4 3 5.7A2 2 0 015 3.5z"/></svg>',
+  user:'<svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4.5 21c.8-4 3.9-6 7.5-6s6.7 2 7.5 6"/></svg>',
+  flashoff:'<svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.9" stroke-linejoin="round"><path d="M13 2L5 13h5l-1 9 8-11h-5z"/><path d="M3 3l18 18" stroke-linecap="round"/></svg>',
+  close:'<svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"><path d="M5 5l14 14M19 5L5 19"/></svg>',
+  image:'<svg width="27" height="27" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linejoin="round"><rect x="3" y="4.5" width="18" height="15" rx="2.5"/><circle cx="8.5" cy="10" r="1.6" fill="#fff"/><path d="M4 17l5-5 4 4 3-2.5 4 3.5"/></svg>',
+  history:'<svg width="27" height="27" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3.2 10A9 9 0 1112 21a9 9 0 01-7-3.4"/><path d="M3 4.5V10h5.5"/><path d="M12 7.5V12l3 2"/></svg>',
+  back:'<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#131313" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>',
+  wifi:'<svg width="17" height="13" viewBox="0 0 17 13" fill="currentColor"><path d="M8.5 12.4l2.3-2.8a3.6 3.6 0 00-4.6 0zM8.5 6.1c1.6 0 3.1.6 4.2 1.6l1.6-1.9a9 9 0 00-11.6 0l1.6 1.9a6.3 6.3 0 014.2-1.6zM8.5 1.6c2.7 0 5.2 1 7.1 2.6L17 2.6A12.3 12.3 0 008.5-.4 12.3 12.3 0 000 2.6l1.4 1.6A10.8 10.8 0 018.5 1.6z"/></svg>',
+  sig:'<svg width="19" height="13" viewBox="0 0 19 13" fill="currentColor"><rect x="0" y="9" width="3" height="4" rx="1"/><rect x="5" y="6" width="3" height="7" rx="1"/><rect x="10" y="3" width="3" height="10" rx="1"/><rect x="15" y="0" width="3" height="13" rx="1" opacity=".35"/></svg>',
+  shield:'<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#E8322A" stroke-width="2" stroke-linejoin="round"><path d="M12 2.5l8 3v6c0 5-3.4 8.9-8 10-4.6-1.1-8-5-8-10v-6z"/><path d="M8.6 12.2l2.4 2.4 4.4-4.6" stroke-linecap="round"/></svg>',
+};
+
+/* ================= STATE ================= */
+let S = {};
+function reset(sc){
+  const key = sc || S.scenario || 'full';
+  S = {scenario:key, amount:SCENARIOS[key].amount, err:SCENARIOS[key].err,
+       orderId:'#PL2608'+(1000+Math.floor(Math.random()*8999)),
+       screen:'home', picking:false, selected:[], modal:false, posState:'waiting'};
+  S.selected = suggest();
+  render();
+}
+
+/* gợi ý: đúng brand → HSD gần → không lấy voucher không tách mà lớn hơn phần còn lại */
+function suggest(){
+  const ok = VOUCHERS.filter(applicable).sort((a,b)=>{
+    const ab = a.brand===MERCHANT.brand?0:1, bb = b.brand===MERCHANT.brand?0:1;
+    return ab!==bb ? ab-bb : toDate(a.exp)-toDate(b.exp);
+  });
+  const picked=[]; let left=S.amount;
+  for(const v of ok){
+    if(left<=0) break;
+    if(!v.split && v.value>left) continue;   // luật mới: không dùng voucher lớn hơn
+    picked.push(v.id); left -= v.value;
+  }
+  return picked;
+}
+
+/* voucher có được phép chọn thêm không */
+function blockReason(v, restBefore){
+  if(!applicable(v)) return 'Chỉ dùng tại thương hiệu khác';
+  if(!v.split && v.value > restBefore) return 'Mệnh giá lớn hơn số tiền cần trả';
+  return null;
+}
+function restExcluding(id){
+  let left = S.amount;
+  for(const vid of S.selected){
+    if(vid===id) continue;
+    const v = VOUCHERS.find(x=>x.id===vid);
+    left -= v.split ? Math.min(v.value, Math.max(left,0)) : v.value;
+  }
+  return Math.max(left,0);
+}
+function calc(){
+  let left=S.amount, applied=[], refund=0;
+  for(const id of S.selected){
+    const v = VOUCHERS.find(x=>x.id===id);
+    const use = Math.min(v.value, Math.max(left,0));
+    applied.push({v, use, keep:v.split ? v.value-use : 0});
+    if(v.split) refund += v.value-use;
+    left -= use;
+  }
+  return {applied, rest:Math.max(left,0), refund, paid:S.amount-Math.max(left,0)};
+}
+
+/* ================= QR ================= */
+function drawQR(cv,size,seed){
+  const N=29, px=Math.floor(size/N), s=px*N;
+  cv.width=s; cv.height=s; const c=cv.getContext('2d');
+  c.fillStyle='#fff'; c.fillRect(0,0,s,s); c.fillStyle='#0B0E13';
+  let r=seed; const rnd=()=>{r=(r*1103515245+12345)&0x7fffffff;return r/0x7fffffff};
+  for(let y=0;y<N;y++)for(let x=0;x<N;x++){
+    if((x<8&&y<8)||(x>N-9&&y<8)||(x<8&&y>N-9)) continue;
+    if(rnd()>0.52) c.fillRect(x*px,y*px,px,px);
+  }
+  const f=(ox,oy)=>{c.fillRect(ox*px,oy*px,7*px,7*px);c.fillStyle='#fff';c.fillRect((ox+1)*px,(oy+1)*px,5*px,5*px);
+    c.fillStyle='#0B0E13';c.fillRect((ox+2)*px,(oy+2)*px,3*px,3*px)};
+  f(0,0); f(N-7,0); f(0,N-7);
+}
+
+/* ================= POS ================= */
+function renderPOS(){
+  const st=S.posState;
+  const badge = st==='waiting'?'<span class="pos-status wait">● Chờ khách quét</span>'
+              : st==='scanned'?'<span class="pos-status live">● Khách đang chọn voucher</span>'
+              : '<span class="pos-status ok">● Đã thanh toán</span>';
+  let body;
+  if(st==='paid'){
+    const k=calc();
+    body=`<div class="pos-done"><div class="tick">✓</div><h4>Đã nhận thanh toán</h4><p>Giao dịch Got It ${S.orderId}</p></div>
+      <div style="text-align:left">
+        <div class="pos-line"><span>Voucher Got It</span><b>−${money(k.paid)}</b></div>
+        ${k.rest>0?`<div class="pos-line"><span>Thu thêm tại quầy</span><b>${money(k.rest)}</b></div>`:''}
+        <div class="pos-line"><span>Tổng đơn</span><b>${money(S.amount)}</b></div>
+      </div>`;
+  }else{
+    body=`<div class="pos-amount">${money(S.amount)}</div>
+      <div class="pos-order">Đơn ${S.orderId} · thu ngân Ngọc Anh</div>
+      <div class="qrbox"><canvas id="posqr"></canvas><div class="qrlogo"><span>got<br>it</span></div></div>
+      <div class="qr-hint">${st==='scanned'?'Khách đã quét mã.<br>Đang chờ khách xác nhận trong app…':'Mời khách quét mã bằng Got It App<br>Mã hết hạn sau 05:00'}</div>`;
+  }
+  document.getElementById('pos').innerHTML=`<div class="pos-brand"><div class="pos-logo"><i>H</i> HIPOS</div>${badge}</div>${body}`;
+  const cv=document.getElementById('posqr'); if(cv) drawQR(cv,168,20260811);
+}
+
+/* ================= MÀN HÌNH APP ================= */
+const sbar = (dark)=>`<div class="sbar ${dark?'dark':''}"><span class="t">${dark?'15:25':'15:24'}</span>
+  <span class="r">${I.sig}${I.wifi}<span class="batt">98</span></span></div>`;
+
+function scHome(){
+  const total = VOUCHERS.reduce((s,v)=>s+v.value,0);
+  return sbar(false) + `
+  <div class="view">
+    <div class="balance">
+      <div><div class="amt">${money(total)}</div><div class="sub"><b>${VOUCHERS.length}</b> voucher khả dụng</div></div>
+      <svg width="58" height="80" viewBox="0 0 58 80">
+        <rect x="10" y="2" width="11" height="16" rx="5.5" fill="#E8322A"/><rect x="34" y="2" width="11" height="16" rx="5.5" fill="#E8322A"/>
+        <rect x="4" y="12" width="50" height="46" rx="11" fill="#F0403A"/>
+        <circle cx="20" cy="30" r="8" fill="#fff"/><circle cx="38" cy="30" r="8" fill="#fff"/>
+        <circle cx="21.5" cy="31" r="4.4" fill="#141414"/><circle cx="39.5" cy="31" r="4.4" fill="#141414"/>
+        <path d="M23 44h12l-6 7z" fill="#8A150F"/>
+        <rect x="6" y="34" width="14" height="9" rx="2" fill="#fff" opacity=".92"/><text x="13" y="40.5" text-anchor="middle" font-size="5" font-weight="700" fill="#E8322A" font-family="Be Vietnam Pro">Hello</text>
+        <rect x="11" y="58" width="12" height="14" rx="4" fill="#D42B24"/><rect x="35" y="58" width="12" height="14" rx="4" fill="#D42B24"/>
+        <ellipse cx="15" cy="74" rx="10" ry="5" fill="#fff"/><ellipse cx="43" cy="74" rx="10" ry="5" fill="#fff"/>
+      </svg>
+    </div>
+
+    <div class="searchrow">
+      <div class="search">${I.search} Chọn trong 300+ thương hiệu để…</div>
+      <div class="bell">${I.bell}<em>73</em></div>
+    </div>
+
+    <div class="quick">
+      <div class="q"><div class="ic">${I.vip}</div>Dịch vụ<br>cao cấp</div>
+      <div class="q"><div class="ic">${I.topup}</div>Nạp điện<br>thoại</div>
+      <div class="q"><div class="ic">${I.bill}</div>Hóa đơn</div>
+      <div class="q"><div class="ic">${I.fuel}</div>Đổ xăng</div>
+    </div>
+
+    <div class="banner">
+      <div class="deco"></div>
+      <h4>TƯNG BỪNG KHAI TRƯƠNG</h4>
+      <div class="brand"><svg width="17" height="17" viewBox="0 0 20 20"><circle cx="10" cy="10" r="9" fill="none" stroke="#fff" stroke-width="1.6"/><path d="M7 5v10h6" stroke="#fff" stroke-width="1.8" fill="none" stroke-linecap="round"/></svg> LOTTE MART</div>
+      <div class="row"><span>LOTTE MART Tây Ninh<br>Từ 17/07/2026</span><span>LOTTE MART Bắc Giang<br>Từ 10/08/2026</span></div>
+      <div class="white">Mua hóa đơn tại sự kiện khai trương Lotte Mart từ 800.000đ<br>để có cơ hội nhận voucher Got It 50.000đ</div>
+    </div>
+
+    <div class="sec-title">Thẻ quà gợi ý dùng</div>
+    <div class="ticket">
+      <div class="best">Phù hợp nhất</div>
+      <div class="tk-div"></div><div class="tk-notch t"></div><div class="tk-notch b"></div>
+      <div class="tk-left">
+        <div class="thumb"><b>got it<br>eGift</b></div>
+        <div class="cap">Got It</div>
+      </div>
+      <div class="tk-right">
+        <div class="tag">Tách dùng nhiều lần</div>
+        <div class="nm">Quà Tặng Got It</div>
+        <div class="pr">25.000đ</div>
+        <div class="ex">HSD: 04/09/2026</div>
+      </div>
+    </div>
+
+    <div class="sec-title">Thương hiệu đề xuất</div>
+    <div class="brands">
+      <div><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#E8322A" stroke-width="1.8"><path d="M4 8h16l-1.4 12H5.4z"/><path d="M8.5 8V6a3.5 3.5 0 017 0v2"/></svg></div>
+      <div><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#8A8F98" stroke-width="1.8"><rect x="3" y="6" width="18" height="12" rx="3"/></svg></div>
+      <div><svg width="30" height="30" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="none" stroke="#C0231C" stroke-width="1.8"/><path d="M8 12h8M12 8v8" stroke="#C0231C" stroke-width="1.8"/></svg></div>
+      <div><svg width="30" height="30" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="#0F7A3D"/><path d="M12 6.5l1.6 3.4 3.6.4-2.7 2.5.8 3.6L12 14.6l-3.3 1.8.8-3.6L6.8 10.3l3.6-.4z" fill="#fff"/></svg></div>
+    </div>
+  </div>
+  <div class="nav">
+    <button class="on"><div class="ic">${I.home}</div>Trang chủ</button>
+    <button><div class="ic">${I.gift}</div>Kho quà</button>
+    <button onclick="go('scan')"><div class="ic">${I.scan}</div>Quét QR</button>
+    <button><div class="ic">${I.phone}</div>Hỗ trợ</button>
+    <button><div class="ic">${I.user}</div>Tài khoản</button>
+  </div>`;
+}
+
+function scScan(){
+  return `<div class="scanner">
+    <div class="cam">
+      <div class="paper"></div>
+      <div class="doc">5.2/ Thiết bị hiển thị QR Kiotviet<br>5.3/ Thiết bị hiển thị QR Ipos<br>5.4/ Máy Pos bán hàng PAX2<br>5.5/ Kiosk tự order<br>6/ Nên mua thiết bị QR động ở đâu<span class="big">1/ Thiết bị hiển thị</span></div>
+    </div>
+    <div class="shade"></div>
+    ${sbar(true)}<div class="camdot"></div>
+    <div class="scan-top">${I.flashoff}<span onclick="go('home')" style="cursor:pointer">${I.close}</span></div>
+    <div class="scan-title">Vui lòng quét mã QR Got It</div>
+    <div class="framewrap">
+      <div class="target" onclick="doScan()">
+        <div class="standee">
+          <div class="lft"></div>
+          <div class="rgt">
+            <div class="posapp">PosApp</div>
+            <div class="qrcard"><canvas id="scanqr"></canvas><div class="qrnum">46323141</div><div class="pw">Powered by</div></div>
+          </div>
+        </div>
+        <div class="scanline"></div>
+      </div>
+      <div class="corners"><i></i><i></i><i></i><i></i></div>
+    </div>
+    <div class="tap-hint">Chạm vào khung để mô phỏng quét mã trên POS</div>
+    <div class="scan-bottom">
+      <div><div class="ic">${I.image}</div>Chọn ảnh QR</div>
+      <div><div class="ic">${I.history}</div>Lịch sử quét</div>
+    </div>
+  </div>`;
+}
+
+function scVerify(){
+  return sbar(false)+`<div class="center"><div class="spin"></div>
+    <h3>Đang xác thực mã QR</h3><p>Got It đang lấy thông tin đơn hàng từ quầy thanh toán</p></div>`;
+}
+
+function scReview(){
+  const k = calc(), sugIds = suggest();
+  const row = (v)=>{
+    const on = S.selected.includes(v.id);
+    const reason = on ? null : blockReason(v, restExcluding(v.id));
+    const a = k.applied.find(x=>x.v.id===v.id);
+    return `<div class="vrow ${on?'sel':''} ${reason?'dis':''}" ${reason?'':`onclick="toggle('${v.id}')"`}>
+      <div class="chk">${on?'✓':''}</div>
+      <div class="vmini">got it</div>
+      <div class="vinfo">
+        <div class="n">${v.name}</div>
+        <div class="s">${reason?`<span class="pill no">${reason}</span>`:''}
+          ${v.brand===MERCHANT.brand?'<span class="pill brand">Đúng thương hiệu</span>':''}
+          ${sugIds.includes(v.id)&&!reason?'<span class="pill sug">Gợi ý</span>':''}
+          ${v.split?'<span class="pill split">Tách nhiều lần</span>':''}HSD ${v.exp}</div>
+      </div>
+      <div class="vamt"><div class="a">${money(v.value)}</div>${on&&a?`<div class="u">dùng ${money(a.use)}</div>`:''}</div>
+    </div>`;
+  };
+  const shown = S.picking ? VOUCHERS : VOUCHERS.filter(v=>S.selected.includes(v.id));
+  return sbar(false) + `
+  <div class="topbar"><span onclick="go('scan')" style="cursor:pointer">${I.back}</span><h3>Thanh toán bằng voucher</h3></div>
+  <div class="view">
+    <div class="merchant"><div class="mlogo">${MERCHANT.code}</div>
+      <div><div class="nm">${MERCHANT.name}</div><div class="ad">${MERCHANT.addr}</div></div></div>
+    <div class="bigamt"><div class="lb">Số tiền cần thanh toán</div><div class="vl">${money(S.amount)}</div>
+      <div class="oid">Đơn ${S.orderId} · mã QR còn hiệu lực 4:32</div></div>
+    ${!S.picking?'<div class="info">Got It đã chọn sẵn voucher phù hợp nhất cho đơn này. Bạn có thể đổi nếu muốn dùng voucher khác.</div>':''}
+    <div class="block">
+      <div class="block-h"><span>Voucher áp dụng (${S.selected.length})</span>
+        <button onclick="togglePick()">${S.picking?'Xong':'Đổi voucher'}</button></div>
+      ${shown.map(row).join('') || '<div class="vrow"><div class="vinfo"><div class="s">Chưa chọn voucher nào</div></div></div>'}
+    </div>
+    ${S.picking?'<div class="warn">Voucher có mệnh giá lớn hơn số tiền cần trả sẽ không dùng được cho đơn này, để bạn không bị mất phần dư.</div>':''}
+    <div style="margin:0 22px 8px">
+      <div class="sumrow"><span>Tổng đơn</span><b>${money(S.amount)}</b></div>
+      <div class="sumrow"><span>Voucher trừ</span><span class="green">−${money(k.paid)}</span></div>
+      ${k.refund>0?`<div class="sumrow"><span>Giữ lại trong kho quà</span><span>${money(k.refund)}</span></div>`:''}
+      <div class="sumrow big"><span>Còn phải trả tại quầy</span><b>${money(k.rest)}</b></div>
+    </div>
+    ${k.rest>0?`<div class="warn">Voucher chưa đủ trả hết đơn. Phần còn lại <b>${money(k.rest)}</b> vui lòng thanh toán tiền mặt hoặc thẻ tại quầy.</div>`:''}
+  </div>
+  <div class="cta"><button class="btn" ${S.selected.length?'':'disabled'} onclick="openModal()">Xác nhận thanh toán</button></div>
+  ${S.modal?modalConfirm():''}`;
+}
+
+/* ---- POPUP XÁC NHẬN ---- */
+function modalConfirm(){
+  const k=calc();
+  return `<div class="modal" onclick="if(event.target===this)closeModal()">
+    <div class="modal-in">
+      <div class="m-head">
+        <div class="ic">${I.shield}</div>
+        <h3>Xác nhận thanh toán</h3>
+        <p>${MERCHANT.name}<br>Đơn ${S.orderId}</p>
+      </div>
+      <div class="m-amt"><div class="v">−${money(k.paid)}</div><div class="l">Số tiền trừ từ voucher</div></div>
+      <div class="m-body">
+        ${k.applied.map(a=>`<div class="m-row"><span>${a.v.name}</span><b>−${money(a.use)}</b></div>`).join('')}
+        <div class="m-row" style="border-top:1px dashed #E2E4E8;margin-top:6px;padding-top:10px"><span>Tổng đơn</span><b>${money(S.amount)}</b></div>
+        ${k.refund>0?`<div class="m-row"><span>Giữ lại trong kho quà</span><b class="g">${money(k.refund)}</b></div>`:''}
+        <div class="m-row"><span>Còn phải trả tại quầy</span><b style="color:${k.rest>0?'var(--red)':'inherit'}">${money(k.rest)}</b></div>
+      </div>
+      <div class="m-note">Voucher sẽ bị trừ ngay khi bạn xác nhận và không thể hoàn lại. Vui lòng đối chiếu số tiền với màn hình quầy trước khi tiếp tục.</div>
+      <div class="m-foot">
+        <button class="cancel" onclick="closeModal()">Huỷ</button>
+        <button class="ok" onclick="pay()">Xác nhận</button>
+      </div>
+    </div>
+  </div>`;
+}
+
+function scProcessing(){
+  return sbar(false)+`<div class="center"><div class="spin"></div>
+    <h3>Đang xử lý thanh toán</h3><p>Đang trừ voucher và báo kết quả về quầy. Vui lòng không tắt ứng dụng.</p></div>`;
+}
+function scSuccess(){
+  const k=calc();
+  return sbar(false)+`<div class="center">
+    <div class="okmark">✓</div>
+    <h3 style="font-size:19px">Thanh toán thành công</h3>
+    <p>Quầy ${MERCHANT.name} đã nhận được thanh toán</p>
+    <div style="font-size:32px;font-weight:800;margin-top:16px">−${money(k.paid)}</div>
+    <div class="rcpt">
+      <div class="r"><span>Mã giao dịch</span><b>${S.orderId}</b></div>
+      <div class="r"><span>Voucher đã dùng</span><b>${k.applied.map(a=>a.v.name).join('<br>')}</b></div>
+      ${k.refund>0?`<div class="r"><span>Giữ lại trong kho quà</span><b style="color:var(--green)">${money(k.refund)}</b></div>`:''}
+      ${k.rest>0?`<div class="r"><span>Trả thêm tại quầy</span><b>${money(k.rest)}</b></div>`:''}
+      <div class="r"><span>Số dư còn lại</span><b>${money(VOUCHERS.reduce((s,v)=>s+v.value,0)-k.paid)}</b></div>
+      <div class="r"><span>Thời gian</span><b>15:26 · 11/08/2026</b></div>
+    </div></div>
+  <div class="cta"><button class="btn" onclick="reset()">Về trang chủ</button>
+    <button class="btn ghost">Xem chi tiết giao dịch</button></div>`;
+}
+function scError(){
+  const t = S.err==='expired'
+    ? {i:'⏱',h:'Mã QR đã hết hạn',p:'Mã này chỉ có hiệu lực 5 phút. Nhờ thu ngân tạo lại mã QR rồi quét lần nữa.',b:'Quét lại'}
+    : {i:'✓',h:'Đơn hàng đã được thanh toán',p:`Đơn ${S.orderId} đã thanh toán lúc 15:21 hôm nay. Không có khoản nào bị trừ thêm.`,b:'Xem giao dịch cũ'};
+  return sbar(false)+`<div class="center"><div class="badmark">${t.i}</div>
+    <h3 style="font-size:18px">${t.h}</h3><p>${t.p}</p></div>
+  <div class="cta"><button class="btn" onclick="go('scan')">${t.b}</button>
+    <button class="btn ghost" onclick="reset()">Về trang chủ</button></div>`;
+}
+
+/* ================= HÀNH ĐỘNG ================= */
+function go(s){ S.screen=s; if(s==='home'&&S.posState!=='paid') S.posState='waiting'; render(); }
+function doScan(){
+  S.screen='verify'; S.posState='scanned'; render();
+  setTimeout(()=>{
+    if(S.err){S.screen='error'; S.posState='waiting';}
+    else {S.screen='review'; S.selected=suggest();}
+    render();
+  },1100);
+}
+function toggle(id){
+  S.selected = S.selected.includes(id) ? S.selected.filter(x=>x!==id) : [...S.selected,id];
+  render();
+}
+function togglePick(){S.picking=!S.picking; render()}
+function openModal(){S.modal=true; render()}
+function showPopup(){
+  S.screen='review'; S.posState='scanned'; S.picking=false;
+  S.selected=suggest(); S.modal=true; render();
+}
+function closeModal(){S.modal=false; render()}
+function pay(){
+  S.modal=false; S.screen='processing'; render();
+  setTimeout(()=>{S.screen='success'; S.posState='paid'; render()},1500);
+}
+
+/* ================= NOTES ================= */
+const NOTES = {
+  home:`<b>Bước 0 — Trước khi quét.</b> Khách mở Got It App, kho quà có 5 voucher. Cách cũ tới đây là đọc mã cho thu ngân.
+        <ul><li>Nhấn <b>Quét QR</b> ở thanh dưới để bắt đầu.</li></ul>`,
+  scan:`<b>Bước 2 — Khách quét mã.</b> Camera mở sẵn, không cần chọn thương hiệu hay nhập gì.
+        <ul><li>Chạm vào khung quét để mô phỏng.</li><li>Mã QR không chứa mã voucher, chỉ chứa <code>order_token</code> của đơn.</li></ul>`,
+  verify:`<b>Đang xác thực.</b> App đổi <code>order_token</code> lấy thông tin đơn: quầy, số tiền, trạng thái. POS chuyển sang “khách đang chọn voucher”.`,
+  review:`<b>Bước 3 — App gợi ý voucher.</b> App chọn sẵn voucher phù hợp nhất.
+        <ul><li>Bấm <b>Đổi voucher</b> để xem toàn bộ kho quà.</li><li>Voucher lớn hơn số tiền cần trả bị khoá kèm lý do — khách không thể tự làm mình mất tiền.</li></ul>`,
+  processing:`<b>Đang xử lý.</b> Server trừ voucher trong transaction, ghi giao dịch với <code>Idempotency-Key</code>, rồi bắn webhook về POS.`,
+  success:`<b>Xong.</b> Hai màn hình cùng hiện kết quả. Phần dư của voucher tách được giữ lại trong kho quà, phần thiếu quầy thu tiếp.`,
+  error:`<b>Nhánh lỗi.</b> App nói rõ chuyện gì xảy ra và bước tiếp theo, không hiện mã lỗi kỹ thuật cho khách.`,
+};
+const STEP_OF = {home:1,scan:2,verify:2,review:3,processing:4,success:4,error:2};
+
+function render(){
+  renderPOS();
+  const el=document.getElementById('screen');
+  el.innerHTML = ({home:scHome,scan:scScan,verify:scVerify,review:scReview,
+                   processing:scProcessing,success:scSuccess,error:scError})[S.screen]();
+  if(S.screen==='scan'){const c=el.querySelector('#scanqr'); if(c) drawQR(c,92,20260811);}
+  const cur=STEP_OF[S.screen], done=S.screen==='success';
+  document.querySelectorAll('.step').forEach(e=>{
+    const n=+e.dataset.s; e.className='step'+(done||n<cur?' done':n===cur?' on':'');
+  });
+  document.getElementById('scenarios').innerHTML = Object.entries(SCENARIOS).map(([k,v])=>
+    `<button class="${S.scenario===k?'active':''}" onclick="reset('${k}')">${v.label}<small>${v.desc}</small></button>`).join('');
+  document.getElementById('note').innerHTML = NOTES[S.screen];
+  if(S.modal) document.querySelector('.modal').scrollIntoView({block:'nearest'});
+}
+reset('full');
+</script>
+
+</body>
+</html>
