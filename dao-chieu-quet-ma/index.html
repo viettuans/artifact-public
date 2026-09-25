@@ -1,0 +1,306 @@
+<!doctype html><html><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Đảo chiều quét mã</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@500;600&display=swap">
+<style>
+:root{
+  --paper:#F5F4F1; --surface:#FFFFFF; --band:#EDEBE6;
+  --ink:#1A1D1C; --ink-2:#5C625F; --ink-3:#8A908C; --rule:#DFDCD5;
+  --accent:#0E5C54; --accent-wash:#E4F0ED; --accent-line:#9CC7BF;
+  --pos:#7A4A17; --pos-wash:#F3E9DE; --pos-line:#CBA87E;
+  --alert:#B4232B; --alert-wash:#F8E8E7;
+  --warn:#8A5E06; --warn-wash:#F7EFDD;
+  --ok:#2A6637;
+  --sans:"Be Vietnam Pro",-apple-system,"Segoe UI",Roboto,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --paper:#141716; --surface:#1D211F; --band:#1A1E1D;
+    --ink:#EAE9E4; --ink-2:#A5ABA7; --ink-3:#7E857F; --rule:#2F3533;
+    --accent:#5CBBAC; --accent-wash:#17312D; --accent-line:#2E5F58;
+    --pos:#D5A26A; --pos-wash:#2E241A; --pos-line:#5E4830;
+    --alert:#EE6B6E; --alert-wash:#3A2222;
+    --warn:#D9A544; --warn-wash:#33291A;
+    --ok:#72BE7B;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#141716; --surface:#1D211F; --band:#1A1E1D;
+  --ink:#EAE9E4; --ink-2:#A5ABA7; --ink-3:#7E857F; --rule:#2F3533;
+  --accent:#5CBBAC; --accent-wash:#17312D; --accent-line:#2E5F58;
+  --pos:#D5A26A; --pos-wash:#2E241A; --pos-line:#5E4830;
+  --alert:#EE6B6E; --alert-wash:#3A2222;
+  --warn:#D9A544; --warn-wash:#33291A;
+  --ok:#72BE7B;
+}
+
+body{background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:16.5px;line-height:1.66;-webkit-font-smoothing:antialiased;}
+.wrap{max-width:800px;margin:0 auto;padding-inline:22px;padding-block:clamp(30px,6vw,58px);display:flex;flex-direction:column;gap:clamp(34px,5vw,48px);}
+p{margin:0;}
+section{display:flex;flex-direction:column;gap:1.1rem;}
+
+.eyebrow{font-family:var(--mono);font-size:.71rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin:0 0 .5rem;}
+h1{font-size:clamp(2.05rem,6vw,2.8rem);font-weight:800;letter-spacing:-.024em;line-height:1.08;margin:0;text-wrap:balance;}
+.lede{margin-top:1rem;font-size:1.06rem;color:var(--ink-2);max-width:60ch;}
+.byline{margin-top:1rem;font-family:var(--mono);font-size:.78rem;color:var(--ink-3);letter-spacing:.02em;}
+h2{font-size:clamp(1.25rem,3.1vw,1.55rem);font-weight:700;letter-spacing:-.015em;line-height:1.25;margin:0;text-wrap:balance;border-top:2px solid var(--ink);padding-top:.75rem;}
+h2 + .sub{color:var(--ink-2);font-size:.96rem;margin-top:-.4rem;max-width:62ch;}
+
+.thesis{background:var(--accent-wash);border-left:4px solid var(--accent);padding:1.35rem 1.5rem;display:flex;flex-direction:column;gap:.7rem;border-radius:0 6px 6px 0;}
+.thesis .big{font-size:clamp(1.15rem,3.2vw,1.42rem);font-weight:700;line-height:1.32;letter-spacing:-.012em;text-wrap:balance;}
+.thesis .small{font-size:.95rem;color:var(--ink-2);}
+
+.cmp{display:grid;grid-template-columns:minmax(116px,1fr) 1fr 1fr;gap:0;border:1px solid var(--rule);border-radius:8px;overflow:hidden;background:var(--surface);}
+.cmp > div{padding:.72rem .85rem;border-bottom:1px solid var(--rule);font-size:.93rem;}
+.cmp > div:nth-child(3n+1){color:var(--ink-2);background:var(--band);}
+.cmp > div:nth-child(3n+2){border-left:1px solid var(--rule);}
+.cmp > div:nth-child(3n){border-left:1px solid var(--rule);}
+.cmp .hd{font-family:var(--mono);font-size:.7rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);background:var(--band);}
+.cmp .hd.now{color:var(--alert);}
+.cmp .hd.next{color:var(--ok);}
+.cmp > div:nth-last-child(-n+3){border-bottom:0;}
+
+figure{margin:0;display:flex;flex-direction:column;gap:.75rem;}
+.scroll{overflow-x:auto;background:var(--surface);border:1px solid var(--rule);border-radius:8px;padding:14px;}
+.scroll svg{display:block;max-width:100%;height:auto;min-width:610px;}
+figcaption{font-size:.87rem;color:var(--ink-2);line-height:1.55;}
+figcaption b{color:var(--ink);font-weight:600;}
+
+.ways{display:flex;flex-direction:column;gap:1rem;}
+.way{display:grid;grid-template-columns:auto 1fr;gap:.35rem 1rem;align-items:baseline;}
+.way .tag{font-family:var(--mono);font-size:.7rem;font-weight:600;letter-spacing:.08em;color:var(--accent);border:1px solid var(--accent-line);border-radius:3px;padding:.1rem .4rem;white-space:nowrap;}
+.way h3{margin:0;font-size:1.02rem;font-weight:700;letter-spacing:-.008em;}
+.way p{grid-column:2;color:var(--ink-2);font-size:.95rem;}
+@media (max-width:520px){
+  .way{grid-template-columns:1fr;}
+  .way p{grid-column:1;}
+}
+
+.caveat{background:var(--warn-wash);border-left:3px solid var(--warn);padding:.85rem 1rem;font-size:.92rem;color:var(--ink);border-radius:0 5px 5px 0;}
+.caveat b{color:var(--warn);font-weight:700;}
+.caveat + .caveat{margin-top:-.3rem;}
+
+.modes{display:grid;grid-template-columns:1fr 1fr;gap:1rem;}
+.mode{border:1px solid var(--rule);border-radius:8px;padding:1rem 1.1rem;background:var(--surface);display:flex;flex-direction:column;gap:.45rem;}
+.mode .lv{font-family:var(--mono);font-size:.7rem;font-weight:600;letter-spacing:.09em;text-transform:uppercase;}
+.mode.on .lv{color:var(--accent);}
+.mode.off .lv{color:var(--ink-3);}
+.mode h3{margin:0;font-size:1rem;font-weight:700;}
+.mode p{font-size:.92rem;color:var(--ink-2);}
+@media (max-width:560px){.modes{grid-template-columns:1fr;}}
+
+.annex{background:var(--band);border:1px solid var(--rule);border-radius:8px;padding:1.2rem 1.35rem;display:flex;flex-direction:column;gap:1.15rem;}
+.annex h2{border-top:0;padding-top:0;font-size:1.1rem;}
+.annex h4{margin:0 0 .45rem;font-family:var(--mono);font-size:.72rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);}
+.api{display:flex;flex-direction:column;gap:.4rem;font-family:var(--mono);font-size:.79rem;line-height:1.5;}
+.api div{display:grid;grid-template-columns:3.1rem 1fr;gap:.55rem;align-items:baseline;}
+.api b{font-weight:600;color:var(--accent);}
+.api code{color:var(--ink);word-break:break-word;}
+.api em{font-style:normal;color:var(--ink-2);display:block;}
+.blockers{display:flex;flex-direction:column;gap:.7rem;}
+.blocker{border-left:3px solid var(--alert);padding-left:.9rem;font-size:.93rem;}
+.blocker b{display:block;font-weight:700;margin-bottom:.12rem;}
+.blocker span{color:var(--ink-2);}
+
+.asks{display:flex;flex-direction:column;gap:.8rem;}
+.ask{padding-left:1.05rem;border-left:3px solid var(--accent);font-size:.97rem;}
+.ask b{font-weight:700;}
+.ask span{color:var(--ink-2);}
+.question{background:var(--surface);border:1px solid var(--rule);border-radius:8px;padding:1.25rem 1.4rem;font-size:1.04rem;font-weight:600;line-height:1.45;text-wrap:balance;}
+.question em{font-style:normal;color:var(--accent);}
+
+footer{border-top:1px solid var(--rule);padding-top:1rem;font-family:var(--mono);font-size:.74rem;color:var(--ink-3);letter-spacing:.03em;}
+</style>
+
+<div class="wrap">
+
+  <header>
+    <p class="eyebrow">Mục 2.1 · Bản trình bày họp</p>
+    <h1>Đảo chiều quét mã</h1>
+    <p class="lede">Thu ngân bấm một nút, màn hình POS hiện mã QR do Got It cấp riêng cho hoá đơn đó. Khách quét bằng app. Voucher được trừ thẳng giữa hai hệ thống — không còn mã nào để đọc to, để chép lại, để dùng trùng.</p>
+    <p class="byline">PM Đặng Viết Tuấn · 16/09/2026 · Dự án Quét QR – Dùng voucher</p>
+  </header>
+
+  <div class="thesis">
+    <p class="big">Không đi xin từng brand. Đi một lần với nhà cung cấp POS.</p>
+    <p class="small">Luồng này cần POS gọi sang Got It — nghĩa là có tích hợp thật. Nhưng phần lớn brand vừa và nhỏ không tự viết POS: họ dùng KiotViet, Sapo, iPOS, Haravan, Odoo. <b>Một lần tích hợp với nhà cung cấp là phủ hàng trăm brand, và không brand nào phải tự làm gì.</b> Việc thuyết phục cũng đổi bản chất: thay vì đi xin từng brand — đúng chỗ Got It yếu thế — Got It đàm phán với vendor, nơi Got It mang tính năng đến cho họ.</p>
+  </div>
+
+  <section>
+    <h2>Giải thích trong một câu: mã voucher biến mất khỏi quầy</h2>
+    <p class="sub">Hôm nay voucher là một dãy ký tự phải truyền từ điện thoại khách sang tay thu ngân. Sau khi đổi, không còn dãy ký tự nào đi qua quầy nữa — hai hệ thống nói chuyện thẳng với nhau.</p>
+    <div class="cmp">
+      <div class="hd">&nbsp;</div>
+      <div class="hd now">Hôm nay</div>
+      <div class="hd next">Sau khi đổi</div>
+
+      <div>Ai đọc mã</div>
+      <div>Khách đọc to giữa chỗ đông, hoặc đưa hẳn điện thoại</div>
+      <div>Không ai — không còn mã để đọc</div>
+
+      <div>Thu ngân phải làm gì</div>
+      <div>Gõ tay 10–16 ký tự, nhầm 0 với O</div>
+      <div>Bấm một nút, QR tự hiện lên màn hình</div>
+
+      <div>Số tiền áp dụng</div>
+      <div>Gõ tay hai lần, không ai kiểm tra tại quầy</div>
+      <div>POS gửi đúng số sang; app không có ô nhập số tiền</div>
+
+      <div>Ảnh chụp màn hình</div>
+      <div>Vẫn tiêu được ở chi nhánh khác</div>
+      <div>QR chết sau 3 phút và chỉ dùng cho đúng hoá đơn đó</div>
+
+      <div>Khi tranh chấp</div>
+      <div>Hai hệ thống giữ hai bản ghi khác nhau</div>
+      <div>Một bản ghi chung: chi nhánh, máy, thu ngân, giờ, số tiền</div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Năm bước tại quầy</h2>
+    <figure>
+      <div class="scroll">
+        <svg viewBox="0 0 660 292" role="img" aria-label="Sơ đồ năm bước: POS gửi số tiền sang Got It, nhận về QR, khách quét bằng app, app xác nhận voucher, Got It báo ngược lại cho POS">
+          <defs>
+            <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+              <path d="M 0 0 L 10 5 L 0 10 z" fill="var(--ink-3)"></path>
+            </marker>
+          </defs>
+
+          <rect x="18" y="14" width="154" height="26" rx="4" fill="var(--pos-wash)" stroke="var(--pos-line)" stroke-width="1"></rect>
+          <text x="95" y="32" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="10.5" font-weight="600" letter-spacing="1.1" fill="var(--pos)">MÁY POS · BRAND</text>
+
+          <rect x="253" y="14" width="154" height="26" rx="4" fill="var(--accent-wash)" stroke="var(--accent-line)" stroke-width="1"></rect>
+          <text x="330" y="32" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="10.5" font-weight="600" letter-spacing="1.1" fill="var(--accent)">SERVER GOT IT</text>
+
+          <rect x="488" y="14" width="154" height="26" rx="4" fill="var(--accent-wash)" stroke="var(--accent-line)" stroke-width="1"></rect>
+          <text x="565" y="32" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="10.5" font-weight="600" letter-spacing="1.1" fill="var(--accent)">APP KHÁCH</text>
+
+          <line x1="95" y1="46" x2="95" y2="280" stroke="var(--rule)" stroke-width="1.5" stroke-dasharray="4 5"></line>
+          <line x1="330" y1="46" x2="330" y2="280" stroke="var(--rule)" stroke-width="1.5" stroke-dasharray="4 5"></line>
+          <line x1="565" y1="46" x2="565" y2="280" stroke="var(--rule)" stroke-width="1.5" stroke-dasharray="4 5"></line>
+
+          <text x="212" y="76" text-anchor="middle" font-family="Be Vietnam Pro, sans-serif" font-size="12.5" fill="var(--ink)">1 · Gửi số tiền hoá đơn sang</text>
+          <line x1="95" y1="86" x2="328" y2="86" stroke="var(--ink-3)" stroke-width="1.5" marker-end="url(#ar)"></line>
+
+          <text x="212" y="120" text-anchor="middle" font-family="Be Vietnam Pro, sans-serif" font-size="12.5" fill="var(--ink)">2 · Trả về mã QR, sống 3 phút</text>
+          <line x1="330" y1="130" x2="97" y2="130" stroke="var(--ink-3)" stroke-width="1.5" marker-end="url(#ar)"></line>
+
+          <rect x="196" y="152" width="268" height="18" fill="var(--surface)"></rect>
+          <text x="330" y="166" text-anchor="middle" font-family="Be Vietnam Pro, sans-serif" font-size="12.5" fill="var(--ink)">3 · Khách quét QR hiện trên màn hình</text>
+          <line x1="95" y1="176" x2="563" y2="176" stroke="var(--ink-3)" stroke-width="1.5" marker-end="url(#ar)"></line>
+
+          <text x="447" y="210" text-anchor="middle" font-family="Be Vietnam Pro, sans-serif" font-size="12.5" fill="var(--ink)">4 · Chọn voucher, bấm xác nhận</text>
+          <line x1="565" y1="220" x2="332" y2="220" stroke="var(--ink-3)" stroke-width="1.5" marker-end="url(#ar)"></line>
+
+          <text x="212" y="254" text-anchor="middle" font-family="Be Vietnam Pro, sans-serif" font-size="12.5" fill="var(--ink)">5 · Báo đã trừ — hoá đơn tự giảm</text>
+          <line x1="330" y1="264" x2="97" y2="264" stroke="var(--ink-3)" stroke-width="1.5" marker-end="url(#ar)"></line>
+        </svg>
+      </div>
+      <figcaption>Mã QR <b>do Got It sinh ra cho riêng hoá đơn đó</b>, không phải tấm sticker dán sẵn ở mỗi máy. Hết 3 phút là chết, chụp lại không dùng được, và không dùng được cho hoá đơn khác. Thiếu bao nhiêu khách trả thêm bằng tiền mặt hoặc thẻ như bình thường.</figcaption>
+    </figure>
+  </section>
+
+  <section>
+    <h2>Vì sao brand vẫn không phải tự làm gì</h2>
+    <div class="ways">
+      <div class="way">
+        <span class="tag">ĐÒN BẨY 1</span>
+        <h3>Tích hợp ở tầng nhà cung cấp POS</h3>
+        <p>Got It làm việc một lần với KiotViet, Sapo, iPOS, Haravan. Vendor bật tính năng, toàn bộ brand đang dùng phần mềm đó có ngay — không ai phải mở dự án, không ai phải duyệt ngân sách. Chỉ chuỗi lớn tự viết POS mới cần bàn riêng.</p>
+      </div>
+      <div class="way">
+        <span class="tag">ĐÒN BẨY 2</span>
+        <h3>Không có ngày chuyển đổi</h3>
+        <p>Nơi đã tích hợp chạy luồng mới. Nơi chưa tích hợp giữ nguyên luồng nhập mã như hôm nay, không hỏng gì. Brand không bị ép theo lịch của Got It — đây cũng là phương án dự phòng khi mạng cửa hàng chập chờn.</p>
+      </div>
+      <div class="way">
+        <span class="tag">ĐÒN BẨY 3</span>
+        <h3>Đổi lại bằng thứ brand thật sự muốn</h3>
+        <p>Đối soát tự động và tiền về nhanh hơn — khoản này tốn dòng vốn của Got It chứ không tốn hoa hồng của brand. Kèm theo: hết voucher giả, hết mã bị tiêu hai lần, và bằng chứng đủ để tự xử lý tranh chấp mà không cần Got It phân xử.</p>
+      </div>
+    </div>
+    <p class="caveat"><b>Phải chuẩn bị trước cho ý kiến MC-2.</b> Luồng này trông rất giống quét mã thanh toán, nên brand có thể neo giá theo mức phí cổng thanh toán. Hai việc giữ ranh giới: trong app tuyệt đối không dùng chữ “thanh toán” mà dùng “Dùng voucher tại &lt;cửa hàng&gt;”; và app <b>không có ô nhập số tiền</b> — số tiền đến từ POS, luồng kết thúc bằng một voucher đã dùng cùng phần còn phải trả, không phải một biên lai thanh toán.</p>
+    <p class="caveat"><b>Rủi ro mới cần ghi vào mục 2.3.</b> Trước đây lỗi mạng là mạng của khách; giờ quầy không gọi được API Got It là cả luồng dừng. Bắt buộc phải có đường lùi về nhập mã tay, và POS phải chịu được trường hợp Got It trả lời chậm.</p>
+  </section>
+
+  <section>
+    <h2>Hai chế độ chạy song song</h2>
+    <div class="modes">
+      <div class="mode on">
+        <span class="lv">Nơi đã tích hợp</span>
+        <h3>POS hiện QR</h3>
+        <p>Năm bước ở trên. Gỡ được lộ mã, dùng lại mã, nhập sai mã, lệch số dư khi dùng một phần, và gian lận nội bộ tại quầy.</p>
+      </div>
+      <div class="mode off">
+        <span class="lv">Nơi chưa tích hợp</span>
+        <h3>Nhập mã như hôm nay</h3>
+        <p>Không đổi gì. Vẫn ô nhập đó, vẫn định dạng mã đó, vẫn dòng đó trên báo cáo đối soát.</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="annex">
+    <h2>Phụ lục cho kỹ thuật ngồi cùng phòng</h2>
+
+    <div>
+      <h4>Phía POS gọi sang Got It — ký bằng API key + HMAC + timestamp</h4>
+      <div class="api">
+        <div><b>POST</b><code>/partner/v1/checkout-session<em>{ store_code, terminal_id, bill_ref, amount } → { session_id, qr_payload, expires_at: 180s }</em></code></div>
+        <div><b>GET</b><code>/partner/v1/checkout-session/{id}<em>POS hỏi trạng thái, cho POS không nhận được webhook</em></code></div>
+        <div><b>POST</b><code>/partner/v1/checkout-session/{id}/confirm<em>{ final_amount, cashier_id } — chốt, ghi bản ghi dùng voucher</em></code></div>
+        <div><b>POST</b><code>/partner/v1/checkout-session/{id}/void<em>huỷ, trả voucher về ví khách</em></code></div>
+      </div>
+    </div>
+
+    <div>
+      <h4>Phía app khách</h4>
+      <div class="api">
+        <div><b>POST</b><code>/v1/use-at-store/resolve<em>{ qr_raw } → phiên, cửa hàng, số tiền hoá đơn</em></code></div>
+        <div><b>GET</b><code>/v1/use-at-store/{sid}/vouchers<em>lọc đúng voucher dùng được tại cửa hàng này, gợi ý số tiền áp</em></code></div>
+        <div><b>POST</b><code>/v1/use-at-store/{sid}/apply<em>khoá voucher, đẩy webhook sang POS, chưa trừ hẳn</em></code></div>
+      </div>
+    </div>
+
+    <div>
+      <h4>Bốn điểm không được bỏ</h4>
+      <div class="api">
+        <div><b>01</b><code><em>Hai pha: apply giữ chỗ, confirm mới trừ hẳn. Không có nó thì vẫn còn cảnh app báo đã dùng mà khách chưa nhận được gì.</em></code></div>
+        <div><b>02</b><code><em>QR chỉ chứa một token ngẫu nhiên ngắn hạn, không nhúng số tiền — chụp lại là vô dụng, và không lộ dữ liệu hoá đơn.</em></code></div>
+        <div><b>03</b><code><em>Idempotency-Key theo bill_ref, cộng khoá theo voucher — hai máy POS cùng lúc thì chỉ một máy thắng.</em></code></div>
+        <div><b>04</b><code><em>Hết hạn giữ chỗ mà POS không confirm thì tự huỷ, voucher về ví, app báo cho khách.</em></code></div>
+      </div>
+    </div>
+
+    <div class="blockers">
+      <div class="blocker">
+        <b>Hai câu phải trả lời trước khi chốt phạm vi</b>
+        <span>Cả hai đều quyết định luồng này chạy được ở bao nhiêu phần trăm doanh số.</span>
+      </div>
+      <div class="blocker">
+        <b>1. Nhà cung cấp POS nào cho phép cài thêm chức năng ở màn hình thu ngân?</b>
+        <span>Có vendor mở SDK/plugin, có vendor chỉ cho gọi API ở tầng đơn hàng. Khác nhau ở đây là khác nhau về khối lượng việc, không phải khác về thiết kế.</span>
+      </div>
+      <div class="blocker">
+        <b>2. Màn hình quầy có hiện được QR cho khách nhìn không?</b>
+        <span>Nhiều quầy chỉ có màn hình quay về phía thu ngân. Nếu không có màn hình phụ, phải cho in QR lên giấy tạm hoặc quay lại luồng nhập mã.</span>
+      </div>
+    </div>
+  </div>
+
+  <section>
+    <h2>Mang gì ra khỏi cuộc họp</h2>
+    <div class="asks">
+      <p class="ask"><b>Từ Merchant:</b> <span>doanh số bóc theo <b>nhà cung cấp POS</b>, không chỉ theo brand — con số này quyết định một lần tích hợp phủ được bao nhiêu phần trăm doanh số, và nó chưa có trong danh sách dữ liệu của mục 1.3.</span></p>
+      <p class="ask"><b>Từ Merchant:</b> <span>đã từng có brand nào đòi đàm phán lại hoa hồng khi Got It đổi quy trình chưa? Một tiền lệ thật nặng hơn mọi suy đoán về ý kiến MC-2.</span></p>
+      <p class="ask"><b>Từ Vận hành:</b> <span>quầy của các đối tác lớn có màn hình hướng về phía khách không.</span></p>
+      <p class="ask"><b>Từ Kỹ thuật:</b> <span>trả lời hai câu ở phụ lục trên.</span></p>
+    </div>
+    <p class="question">Câu chốt mang ra bàn: <em>“Nếu việc tích hợp do nhà cung cấp POS làm một lần, brand không mở dự án, không duyệt ngân sách, không sửa hợp đồng — và đổi lại được đối soát tự động cùng tiền về nhanh hơn — thì còn vướng gì nữa không?”</em></p>
+  </section>
+
+  <footer>Mục 2.1 · Đầu vào cho 2.2 và 2.3 · Dự án Quét QR – Dùng voucher</footer>
+
+</div>
+
+</body></html>
