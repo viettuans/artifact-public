@@ -1,0 +1,586 @@
+<!doctype html><html><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Lộ trình Go-live Campaign Solution</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Be+Vietnam+Pro:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap">
+<style>
+:root{
+  --bg:#F4F6F9; --surface:#FFFFFF; --surface-2:#EDF1F6; --ink:#131C2E; --ink-2:#44506A; --muted:#6B7690;
+  --line:#D9DFE8; --line-2:#C5CEDB;
+  --uat:#B86A0B; --uat-soft:#FCEFD9; --plan:#2B55C7; --plan-soft:#E3EAFB; --live:#16805A; --live-soft:#DDF3E9;
+  --risk:#B4332B; --risk-soft:#FBE4E1;
+  --display:"Bricolage Grotesque","Be Vietnam Pro",system-ui,sans-serif;
+  --body:"Be Vietnam Pro",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --bg:#0F1522; --surface:#172033; --surface-2:#1E2940; --ink:#E8ECF4; --ink-2:#B4BDD0; --muted:#8792AA;
+    --line:#2A3650; --line-2:#36445F;
+    --uat:#F0A640; --uat-soft:#3A2A12; --plan:#7C9CF5; --plan-soft:#1D2A4F; --live:#4CC896; --live-soft:#123528;
+    --risk:#F07A70; --risk-soft:#3D1D1B;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#0F1522; --surface:#172033; --surface-2:#1E2940; --ink:#E8ECF4; --ink-2:#B4BDD0; --muted:#8792AA;
+  --line:#2A3650; --line-2:#36445F;
+  --uat:#F0A640; --uat-soft:#3A2A12; --plan:#7C9CF5; --plan-soft:#1D2A4F; --live:#4CC896; --live-soft:#123528;
+  --risk:#F07A70; --risk-soft:#3D1D1B;
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.6}
+.wrap{max-width:1120px;margin:0 auto;padding-inline:24px;padding-block:40px 80px}
+h1,h2,h3{font-family:var(--display);text-wrap:balance;margin:0;letter-spacing:-.01em}
+h1{font-size:clamp(30px,5vw,48px);line-height:1.08;font-weight:800}
+h2{font-size:clamp(22px,3vw,28px);line-height:1.2;font-weight:700}
+h3{font-size:17px;font-weight:700;line-height:1.3}
+p{margin:0}
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
+.lede{color:var(--ink-2);font-size:17px;max-width:62ch}
+
+/* header */
+.top{display:flex;flex-wrap:wrap;gap:24px;justify-content:space-between;align-items:flex-end}
+.top__intro{display:grid;gap:14px;max-width:680px}
+.ctrl{display:grid;gap:6px;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:12px 14px}
+.ctrl label{font-size:12px;color:var(--muted);font-weight:600}
+.ctrl input{font-family:var(--mono);font-size:14px;color:var(--ink);background:var(--surface-2);border:1px solid var(--line-2);border-radius:6px;padding:6px 8px}
+.ctrl input:focus-visible,.nav a:focus-visible,button:focus-visible{outline:2px solid var(--plan);outline-offset:2px}
+.ctrl small{color:var(--muted);font-size:12px}
+
+/* phase strip */
+.strip{margin-top:36px;display:grid;grid-template-columns:repeat(3,1fr);gap:0;border:1px solid var(--line);border-radius:14px;overflow:hidden;background:var(--surface)}
+.phase-card{padding:20px 22px;display:grid;gap:8px;align-content:start;border-left:1px solid var(--line);position:relative}
+.phase-card:first-child{border-left:0}
+.phase-card::before{content:"";position:absolute;inset:0 0 auto 0;height:4px;background:var(--c)}
+.phase-card--uat{--c:var(--uat);--cs:var(--uat-soft)}
+.phase-card--plan{--c:var(--plan);--cs:var(--plan-soft)}
+.phase-card--live{--c:var(--live);--cs:var(--live-soft)}
+.phase-card__step{font-family:var(--mono);font-size:12px;color:var(--c);font-weight:600;letter-spacing:.06em}
+.phase-card__dates{font-family:var(--mono);font-size:13px;color:var(--ink-2)}
+.phase-card__dur{display:inline-block;background:var(--cs);color:var(--c);font-weight:600;font-size:12px;border-radius:999px;padding:2px 10px;justify-self:start}
+.phase-card p{color:var(--ink-2);font-size:14px}
+
+/* gantt */
+.section{margin-top:64px;display:grid;gap:20px}
+.section__head{display:grid;gap:6px}
+.gantt{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:18px 18px 12px;overflow-x:auto}
+.gantt__inner{min-width:760px;position:relative}
+.gantt__weeks{display:grid;border-bottom:1px solid var(--line);font-family:var(--mono);font-size:11px;color:var(--muted)}
+.gantt__weeks div{padding:0 6px 8px;border-left:1px solid var(--line)}
+.gantt__weeks div:first-child{border-left:0}
+.gantt__rows{position:relative;display:grid;gap:6px;padding-top:10px}
+.g-row{display:grid;grid-template-columns:210px 1fr;align-items:center;gap:10px;min-height:28px}
+.g-row__label{font-size:13px;color:var(--ink-2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.g-row__track{position:relative;height:22px}
+.g-bar{position:absolute;top:2px;height:18px;border-radius:5px;background:var(--c);opacity:.9}
+.g-bar--soft{background:var(--cs);border:1px dashed var(--c);opacity:1}
+.g-mile{position:absolute;top:1px;width:20px;height:20px;transform:translateX(-10px) rotate(45deg) scale(.72);background:var(--c);border-radius:3px}
+.g-group{font-family:var(--mono);font-size:11px;letter-spacing:.07em;text-transform:uppercase;color:var(--c);font-weight:600;padding-top:6px}
+.g-today{position:absolute;top:0;bottom:0;width:0;border-left:2px dashed var(--risk);pointer-events:none}
+.g-today span{position:absolute;top:-2px;left:4px;font-family:var(--mono);font-size:10px;color:var(--risk);background:var(--surface);padding:0 3px;white-space:nowrap}
+.legend{display:flex;flex-wrap:wrap;gap:16px;font-size:12px;color:var(--muted);padding-top:10px}
+.legend i{display:inline-block;width:12px;height:12px;border-radius:3px;vertical-align:-2px;margin-right:6px}
+
+/* phase detail */
+.phase{display:grid;grid-template-columns:260px 1fr;gap:28px;padding-top:28px;border-top:1px solid var(--line)}
+.phase__side{display:grid;gap:10px;align-content:start}
+.phase__num{font-family:var(--display);font-size:64px;line-height:1;font-weight:800;color:var(--c)}
+.phase__side .phase-card__dates{font-size:14px}
+.phase__goal{font-size:14px;color:var(--ink-2)}
+.phase__body{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.box{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:16px 18px;display:grid;gap:10px;align-content:start}
+.box--wide{grid-column:1/-1}
+.box h3{font-size:15px}
+ul.clean{margin:0;padding:0;list-style:none;display:grid;gap:8px}
+ul.clean li{position:relative;padding-left:18px;font-size:14px;color:var(--ink-2)}
+ul.clean li::before{content:"";position:absolute;left:2px;top:.62em;width:7px;height:7px;border-radius:2px;background:var(--c,var(--muted))}
+ul.clean li b{color:var(--ink);font-weight:600}
+ul.check li::before{content:"✓";background:none;width:auto;height:auto;top:0;left:0;color:var(--c);font-weight:700;font-size:13px}
+.tag{font-family:var(--mono);font-size:11px;border-radius:4px;padding:1px 6px;background:var(--surface-2);color:var(--ink-2);white-space:nowrap}
+
+/* timeline inside phase */
+.steps{display:grid;gap:0}
+.step{display:grid;grid-template-columns:96px 1fr;gap:14px;padding:10px 0;border-top:1px dashed var(--line)}
+.step:first-child{border-top:0;padding-top:0}
+.step__when{font-family:var(--mono);font-size:12px;color:var(--c);font-weight:600;padding-top:2px}
+.step__what{font-size:14px;color:var(--ink-2)}
+.step__what b{color:var(--ink);font-weight:600}
+
+/* tables */
+.tbl-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:12px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;font-size:14px;min-width:640px}
+th,td{text-align:left;padding:10px 14px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:12px;color:var(--muted);font-weight:600;background:var(--surface-2);letter-spacing:.02em}
+tr:last-child td{border-bottom:0}
+td{color:var(--ink-2)}
+td b{color:var(--ink)}
+.sev{font-family:var(--mono);font-weight:600;font-size:12px;border-radius:4px;padding:2px 7px;white-space:nowrap}
+.sev--p0{background:var(--risk-soft);color:var(--risk)}
+.sev--p1{background:var(--uat-soft);color:var(--uat)}
+.sev--p2{background:var(--plan-soft);color:var(--plan)}
+.sev--p3{background:var(--surface-2);color:var(--muted)}
+.sev--ok{background:var(--live-soft);color:var(--live)}
+.num{font-variant-numeric:tabular-nums;font-family:var(--mono);font-size:13px}
+.hl td{background:var(--live-soft)}
+
+/* raci */
+.raci{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px}
+.who{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px 16px;display:grid;gap:6px;align-content:start}
+.who h3{font-size:15px}
+.who p{font-size:13px;color:var(--ink-2)}
+
+.gate{background:var(--surface);border:1px solid var(--line);border-left:4px solid var(--plan);border-radius:12px;padding:18px 20px;display:grid;gap:12px}
+.gate__grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px 28px}
+.risk{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.risk .box{border-left:4px solid var(--risk)}
+.risk .box p{font-size:14px;color:var(--ink-2)}
+.risk .box .fix{color:var(--ink);font-size:13px}
+.risk .box .fix b{color:var(--live)}
+.note{font-size:12px;color:var(--muted)}
+.foot{margin-top:64px;padding-top:20px;border-top:1px solid var(--line);font-size:12px;color:var(--muted);display:flex;flex-wrap:wrap;gap:8px 24px;justify-content:space-between}
+
+.nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);margin-inline:-24px;padding:10px 24px;display:flex;gap:6px;flex-wrap:wrap;margin-top:40px}
+.nav a{font-size:13px;color:var(--ink-2);text-decoration:none;padding:4px 10px;border-radius:999px}
+.nav a:hover{background:var(--surface-2);color:var(--ink)}
+
+@media (max-width:860px){
+  .strip{grid-template-columns:1fr}
+  .phase-card{border-left:0;border-top:1px solid var(--line)}
+  .phase-card:first-child{border-top:0}
+  .phase{grid-template-columns:1fr;gap:16px}
+  .phase__num{font-size:44px}
+  .phase__body,.gate__grid,.risk{grid-template-columns:1fr}
+}
+@media (max-width:480px){
+  .wrap{padding-inline:16px}
+  .nav{margin-inline:-16px;padding-inline:16px}
+  .step{grid-template-columns:78px 1fr}
+}
+@media (prefers-reduced-motion:no-preference){
+  .g-bar{transition:left .3s ease,width .3s ease}
+}
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <div class="top__intro">
+      <span class="eyebrow">Campaign Solution · Kế hoạch release v1</span>
+      <h1>Từ UAT tới chiến dịch thật đầu tiên</h1>
+      <p class="lede">Sales dùng thử và góp ý trong 2 tuần trên môi trường staging. Sau đó team chốt phạm vi, dựng production, rồi phát hành chiến dịch thật và theo dõi sát 2 tuần đầu.</p>
+    </div>
+    <div class="ctrl">
+      <label for="uatStart">Ngày bắt đầu UAT</label>
+      <input id="uatStart" type="date" value="2026-10-05">
+      <small>Đổi ngày này thì cả lịch dịch theo</small>
+    </div>
+  </header>
+
+  <div class="strip" id="strip">
+    <div class="phase-card phase-card--uat">
+      <span class="phase-card__step">GIAI ĐOẠN 1</span>
+      <h3>Sales UAT &amp; feedback</h3>
+      <span class="phase-card__dates" data-range="uat"></span>
+      <span class="phase-card__dur">2 tuần</span>
+      <p>Sales tự dựng và chạy thử chiến dịch trên staging, ghi nhận lỗi và yêu cầu vào Redmine.</p>
+    </div>
+    <div class="phase-card phase-card--plan">
+      <span class="phase-card__step">GIAI ĐOẠN 2</span>
+      <h3>Plan release</h3>
+      <span class="phase-card__dates" data-range="plan"></span>
+      <span class="phase-card__dur">1 tuần</span>
+      <p>Chốt phạm vi, đóng băng code, chạy regression, dựng production và họp Go / No-go.</p>
+    </div>
+    <div class="phase-card phase-card--live">
+      <span class="phase-card__step">GIAI ĐOẠN 3</span>
+      <h3>Chạy thật campaign</h3>
+      <span class="phase-card__dates" data-range="live"></span>
+      <span class="phase-card__dur">Go-live + 2 tuần hypercare</span>
+      <p>Sao chép chiến dịch đã nghiệm thu sang production, bật chạy, theo dõi hằng ngày.</p>
+    </div>
+  </div>
+
+  <nav class="nav" aria-label="Mục lục">
+    <a href="#lich">Lịch tổng</a>
+    <a href="#uat">1 · UAT</a>
+    <a href="#plan">2 · Plan release</a>
+    <a href="#live">3 · Chạy thật</a>
+    <a href="#feedback">Phân loại feedback</a>
+    <a href="#gate">Go / No-go</a>
+    <a href="#tai">Năng lực tải</a>
+    <a href="#rui-ro">Rủi ro</a>
+    <a href="#vai-tro">Vai trò</a>
+  </nav>
+
+  <!-- GANTT -->
+  <section class="section" id="lich">
+    <div class="section__head">
+      <span class="eyebrow">Lịch tổng</span>
+      <h2>7 tuần, 3 cột mốc</h2>
+    </div>
+    <div class="gantt">
+      <div class="gantt__inner" id="gantt"></div>
+      <div class="legend">
+        <span><i style="background:var(--uat)"></i>UAT</span>
+        <span><i style="background:var(--plan)"></i>Plan release</span>
+        <span><i style="background:var(--live)"></i>Chạy thật</span>
+        <span><i style="border:1px dashed var(--muted);background:var(--surface-2)"></i>Việc chạy song song</span>
+        <span><i style="border-left:2px dashed var(--risk);width:0;border-radius:0"></i>Hôm nay</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- PHASE 1 -->
+  <section class="section" id="uat">
+    <div class="phase" style="--c:var(--uat);--cs:var(--uat-soft)">
+      <div class="phase__side">
+        <span class="phase__num">01</span>
+        <h2>Sales UAT &amp; feedback</h2>
+        <span class="phase-card__dates" data-range="uat"></span>
+        <p class="phase__goal">Mục tiêu: Sales tự tay dựng được một chiến dịch trọn vẹn không cần dev hỗ trợ, và mọi góp ý đều được ghi nhận, phân loại.</p>
+      </div>
+      <div class="phase__body">
+        <div class="box box--wide">
+          <h3>Diễn tiến</h3>
+          <div class="steps">
+            <div class="step"><span class="step__when" data-d="-5,-3">…</span><span class="step__what"><b>Chuẩn bị</b>: dựng 2–3 chiến dịch mẫu trên staging (vòng quay, hộp quà, mã dự thưởng), cấp tài khoản CMS cho Sales theo đúng phạm vi chiến dịch, soạn kịch bản UAT từ BA doc.</span></div>
+            <div class="step"><span class="step__when" data-d="0">…</span><span class="step__what"><b>Kickoff UAT</b> (1 giờ): demo luồng dựng chiến dịch qua 11 tab cấu hình, hướng dẫn cách báo lỗi trên Redmine.</span></div>
+            <div class="step"><span class="step__when" data-d="0,4">…</span><span class="step__what"><b>Tuần 1 · Dựng chiến dịch</b>: Sales tự cấu hình quà, luật quà, phân bổ, giao diện, luồng trang; chơi thử trên app bằng số điện thoại test.</span></div>
+            <div class="step"><span class="step__when" data-d="4">…</span><span class="step__what"><b>Review giữa kỳ</b> (30 phút): điểm lại số lỗi theo mức độ, chốt những lỗi P0/P1 phải xong trong tuần 2.</span></div>
+            <div class="step"><span class="step__when" data-d="7,11">…</span><span class="step__what"><b>Tuần 2 · Kịch bản thật</b>: chạy chiến dịch gần giống chiến dịch sẽ phát hành (số quà thật, phân bổ thật, gửi ZNS/SMS thật), xuất báo cáo, thử reset dữ liệu chạy thử.</span></div>
+            <div class="step"><span class="step__when" data-d="11">…</span><span class="step__what"><b>Chốt UAT</b>: Sales ký nhận danh sách tính năng đạt, danh sách lỗi còn mở và yêu cầu thay đổi cho vòng sau.</span></div>
+          </div>
+        </div>
+        <div class="box">
+          <h3>Sales cần thử</h3>
+          <ul class="clean">
+            <li><b>Dựng chiến dịch</b> đi tuần tự 11 tab, dùng bubble checklist để biết còn thiếu gì</li>
+            <li><b>3 hình thức chơi</b>: vòng quay, hộp quà bí ẩn, trao quà trực tiếp</li>
+            <li><b>Đăng nhập</b>: Zalo, OTP, mã dự thưởng</li>
+            <li><b>Quà</b>: e-voucher, nạp tiền điện thoại, quà vật lý có form giao hàng</li>
+            <li><b>Phân bổ quà</b> theo khu vực / cửa hàng, gửi duyệt và duyệt</li>
+            <li><b>Import Excel</b> dữ liệu nền, danh sách đen</li>
+            <li><b>Thông báo</b> trúng thưởng qua ZNS / SMS, trang Quà của tôi</li>
+            <li><b>Báo cáo</b> và xuất danh sách khách hàng</li>
+          </ul>
+        </div>
+        <div class="box">
+          <h3>Đầu ra khi kết thúc</h3>
+          <ul class="clean check">
+            <li>Biên bản nghiệm thu từ Sales, liệt kê tính năng đạt / chưa đạt</li>
+            <li>Toàn bộ feedback đã có ticket Redmine và đã gán mức độ</li>
+            <li>Không còn lỗi <span class="sev sev--p0">P0</span> mở</li>
+            <li>Chiến dịch đầu tiên đã dựng xong trên staging, sẵn sàng sao chép</li>
+            <li>Sales xác nhận ngày muốn chạy thật và thông số: số khách dự kiến, số quà, kênh truyền thông</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PHASE 2 -->
+  <section class="section" id="plan">
+    <div class="phase" style="--c:var(--plan);--cs:var(--plan-soft)">
+      <div class="phase__side">
+        <span class="phase__num">02</span>
+        <h2>Plan release</h2>
+        <span class="phase-card__dates" data-range="plan"></span>
+        <p class="phase__goal">Mục tiêu: có bản build đã đóng băng, production dựng xong, và cả team đồng ý Go dựa trên checklist chứ không dựa trên cảm giác.</p>
+      </div>
+      <div class="phase__body">
+        <div class="box box--wide">
+          <h3>Diễn tiến</h3>
+          <div class="steps">
+            <div class="step"><span class="step__when" data-d="14">…</span><span class="step__what"><b>Triage cuối</b>: PO + BA + Sales chốt lỗi nào sửa trước go-live, lỗi nào sang bản sau. Yêu cầu tính năng mới mặc định để sau go-live.</span></div>
+            <div class="step"><span class="step__when" data-d="15">…</span><span class="step__what"><b>Code freeze</b> nhánh release. Từ đây chỉ nhận fix <span class="sev sev--p0">P0</span> <span class="sev sev--p1">P1</span> đã chốt.</span></div>
+            <div class="step"><span class="step__when" data-d="15,17">…</span><span class="step__what"><b>QC regression</b> toàn bộ trên staging: PHPUnit + E2E Playwright + test case BA của các luồng chính. Sales kiểm lại những lỗi đã báo.</span></div>
+            <div class="step"><span class="step__when" data-d="14,17">…</span><span class="step__what"><b>Dựng production</b>: biến môi trường prd, secret SSM, domain + HTTPS, cấu hình tài nguyên theo số khách dự kiến, bật đối tác Biz voucher / ZNS / SMS thật.</span></div>
+            <div class="step"><span class="step__when" data-d="17">…</span><span class="step__what"><b>Deploy production</b> bản đã đóng băng + smoke test (đăng nhập CMS, tạo chiến dịch test, chơi 1 lượt, nhận 1 voucher thật).</span></div>
+            <div class="step"><span class="step__when" data-d="18">…</span><span class="step__what"><b>Họp Go / No-go</b> (30 phút): đi qua checklist bên dưới. Thiếu mục bắt buộc thì lùi go-live, không chạy vớt.</span></div>
+          </div>
+        </div>
+        <div class="box">
+          <h3>Tài liệu cần có</h3>
+          <ul class="clean">
+            <li><b>Release note</b> cho Sales: tính năng có trong bản này, giới hạn đã biết</li>
+            <li><b>Runbook ngày go-live</b>: ai làm gì, lúc mấy giờ, gọi ai khi sự cố</li>
+            <li><b>Kế hoạch rollback</b>: tạm dừng chiến dịch, quay lại image trước</li>
+            <li><b>Hướng dẫn vận hành</b>: duyệt phân bổ, xử lý khiếu nại "không nhận được quà" bằng nhật ký chơi game</li>
+          </ul>
+        </div>
+        <div class="box">
+          <h3>Đầu ra khi kết thúc</h3>
+          <ul class="clean check">
+            <li>Tag release trên GitLab, pipeline xanh</li>
+            <li>Production chạy bản đã đóng băng, smoke test đạt</li>
+            <li>Biên bản Go / No-go có đủ chữ ký PO, Tech lead, QC, Sales</li>
+            <li>Ngày giờ bật chiến dịch đã thông báo cho khách hàng doanh nghiệp</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PHASE 3 -->
+  <section class="section" id="live">
+    <div class="phase" style="--c:var(--live);--cs:var(--live-soft)">
+      <div class="phase__side">
+        <span class="phase__num">03</span>
+        <h2>Chạy thật campaign</h2>
+        <span class="phase-card__dates" data-range="live"></span>
+        <p class="phase__goal">Mục tiêu: chiến dịch đầu tiên chạy đúng cấu hình đã nghiệm thu, không phát trùng quà, và mọi sự cố được xử lý trong ngày.</p>
+      </div>
+      <div class="phase__body">
+        <div class="box box--wide">
+          <h3>Ngày go-live</h3>
+          <div class="steps">
+            <div class="step"><span class="step__when" data-d="20" data-t="09:00">…</span><span class="step__what"><b>Sao chép chiến dịch</b> staging → production bằng tính năng Deploy campaign. Chiến dịch ở đích được tạo ở trạng thái tắt.</span></div>
+            <div class="step"><span class="step__when" data-d="20" data-t="10:00">…</span><span class="step__what"><b>Rà cấu hình</b> trên production theo bubble checklist; nhập khóa tích hợp và thông tin đối tác (không đi theo bản sao).</span></div>
+            <div class="step"><span class="step__when" data-d="20" data-t="11:00">…</span><span class="step__what"><b>Chạy thử trên production</b> ở chế độ KIỂM THỬ với vài số điện thoại nội bộ, rồi <b>reset dữ liệu chạy thử</b> để kho quà về nguyên trạng.</span></div>
+            <div class="step"><span class="step__when" data-d="20" data-t="14:00">…</span><span class="step__what"><b>Bật chiến dịch</b>, tắt cờ kiểm thử. Dev + QC trực trên kênh chung, theo dõi lượt chơi, lỗi phát quà, hàng đợi.</span></div>
+            <div class="step"><span class="step__when" data-d="20" data-t="17:30">…</span><span class="step__what"><b>Báo cáo cuối ngày</b>: số khách, số lượt chơi, số quà đã phát, lỗi phát sinh.</span></div>
+          </div>
+        </div>
+        <div class="box">
+          <h3>Hypercare 2 tuần</h3>
+          <ul class="clean">
+            <li><b>Họp nhanh 15 phút mỗi sáng</b>: số liệu hôm trước, lỗi mới, khiếu nại khách</li>
+            <li>Đối soát số quà đã phát với đối tác Biz voucher và kho quà trên CMS</li>
+            <li>Theo dõi quà lỗi cấp (nạp tiền trễ, voucher timeout) và xác nhận hệ thống đã tự phát lại</li>
+            <li>Dev trực luân phiên, fix <span class="sev sev--p0">P0</span> phát hành trong ngày</li>
+          </ul>
+        </div>
+        <div class="box">
+          <h3>Tiêu chí thành công</h3>
+          <ul class="clean check">
+            <li>Không có lượt quà bị phát trùng hoặc lệch kho</li>
+            <li>Tỷ lệ phát quà lỗi không tự phục hồi dưới 1%</li>
+            <li>Không có sự cố làm dừng chiến dịch quá 30 phút</li>
+            <li>Khiếu nại khách được trả lời trong ngày bằng nhật ký chơi game</li>
+            <li>Họp retro sau 2 tuần, chốt backlog cho chiến dịch tiếp theo</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEEDBACK -->
+  <section class="section" id="feedback">
+    <div class="section__head">
+      <span class="eyebrow">Quy ước trong UAT</span>
+      <h2>Feedback của Sales được xử lý thế nào</h2>
+      <p class="lede">Mỗi góp ý là một ticket Redmine có ảnh chụp, đường dẫn trang và các bước tái hiện. PO/BA phân loại trong vòng 1 ngày làm việc.</p>
+    </div>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Mức</th><th>Nghĩa là</th><th>Ví dụ</th><th>Thời hạn xử lý</th></tr></thead>
+        <tbody>
+          <tr><td><span class="sev sev--p0">P0 · Chặn</span></td><td><b>Không chạy được chiến dịch</b> hoặc sai tiền, sai quà</td><td>Phát trùng quà, không đăng nhập được, không lưu được cấu hình</td><td>Trong ngày</td></tr>
+          <tr><td><span class="sev sev--p1">P1 · Nặng</span></td><td>Tính năng chính sai, có cách làm tạm</td><td>Import lỗi với file lớn, báo cáo lệch số</td><td>2 ngày, trước code freeze</td></tr>
+          <tr><td><span class="sev sev--p2">P2 · Vừa</span></td><td>Sai hiển thị, khó dùng</td><td>Chữ tràn, thông báo lỗi khó hiểu, preview lệch app</td><td>Trước code freeze nếu kịp</td></tr>
+          <tr><td><span class="sev sev--p3">P3 · Nhẹ</span></td><td>Góp ý thẩm mỹ, câu chữ</td><td>Đổi nhãn nút, đổi thứ tự cột</td><td>Sau go-live</td></tr>
+          <tr><td><span class="sev sev--ok">CR · Yêu cầu mới</span></td><td>Tính năng chưa có trong phạm vi</td><td>Thêm hình thức game mới, thêm kiểu báo cáo</td><td>Vào backlog, ưu tiên sau go-live</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- GATE -->
+  <section class="section" id="gate">
+    <div class="section__head">
+      <span class="eyebrow">Họp Go / No-go · <span data-d="18" class="mono">…</span></span>
+      <h2>Chỉ Go khi đủ tất cả các mục</h2>
+    </div>
+    <div class="gate" style="--c:var(--plan)">
+      <div class="gate__grid">
+        <ul class="clean check">
+          <li>Không còn lỗi <span class="sev sev--p0">P0</span>, lỗi <span class="sev sev--p1">P1</span> còn lại đều có cách làm tạm được Sales chấp nhận</li>
+          <li>Regression đạt trên staging với đúng bản build sẽ lên production</li>
+          <li>Sales ký nghiệm thu chiến dịch trên staging</li>
+          <li>Production: smoke test đạt, HTTPS, backup DB đã bật</li>
+        </ul>
+        <ul class="clean check">
+          <li>Đối tác voucher, ZNS, SMS đã thử phát 1 lần thật trên production</li>
+          <li>Tài nguyên server đủ cho lưu lượng dự kiến (xem bảng năng lực tải)</li>
+          <li>Runbook, kế hoạch rollback và danh sách trực đã gửi cả team</li>
+          <li>Tài khoản CMS production cấp đúng quyền, đúng chiến dịch</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- CAPACITY -->
+  <section class="section" id="tai">
+    <div class="section__head">
+      <span class="eyebrow">Đo trên môi trường benchmark · 25/09/2026</span>
+      <h2>Chọn cấu hình server theo lưu lượng dự kiến</h2>
+      <p class="lede">Số liệu là số khách đi hết luồng đăng nhập và chơi game mỗi phút, trên 1 task app. Sales cần cho số khách dự kiến vào giờ cao điểm để chốt cấu hình trước Go / No-go.</p>
+    </div>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Cấu hình 1 task app</th><th>Chạy mượt tới</th><th>Bắt đầu nghẽn</th><th>Phù hợp khi</th></tr></thead>
+        <tbody>
+          <tr><td><b>0,5 vCPU / 1 GB</b>, php-fpm 5 worker <span class="tag">hiện tại</span></td><td class="num">120 khách/phút</td><td class="num">~140</td><td>Chiến dịch nhỏ, truyền thông rải rác</td></tr>
+          <tr><td><b>0,5 vCPU / 1 GB</b>, 12 worker</td><td class="num">240 khách/phút</td><td class="num">~260</td><td>Tăng gấp đôi chỉ bằng cấu hình php-fpm</td></tr>
+          <tr class="hl"><td><b>2 vCPU / 4 GB</b>, 32 worker <span class="tag">đề xuất</span></td><td class="num">600 khách/phút</td><td class="num">~630</td><td>Chiến dịch có đợt truyền thông tập trung</td></tr>
+          <tr><td><b>4 vCPU / 8 GB</b>, 64 worker</td><td class="num">1.440 khách/phút</td><td class="num">~1.600</td><td>Đợt cao điểm lớn; DB bắt đầu thành nút thắt</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="note">Nguồn: perf/reports/2026-09-25-bmk-sizing.md. Số đo với đối tác voucher được giả lập, nên thời gian chờ đối tác thật chưa tính vào.</p>
+  </section>
+
+  <!-- RISKS -->
+  <section class="section" id="rui-ro">
+    <div class="section__head">
+      <span class="eyebrow">Cần xử lý trước go-live</span>
+      <h2>Rủi ro đã biết</h2>
+    </div>
+    <div class="risk">
+      <div class="box">
+        <h3>Môi trường production chưa dựng xong</h3>
+        <p>Repo hiện mới có cấu hình deploy cho test, staging và benchmark. Biến môi trường và secret của production chưa có.</p>
+        <p class="fix"><b>Xử lý:</b> DevOps bắt đầu ngay trong tuần UAT, xong trước code freeze.</p>
+      </div>
+      <div class="box">
+        <h3>OTP chưa từng gửi thật</h3>
+        <p>Luồng đăng nhập OTP đã có nhưng chưa gửi tin thật ở môi trường nào.</p>
+        <p class="fix"><b>Xử lý:</b> gửi OTP thật trên staging trong tuần 2 UAT; nếu chiến dịch đầu không dùng OTP thì ghi rõ vào release note.</p>
+      </div>
+      <div class="box">
+        <h3>Chiến dịch duyệt hóa đơn đang hoàn thiện</h3>
+        <p>Hình thức tặng quà theo hóa đơn dự kiến xong cuối tháng 9, có thể chưa kịp nghiệm thu trọn vẹn.</p>
+        <p class="fix"><b>Xử lý:</b> quyết định trong triage cuối: đưa vào bản này hay tách sang bản sau.</p>
+      </div>
+      <div class="box">
+        <h3>Phụ thuộc đối tác phát quà</h3>
+        <p>Phần lớn thời gian trao e-voucher là chờ API đối tác. Khi đối tác chậm, khách chờ lâu ở màn kết quả.</p>
+        <p class="fix"><b>Xử lý:</b> báo trước lịch go-live cho đối tác, thống nhất đầu mối trực, thử phát thật trước Go / No-go.</p>
+      </div>
+      <div class="box">
+        <h3>Feedback dồn về cuối UAT</h3>
+        <p>Nếu Sales thử muộn, lỗi dồn vào tuần 2 và không kịp sửa trước code freeze.</p>
+        <p class="fix"><b>Xử lý:</b> review giữa kỳ bắt buộc; mỗi Sales hoàn thành kịch bản tuần 1 trước ngày review.</p>
+      </div>
+      <div class="box">
+        <h3>Yêu cầu mới làm trượt lịch</h3>
+        <p>UAT thường kéo theo yêu cầu thay đổi, dễ bị đưa vào bản đang chạy.</p>
+        <p class="fix"><b>Xử lý:</b> mọi yêu cầu mới gắn nhãn CR và vào backlog; chỉ PO được đưa CR vào bản này.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ROLES -->
+  <section class="section" id="vai-tro">
+    <div class="section__head">
+      <span class="eyebrow">Ai làm gì</span>
+      <h2>Vai trò</h2>
+    </div>
+    <div class="raci">
+      <div class="who"><h3>Sales</h3><p>Chạy kịch bản UAT, báo lỗi trên Redmine, ký nghiệm thu, cung cấp số khách dự kiến và làm việc với khách hàng doanh nghiệp.</p></div>
+      <div class="who"><h3>PO / BA</h3><p>Soạn kịch bản UAT, phân loại feedback, chốt phạm vi, chủ trì họp Go / No-go, viết release note.</p></div>
+      <div class="who"><h3>Dev</h3><p>Sửa lỗi theo mức độ, đóng băng code, deploy production, trực kỹ thuật ngày go-live và 2 tuần hypercare.</p></div>
+      <div class="who"><h3>QC</h3><p>Xác nhận lỗi đã sửa, chạy regression và E2E, smoke test production.</p></div>
+      <div class="who"><h3>DevOps</h3><p>Dựng production, secret, domain, cấu hình tài nguyên theo bảng năng lực tải, giám sát và backup.</p></div>
+      <div class="who"><h3>Vận hành chiến dịch</h3><p>Sao chép và rà cấu hình trên production, xử lý duyệt phân bổ và khiếu nại khách trong lúc chạy.</p></div>
+    </div>
+  </section>
+
+  <footer class="foot">
+    <span>Ngày trong kế hoạch là dự kiến, tính theo ngày làm việc, bỏ thứ Bảy và Chủ nhật.</span>
+    <span>Cập nhật 28/09/2026</span>
+  </footer>
+</div>
+
+<script>
+(function(){
+  var input=document.getElementById('uatStart');
+  var KEY='cs-release-uat-start';
+  try{var saved=localStorage.getItem(KEY); if(saved) input.value=saved;}catch(e){}
+
+  var DOW=['CN','T2','T3','T4','T5','T6','T7'];
+  function parse(s){var p=s.split('-');return new Date(+p[0],+p[1]-1,+p[2]);}
+  function add(d,n){var x=new Date(d);x.setDate(x.getDate()+n);return x;}
+  function fmt(d){return DOW[d.getDay()]+' '+String(d.getDate()).padStart(2,'0')+'/'+String(d.getMonth()+1).padStart(2,'0');}
+  function short(d){return String(d.getDate()).padStart(2,'0')+'/'+String(d.getMonth()+1).padStart(2,'0');}
+  function days(a,b){return Math.round((b-a)/864e5);}
+
+  // Offsets are calendar days from UAT start (a Monday).
+  var PHASES={uat:[0,11],plan:[14,18],live:[21,32]};
+
+  var ROWS=[
+    {g:'uat',label:'UAT'},
+    {c:'uat',label:'Chuẩn bị môi trường & kịch bản',s:-5,e:-3},
+    {c:'uat',label:'Kickoff UAT',m:0},
+    {c:'uat',label:'Tuần 1 · Dựng chiến dịch',s:0,e:4},
+    {c:'uat',label:'Review giữa kỳ',m:4},
+    {c:'uat',label:'Tuần 2 · Kịch bản thật',s:7,e:11},
+    {c:'uat',label:'Dev sửa lỗi cuốn chiếu',s:1,e:15,soft:true},
+    {g:'plan',label:'Plan release'},
+    {c:'plan',label:'Dựng production',s:4,e:17,soft:true},
+    {c:'plan',label:'Triage cuối · Code freeze',s:14,e:15},
+    {c:'plan',label:'Regression + smoke test',s:15,e:17},
+    {c:'plan',label:'Go / No-go',m:18},
+    {g:'live',label:'Chạy thật'},
+    {c:'live',label:'Go-live',m:21},
+    {c:'live',label:'Hypercare 2 tuần',s:21,e:32},
+    {c:'live',label:'Retro',m:32}
+  ];
+
+  function render(){
+    var start=parse(input.value||'2026-10-05');
+    var shift=(start.getDay()+6)%7; // snap to Monday
+    start=add(start,-shift);
+    var g0=add(start,-7), gDays=7*7; // 7 weeks window starting a week before UAT
+    function pct(off){return (days(g0,add(start,off))/gDays*100);}
+
+    document.querySelectorAll('[data-range]').forEach(function(el){
+      var r=PHASES[el.getAttribute('data-range')];
+      el.textContent=fmt(add(start,r[0]))+' → '+fmt(add(start,r[1]));
+    });
+    document.querySelectorAll('[data-d]').forEach(function(el){
+      var parts=el.getAttribute('data-d').split(',').map(Number);
+      var t=el.getAttribute('data-t');
+      if(parts.length===2) el.textContent=short(add(start,parts[0]))+'–'+short(add(start,parts[1]));
+      else el.textContent=(t?t+' ':'')+fmt(add(start,parts[0]));
+    });
+
+    var html='<div class="gantt__weeks" style="grid-template-columns:210px repeat(7,1fr)"><div></div>';
+    for(var w=0;w<7;w++){html+='<div>Tuần '+short(add(g0,w*7))+'</div>';}
+    html+='</div><div class="gantt__rows">';
+    ROWS.forEach(function(r){
+      if(r.g){html+='<div class="g-group" style="--c:var(--'+r.g+')">'+r.label+'</div>';return;}
+      var style='--c:var(--'+r.c+');--cs:var(--'+r.c+'-soft)';
+      var mark;
+      if(r.m!==undefined){mark='<span class="g-mile" style="left:'+(pct(r.m)+100/gDays/2)+'%" title="'+fmt(add(start,r.m))+'"></span>';}
+      else{var l=pct(r.s),w2=pct(r.e+1)-l;mark='<span class="g-bar'+(r.soft?' g-bar--soft':'')+'" style="left:'+l+'%;width:'+w2+'%" title="'+fmt(add(start,r.s))+' → '+fmt(add(start,r.e))+'"></span>';}
+      html+='<div class="g-row" style="'+style+'"><span class="g-row__label">'+r.label+'</span><div class="g-row__track">'+mark+'</div></div>';
+    });
+    html+='</div>';
+    var gantt=document.getElementById('gantt');
+    gantt.innerHTML=html;
+
+    var today=new Date();today.setHours(0,0,0,0);
+    var tOff=days(g0,today);
+    if(tOff>=0&&tOff<gDays){
+      var rows=gantt.querySelector('.gantt__rows');
+      var track=rows.querySelector('.g-row__track');
+      var left=track.offsetLeft+track.offsetWidth*((tOff+.5)/gDays);
+      var line=document.createElement('div');
+      line.className='g-today';line.style.left=left+'px';
+      line.innerHTML='<span>Hôm nay '+short(today)+'</span>';
+      rows.appendChild(line);
+    }
+  }
+  input.addEventListener('change',function(){
+    try{localStorage.setItem(KEY,input.value);}catch(e){}
+    render();
+  });
+  window.addEventListener('resize',render);
+  render();
+})();
+</script>
+
+</body></html>
