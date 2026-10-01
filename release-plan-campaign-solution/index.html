@@ -1,4 +1,4 @@
-<!doctype html><html><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <title>Lộ trình Go-live Campaign Solution</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -169,7 +169,7 @@ td b{color:var(--ink)}
     <div class="top__intro">
       <span class="eyebrow">Campaign Solution · Kế hoạch release v1</span>
       <h1>Từ UAT tới chiến dịch thật đầu tiên</h1>
-      <p class="lede">Sales dùng thử và góp ý trong 2 tuần trên môi trường staging. Sau đó team chốt phạm vi, dựng production, rồi phát hành chiến dịch thật và theo dõi sát 2 tuần đầu.</p>
+      <p class="lede">Sales dùng thử và góp ý trong 10 ngày trên môi trường staging. Sau đó team có 2 ngày làm việc để chốt phạm vi và lên production, rồi phát hành chiến dịch thật và theo dõi sát 2 tuần đầu.</p>
     </div>
     <div class="ctrl">
       <label for="uatStart">Ngày bắt đầu UAT</label>
@@ -183,15 +183,15 @@ td b{color:var(--ink)}
       <span class="phase-card__step">GIAI ĐOẠN 1</span>
       <h3>Sales UAT &amp; feedback</h3>
       <span class="phase-card__dates" data-range="uat"></span>
-      <span class="phase-card__dur">2 tuần</span>
+      <span class="phase-card__dur">10 ngày</span>
       <p>Sales tự dựng và chạy thử chiến dịch trên staging, ghi nhận lỗi và yêu cầu vào Redmine.</p>
     </div>
     <div class="phase-card phase-card--plan">
       <span class="phase-card__step">GIAI ĐOẠN 2</span>
       <h3>Plan release</h3>
       <span class="phase-card__dates" data-range="plan"></span>
-      <span class="phase-card__dur">1 tuần</span>
-      <p>Chốt phạm vi, đóng băng code, chạy regression, dựng production và họp Go / No-go.</p>
+      <span class="phase-card__dur">2 ngày</span>
+      <p>Chốt phạm vi, đóng băng code, chạy regression, deploy production và họp Go / No-go. Production phải dựng sẵn từ trong UAT.</p>
     </div>
     <div class="phase-card phase-card--live">
       <span class="phase-card__step">GIAI ĐOẠN 3</span>
@@ -218,7 +218,7 @@ td b{color:var(--ink)}
   <section class="section" id="lich">
     <div class="section__head">
       <span class="eyebrow">Lịch tổng</span>
-      <h2>7 tuần, 3 cột mốc</h2>
+      <h2>5 tuần, 3 cột mốc</h2>
     </div>
     <div class="gantt">
       <div class="gantt__inner" id="gantt"></div>
@@ -247,10 +247,10 @@ td b{color:var(--ink)}
           <div class="steps">
             <div class="step"><span class="step__when" data-d="-5,-3">…</span><span class="step__what"><b>Chuẩn bị</b>: dựng 2–3 chiến dịch mẫu trên staging (vòng quay, hộp quà, mã dự thưởng), cấp tài khoản CMS cho Sales theo đúng phạm vi chiến dịch, soạn kịch bản UAT từ BA doc.</span></div>
             <div class="step"><span class="step__when" data-d="0">…</span><span class="step__what"><b>Kickoff UAT</b> (1 giờ): demo luồng dựng chiến dịch qua 11 tab cấu hình, hướng dẫn cách báo lỗi trên Redmine.</span></div>
-            <div class="step"><span class="step__when" data-d="0,4">…</span><span class="step__what"><b>Tuần 1 · Dựng chiến dịch</b>: Sales tự cấu hình quà, luật quà, phân bổ, giao diện, luồng trang; chơi thử trên app bằng số điện thoại test.</span></div>
-            <div class="step"><span class="step__when" data-d="4">…</span><span class="step__what"><b>Review giữa kỳ</b> (30 phút): điểm lại số lỗi theo mức độ, chốt những lỗi P0/P1 phải xong trong tuần 2.</span></div>
-            <div class="step"><span class="step__when" data-d="7,11">…</span><span class="step__what"><b>Tuần 2 · Kịch bản thật</b>: chạy chiến dịch gần giống chiến dịch sẽ phát hành (số quà thật, phân bổ thật, gửi ZNS/SMS thật), xuất báo cáo, thử reset dữ liệu chạy thử.</span></div>
-            <div class="step"><span class="step__when" data-d="11">…</span><span class="step__what"><b>Chốt UAT</b>: Sales ký nhận danh sách tính năng đạt, danh sách lỗi còn mở và yêu cầu thay đổi cho vòng sau.</span></div>
+            <div class="step"><span class="step__when" data-d="0,4">…</span><span class="step__what"><b>Đợt 1 · Dựng chiến dịch</b>: Sales tự cấu hình quà, luật quà, phân bổ, giao diện, luồng trang; chơi thử trên app bằng số điện thoại test.</span></div>
+            <div class="step"><span class="step__when" data-d="4">…</span><span class="step__what"><b>Review giữa kỳ</b> (30 phút): điểm lại số lỗi theo mức độ, chốt những lỗi P0/P1 phải xong trước khi chốt UAT.</span></div>
+            <div class="step"><span class="step__when" data-d="7,8">…</span><span class="step__what"><b>Đợt 2 · Kịch bản thật</b>: chạy chiến dịch gần giống chiến dịch sẽ phát hành (số quà thật, phân bổ thật, gửi ZNS/SMS thật), xuất báo cáo, thử reset dữ liệu chạy thử.</span></div>
+            <div class="step"><span class="step__when" data-d="9">…</span><span class="step__what"><b>Chốt UAT</b>: Sales ký nhận danh sách tính năng đạt, danh sách lỗi còn mở và yêu cầu thay đổi cho vòng sau.</span></div>
           </div>
         </div>
         <div class="box">
@@ -293,12 +293,12 @@ td b{color:var(--ink)}
         <div class="box box--wide">
           <h3>Diễn tiến</h3>
           <div class="steps">
-            <div class="step"><span class="step__when" data-d="14">…</span><span class="step__what"><b>Triage cuối</b>: PO + BA + Sales chốt lỗi nào sửa trước go-live, lỗi nào sang bản sau. Yêu cầu tính năng mới mặc định để sau go-live.</span></div>
-            <div class="step"><span class="step__when" data-d="15">…</span><span class="step__what"><b>Code freeze</b> nhánh release. Từ đây chỉ nhận fix <span class="sev sev--p0">P0</span> <span class="sev sev--p1">P1</span> đã chốt.</span></div>
-            <div class="step"><span class="step__when" data-d="15,17">…</span><span class="step__what"><b>QC regression</b> toàn bộ trên staging: PHPUnit + E2E Playwright + test case BA của các luồng chính. Sales kiểm lại những lỗi đã báo.</span></div>
-            <div class="step"><span class="step__when" data-d="14,17">…</span><span class="step__what"><b>Dựng production</b>: biến môi trường prd, secret SSM, domain + HTTPS, cấu hình tài nguyên theo số khách dự kiến, bật đối tác Biz voucher / ZNS / SMS thật.</span></div>
-            <div class="step"><span class="step__when" data-d="17">…</span><span class="step__what"><b>Deploy production</b> bản đã đóng băng + smoke test (đăng nhập CMS, tạo chiến dịch test, chơi 1 lượt, nhận 1 voucher thật).</span></div>
-            <div class="step"><span class="step__when" data-d="18">…</span><span class="step__what"><b>Họp Go / No-go</b> (30 phút): đi qua checklist bên dưới. Thiếu mục bắt buộc thì lùi go-live, không chạy vớt.</span></div>
+            <div class="step"><span class="step__when" data-d="4,9">…</span><span class="step__what"><b>Dựng production</b> (làm song song từ giữa UAT, xong trước khi chốt UAT): biến môi trường prd, secret SSM, domain + HTTPS, cấu hình tài nguyên theo số khách dự kiến, bật đối tác Biz voucher / ZNS / SMS thật.</span></div>
+            <div class="step"><span class="step__when" data-d="10" data-t="09:00">…</span><span class="step__what"><b>Triage cuối</b> (sáng): PO + BA + Sales chốt lỗi nào sửa trước go-live, lỗi nào sang bản sau. Yêu cầu tính năng mới mặc định để sau go-live.</span></div>
+            <div class="step"><span class="step__when" data-d="10" data-t="12:00">…</span><span class="step__what"><b>Code freeze</b> nhánh release. Từ đây chỉ nhận fix <span class="sev sev--p0">P0</span> <span class="sev sev--p1">P1</span> đã chốt.</span></div>
+            <div class="step"><span class="step__when" data-d="10,11">…</span><span class="step__what"><b>QC regression</b> toàn bộ trên staging (E2E chạy tự động trên pipeline để kịp trong 1,5 ngày): PHPUnit + E2E Playwright + test case BA của các luồng chính. Sales kiểm lại những lỗi đã báo.</span></div>
+            <div class="step"><span class="step__when" data-d="11" data-t="10:00">…</span><span class="step__what"><b>Deploy production</b> bản đã đóng băng + smoke test (đăng nhập CMS, tạo chiến dịch test, chơi 1 lượt, nhận 1 voucher thật).</span></div>
+            <div class="step"><span class="step__when" data-d="11" data-t="16:00">…</span><span class="step__what"><b>Họp Go / No-go</b> (30 phút): đi qua checklist bên dưới. Thiếu mục bắt buộc thì lùi go-live, không chạy vớt.</span></div>
           </div>
         </div>
         <div class="box">
@@ -336,11 +336,11 @@ td b{color:var(--ink)}
         <div class="box box--wide">
           <h3>Ngày go-live</h3>
           <div class="steps">
-            <div class="step"><span class="step__when" data-d="20" data-t="09:00">…</span><span class="step__what"><b>Sao chép chiến dịch</b> staging → production bằng tính năng Deploy campaign. Chiến dịch ở đích được tạo ở trạng thái tắt.</span></div>
-            <div class="step"><span class="step__when" data-d="20" data-t="10:00">…</span><span class="step__what"><b>Rà cấu hình</b> trên production theo bubble checklist; nhập khóa tích hợp và thông tin đối tác (không đi theo bản sao).</span></div>
-            <div class="step"><span class="step__when" data-d="20" data-t="11:00">…</span><span class="step__what"><b>Chạy thử trên production</b> ở chế độ KIỂM THỬ với vài số điện thoại nội bộ, rồi <b>reset dữ liệu chạy thử</b> để kho quà về nguyên trạng.</span></div>
-            <div class="step"><span class="step__when" data-d="20" data-t="14:00">…</span><span class="step__what"><b>Bật chiến dịch</b>, tắt cờ kiểm thử. Dev + QC trực trên kênh chung, theo dõi lượt chơi, lỗi phát quà, hàng đợi.</span></div>
-            <div class="step"><span class="step__when" data-d="20" data-t="17:30">…</span><span class="step__what"><b>Báo cáo cuối ngày</b>: số khách, số lượt chơi, số quà đã phát, lỗi phát sinh.</span></div>
+            <div class="step"><span class="step__when" data-d="14" data-t="09:00">…</span><span class="step__what"><b>Sao chép chiến dịch</b> staging → production bằng tính năng Deploy campaign. Chiến dịch ở đích được tạo ở trạng thái tắt.</span></div>
+            <div class="step"><span class="step__when" data-d="14" data-t="10:00">…</span><span class="step__what"><b>Rà cấu hình</b> trên production theo bubble checklist; nhập khóa tích hợp và thông tin đối tác (không đi theo bản sao).</span></div>
+            <div class="step"><span class="step__when" data-d="14" data-t="11:00">…</span><span class="step__what"><b>Chạy thử trên production</b> ở chế độ KIỂM THỬ với vài số điện thoại nội bộ, rồi <b>reset dữ liệu chạy thử</b> để kho quà về nguyên trạng.</span></div>
+            <div class="step"><span class="step__when" data-d="14" data-t="14:00">…</span><span class="step__what"><b>Bật chiến dịch</b>, tắt cờ kiểm thử. Dev + QC trực trên kênh chung, theo dõi lượt chơi, lỗi phát quà, hàng đợi.</span></div>
+            <div class="step"><span class="step__when" data-d="14" data-t="17:30">…</span><span class="step__what"><b>Báo cáo cuối ngày</b>: số khách, số lượt chơi, số quà đã phát, lỗi phát sinh.</span></div>
           </div>
         </div>
         <div class="box">
@@ -378,7 +378,7 @@ td b{color:var(--ink)}
         <thead><tr><th>Mức</th><th>Nghĩa là</th><th>Ví dụ</th><th>Thời hạn xử lý</th></tr></thead>
         <tbody>
           <tr><td><span class="sev sev--p0">P0 · Chặn</span></td><td><b>Không chạy được chiến dịch</b> hoặc sai tiền, sai quà</td><td>Phát trùng quà, không đăng nhập được, không lưu được cấu hình</td><td>Trong ngày</td></tr>
-          <tr><td><span class="sev sev--p1">P1 · Nặng</span></td><td>Tính năng chính sai, có cách làm tạm</td><td>Import lỗi với file lớn, báo cáo lệch số</td><td>2 ngày, trước code freeze</td></tr>
+          <tr><td><span class="sev sev--p1">P1 · Nặng</span></td><td>Tính năng chính sai, có cách làm tạm</td><td>Import lỗi với file lớn, báo cáo lệch số</td><td>1 ngày, trước code freeze</td></tr>
           <tr><td><span class="sev sev--p2">P2 · Vừa</span></td><td>Sai hiển thị, khó dùng</td><td>Chữ tràn, thông báo lỗi khó hiểu, preview lệch app</td><td>Trước code freeze nếu kịp</td></tr>
           <tr><td><span class="sev sev--p3">P3 · Nhẹ</span></td><td>Góp ý thẩm mỹ, câu chữ</td><td>Đổi nhãn nút, đổi thứ tự cột</td><td>Sau go-live</td></tr>
           <tr><td><span class="sev sev--ok">CR · Yêu cầu mới</span></td><td>Tính năng chưa có trong phạm vi</td><td>Thêm hình thức game mới, thêm kiểu báo cáo</td><td>Vào backlog, ưu tiên sau go-live</td></tr>
@@ -390,7 +390,7 @@ td b{color:var(--ink)}
   <!-- GATE -->
   <section class="section" id="gate">
     <div class="section__head">
-      <span class="eyebrow">Họp Go / No-go · <span data-d="18" class="mono">…</span></span>
+      <span class="eyebrow">Họp Go / No-go · <span data-d="11" class="mono">…</span></span>
       <h2>Chỉ Go khi đủ tất cả các mục</h2>
     </div>
     <div class="gate" style="--c:var(--plan)">
@@ -442,12 +442,12 @@ td b{color:var(--ink)}
       <div class="box">
         <h3>Môi trường production chưa dựng xong</h3>
         <p>Repo hiện mới có cấu hình deploy cho test, staging và benchmark. Biến môi trường và secret của production chưa có.</p>
-        <p class="fix"><b>Xử lý:</b> DevOps bắt đầu ngay trong tuần UAT, xong trước code freeze.</p>
+        <p class="fix"><b>Xử lý:</b> DevOps bắt đầu ngay đầu UAT, xong trước ngày chốt UAT. Plan release chỉ 2 ngày nên không còn chỗ để dựng production.</p>
       </div>
       <div class="box">
         <h3>OTP chưa từng gửi thật</h3>
         <p>Luồng đăng nhập OTP đã có nhưng chưa gửi tin thật ở môi trường nào.</p>
-        <p class="fix"><b>Xử lý:</b> gửi OTP thật trên staging trong tuần 2 UAT; nếu chiến dịch đầu không dùng OTP thì ghi rõ vào release note.</p>
+        <p class="fix"><b>Xử lý:</b> gửi OTP thật trên staging trong đợt 2 UAT; nếu chiến dịch đầu không dùng OTP thì ghi rõ vào release note.</p>
       </div>
       <div class="box">
         <h3>Chiến dịch duyệt hóa đơn đang hoàn thiện</h3>
@@ -461,8 +461,8 @@ td b{color:var(--ink)}
       </div>
       <div class="box">
         <h3>Feedback dồn về cuối UAT</h3>
-        <p>Nếu Sales thử muộn, lỗi dồn vào tuần 2 và không kịp sửa trước code freeze.</p>
-        <p class="fix"><b>Xử lý:</b> review giữa kỳ bắt buộc; mỗi Sales hoàn thành kịch bản tuần 1 trước ngày review.</p>
+        <p>UAT chỉ 10 ngày, nếu Sales thử muộn thì lỗi dồn vào đợt 2 và không kịp sửa trước code freeze.</p>
+        <p class="fix"><b>Xử lý:</b> review giữa kỳ bắt buộc; mỗi Sales hoàn thành kịch bản đợt 1 trước ngày review.</p>
       </div>
       <div class="box">
         <h3>Yêu cầu mới làm trượt lịch</h3>
@@ -490,7 +490,7 @@ td b{color:var(--ink)}
 
   <footer class="foot">
     <span>Ngày trong kế hoạch là dự kiến, tính theo ngày làm việc, bỏ thứ Bảy và Chủ nhật.</span>
-    <span>Cập nhật 28/09/2026</span>
+    <span>Cập nhật 01/10/2026</span>
   </footer>
 </div>
 
@@ -508,32 +508,33 @@ td b{color:var(--ink)}
   function days(a,b){return Math.round((b-a)/864e5);}
 
   // Offsets are calendar days from UAT start (a Monday).
-  var PHASES={uat:[0,11],plan:[14,18],live:[21,32]};
+  var PHASES={uat:[0,9],plan:[10,11],live:[14,25]};
 
   var ROWS=[
     {g:'uat',label:'UAT'},
     {c:'uat',label:'Chuẩn bị môi trường & kịch bản',s:-5,e:-3},
     {c:'uat',label:'Kickoff UAT',m:0},
-    {c:'uat',label:'Tuần 1 · Dựng chiến dịch',s:0,e:4},
+    {c:'uat',label:'Đợt 1 · Dựng chiến dịch',s:0,e:4},
     {c:'uat',label:'Review giữa kỳ',m:4},
-    {c:'uat',label:'Tuần 2 · Kịch bản thật',s:7,e:11},
-    {c:'uat',label:'Dev sửa lỗi cuốn chiếu',s:1,e:15,soft:true},
+    {c:'uat',label:'Đợt 2 · Kịch bản thật',s:7,e:8},
+    {c:'uat',label:'Chốt UAT',m:9},
+    {c:'uat',label:'Dev sửa lỗi cuốn chiếu',s:1,e:10,soft:true},
     {g:'plan',label:'Plan release'},
-    {c:'plan',label:'Dựng production',s:4,e:17,soft:true},
-    {c:'plan',label:'Triage cuối · Code freeze',s:14,e:15},
-    {c:'plan',label:'Regression + smoke test',s:15,e:17},
-    {c:'plan',label:'Go / No-go',m:18},
+    {c:'plan',label:'Dựng production',s:4,e:9,soft:true},
+    {c:'plan',label:'Triage cuối · Code freeze',m:10},
+    {c:'plan',label:'Regression + smoke test',s:10,e:11},
+    {c:'plan',label:'Go / No-go',m:11},
     {g:'live',label:'Chạy thật'},
-    {c:'live',label:'Go-live',m:21},
-    {c:'live',label:'Hypercare 2 tuần',s:21,e:32},
-    {c:'live',label:'Retro',m:32}
+    {c:'live',label:'Go-live',m:14},
+    {c:'live',label:'Hypercare 2 tuần',s:14,e:25},
+    {c:'live',label:'Retro',m:25}
   ];
 
   function render(){
     var start=parse(input.value||'2026-10-05');
     var shift=(start.getDay()+6)%7; // snap to Monday
     start=add(start,-shift);
-    var g0=add(start,-7), gDays=7*7; // 7 weeks window starting a week before UAT
+    var g0=add(start,-7), gDays=5*7; // 5 weeks window starting a week before UAT
     function pct(off){return (days(g0,add(start,off))/gDays*100);}
 
     document.querySelectorAll('[data-range]').forEach(function(el){
@@ -547,8 +548,8 @@ td b{color:var(--ink)}
       else el.textContent=(t?t+' ':'')+fmt(add(start,parts[0]));
     });
 
-    var html='<div class="gantt__weeks" style="grid-template-columns:210px repeat(7,1fr)"><div></div>';
-    for(var w=0;w<7;w++){html+='<div>Tuần '+short(add(g0,w*7))+'</div>';}
+    var html='<div class="gantt__weeks" style="grid-template-columns:210px repeat(5,1fr)"><div></div>';
+    for(var w=0;w<5;w++){html+='<div>Tuần '+short(add(g0,w*7))+'</div>';}
     html+='</div><div class="gantt__rows">';
     ROWS.forEach(function(r){
       if(r.g){html+='<div class="g-group" style="--c:var(--'+r.g+')">'+r.label+'</div>';return;}
