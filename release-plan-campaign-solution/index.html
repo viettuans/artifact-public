@@ -207,6 +207,7 @@ td b{color:var(--ink)}
     <a href="#uat">1 · UAT</a>
     <a href="#plan">2 · Plan release</a>
     <a href="#live">3 · Chạy thật</a>
+    <a href="#ban-giao">Bàn giao Sales</a>
     <a href="#feedback">Phân loại feedback</a>
     <a href="#gate">Go / No-go</a>
     <a href="#tai">Năng lực tải</a>
@@ -307,7 +308,7 @@ td b{color:var(--ink)}
             <li><b>Release note</b> cho Sales: tính năng có trong bản này, giới hạn đã biết</li>
             <li><b>Runbook ngày go-live</b>: ai làm gì, lúc mấy giờ, gọi ai khi sự cố</li>
             <li><b>Kế hoạch rollback</b>: tạm dừng chiến dịch, quay lại image trước</li>
-            <li><b>Hướng dẫn vận hành</b>: duyệt phân bổ, xử lý khiếu nại "không nhận được quà" bằng nhật ký chơi game</li>
+            <li><b>Hướng dẫn vận hành</b>: điều chỉnh số lượng quà, cập nhật và duyệt phân bổ, xử lý khiếu nại "không nhận được quà" bằng nhật ký chơi game</li>
           </ul>
         </div>
         <div class="box">
@@ -362,6 +363,53 @@ td b{color:var(--ink)}
             <li>Họp retro sau 2 tuần, chốt backlog cho chiến dịch tiếp theo</li>
           </ul>
         </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HANDOVER -->
+  <section class="section" id="ban-giao">
+    <div class="section__head">
+      <span class="eyebrow">Dự kiến bàn giao · trong 2 tuần hypercare</span>
+      <h2>Sales tự vận hành 2 nghiệp vụ</h2>
+      <p class="lede">Sau go-live, việc điều chỉnh số lượng quà và phân bổ quà chuyển dần từ team dự án sang Sales. Tuần đầu hypercare có Dev và QC kèm, tuần thứ hai Sales tự làm, bàn giao chính thức ở buổi retro.</p>
+    </div>
+    <div class="phase__body" style="--c:var(--live);--cs:var(--live-soft)">
+      <div class="box">
+        <h3>1 · Điều chỉnh số lượng quà</h3>
+        <ul class="clean">
+          <li><b>Tạo yêu cầu</b> tăng / giảm số lượng quà khi khách hàng doanh nghiệp bổ sung hoặc cắt ngân sách</li>
+          <li><b>Duyệt / từ chối / hủy</b> yêu cầu; người liên quan nhận email theo từng bước</li>
+          <li>Kiểm tra số quà đã phát trước khi giảm, không giảm xuống dưới số đã phát</li>
+          <li>Tra lịch sử thay đổi số lượng khi cần đối soát với đối tác</li>
+        </ul>
+      </div>
+      <div class="box">
+        <h3>2 · Phân bổ quà</h3>
+        <ul class="clean">
+          <li><b>Cập nhật số lượng phân bổ</b> theo khu vực / cửa hàng / khung thời gian: nhập thủ công hoặc import Excel</li>
+          <li><b>Gửi duyệt và duyệt</b> thay đổi, xem bảng so sánh trước và sau</li>
+          <li>Chọn áp dụng ngay hoặc hẹn giờ; xử lý khi số mới thấp hơn số đã phát (ô đỏ)</li>
+          <li>Theo dõi ô đã phát hết (ô vàng) để bổ sung kịp thời</li>
+        </ul>
+      </div>
+      <div class="box box--wide">
+        <h3>Lộ trình bàn giao</h3>
+        <div class="steps">
+          <div class="step"><span class="step__when" data-d="0,8">…</span><span class="step__what"><b>Làm quen trong UAT</b>: Sales đã thử cả 2 nghiệp vụ trên staging theo kịch bản UAT.</span></div>
+          <div class="step"><span class="step__when" data-d="11">…</span><span class="step__what"><b>Hướng dẫn vận hành</b> cho 2 nghiệp vụ có trong bộ tài liệu Plan release; cấp quyền tạo / duyệt trên CMS production cho đúng người.</span></div>
+          <div class="step"><span class="step__when" data-d="14,18">…</span><span class="step__what"><b>Làm có kèm</b>: Sales thao tác trên production, Dev / QC rà lại trước khi duyệt và giải thích các ô cảnh báo.</span></div>
+          <div class="step"><span class="step__when" data-d="21,25">…</span><span class="step__what"><b>Sales tự làm</b>: team dự án chỉ hỗ trợ khi có lỗi hệ thống, ghi nhận vướng mắc để bổ sung tài liệu.</span></div>
+          <div class="step"><span class="step__when" data-d="25">…</span><span class="step__what"><b>Bàn giao chính thức</b> tại buổi retro: Sales xác nhận tự vận hành được, chốt đầu mối duyệt của phía Sales.</span></div>
+        </div>
+      </div>
+      <div class="box box--wide">
+        <h3>Điều kiện bàn giao</h3>
+        <ul class="clean check">
+          <li>Sales tự hoàn thành ít nhất 1 lần điều chỉnh số lượng quà và 1 lần cập nhật phân bổ trên production mà không cần Dev sửa dữ liệu</li>
+          <li>Có ít nhất 2 người phía Sales được cấp quyền duyệt, để không phụ thuộc 1 người</li>
+          <li>Không còn lỗi <span class="sev sev--p0">P0</span> <span class="sev sev--p1">P1</span> mở ở 2 nghiệp vụ này</li>
+        </ul>
       </div>
     </div>
   </section>
@@ -479,12 +527,12 @@ td b{color:var(--ink)}
       <h2>Vai trò</h2>
     </div>
     <div class="raci">
-      <div class="who"><h3>Sales</h3><p>Chạy kịch bản UAT, báo lỗi trên Redmine, ký nghiệm thu, cung cấp số khách dự kiến và làm việc với khách hàng doanh nghiệp.</p></div>
+      <div class="who"><h3>Sales</h3><p>Chạy kịch bản UAT, báo lỗi trên Redmine, ký nghiệm thu, nhận bàn giao điều chỉnh số lượng quà và phân bổ, cung cấp số khách dự kiến và làm việc với khách hàng doanh nghiệp.</p></div>
       <div class="who"><h3>PO / BA</h3><p>Soạn kịch bản UAT, phân loại feedback, chốt phạm vi, chủ trì họp Go / No-go, viết release note.</p></div>
       <div class="who"><h3>Dev</h3><p>Sửa lỗi theo mức độ, đóng băng code, deploy production, trực kỹ thuật ngày go-live và 2 tuần hypercare.</p></div>
       <div class="who"><h3>QC</h3><p>Xác nhận lỗi đã sửa, chạy regression và E2E, smoke test production.</p></div>
       <div class="who"><h3>DevOps</h3><p>Dựng production, secret, domain, cấu hình tài nguyên theo bảng năng lực tải, giám sát và backup.</p></div>
-      <div class="who"><h3>Vận hành chiến dịch</h3><p>Sao chép và rà cấu hình trên production, xử lý duyệt phân bổ và khiếu nại khách trong lúc chạy.</p></div>
+      <div class="who"><h3>Vận hành chiến dịch</h3><p>Sao chép và rà cấu hình trên production, kèm Sales điều chỉnh số lượng quà và phân bổ trong tuần đầu, xử lý khiếu nại khách trong lúc chạy.</p></div>
     </div>
   </section>
 
@@ -527,7 +575,9 @@ td b{color:var(--ink)}
     {g:'live',label:'Chạy thật'},
     {c:'live',label:'Go-live',m:14},
     {c:'live',label:'Hypercare 2 tuần',s:14,e:25},
-    {c:'live',label:'Retro',m:25}
+    {c:'live',label:'Bàn giao Sales · làm có kèm',s:14,e:18,soft:true},
+    {c:'live',label:'Bàn giao Sales · tự làm',s:21,e:25,soft:true},
+    {c:'live',label:'Retro · bàn giao chính thức',m:25}
   ];
 
   function render(){
