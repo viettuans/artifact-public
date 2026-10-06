@@ -1,0 +1,148 @@
+<!doctype html><html><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;600;700&display=swap" rel="stylesheet">
+<title>Dùng voucher bằng QR</title>
+<style>
+  :root{--bg:#faf9f5;--card:#fff;--ink:#141413;--quiet:#6b6a64;--line:#e6e3da;--accent:#2c6fd6;--accent2:#e0662e;--soft:#f2f0ea;--code:#f1efe8}
+  body{background:var(--bg);color:var(--ink);font:15px/1.6 "Be Vietnam Pro",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+  .wrap{max-width:860px;margin:0 auto;padding:40px 16px 72px}
+  header .eyebrow{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);font-weight:600}
+  h1{font-size:30px;line-height:1.25;margin:8px 0 10px;letter-spacing:-.01em}
+  .meta{color:var(--quiet);font-size:13px}
+  .lead{margin:24px 0 0;padding:18px 20px;background:var(--card);border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:10px}
+  .lead p{margin:0 0 8px}.lead p:last-child{margin:0;color:var(--quiet);font-size:14px}
+  section{margin-top:40px}
+  h2{font-size:20px;margin:0 0 6px;display:flex;align-items:center;gap:10px}
+  h2 .n{flex:none;width:28px;height:28px;border-radius:50%;background:var(--ink);color:#fff;font-size:13px;display:grid;place-items:center}
+  section>p{margin:0 0 14px;color:#3b3a36}
+  figure{margin:0;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px}
+  figure svg{display:block;width:100%;height:auto}
+  .tbl{overflow-x:auto;background:var(--card);border:1px solid var(--line);border-radius:12px}
+  table{border-collapse:collapse;width:100%;font-size:14px}
+  th{background:var(--soft);text-align:left;font-weight:600;font-size:13px;color:#3b3a36}
+  th,td{padding:10px 14px;border-bottom:1px solid var(--line);vertical-align:top}
+  tr:last-child td{border-bottom:0}
+  td:first-child{white-space:nowrap}
+  code{font:12.5px/1.4 ui-monospace,SFMono-Regular,Menlo,monospace;background:var(--code);padding:1px 5px;border-radius:4px}
+  .api td:nth-child(2){white-space:nowrap}
+  .ok{color:#1f8a4c;font-weight:600}
+  .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px}
+  .card b{display:block;margin-bottom:4px}.card span{color:var(--quiet);font-size:14px}
+  .card .i{font-size:12px;font-weight:700;color:var(--accent);margin-bottom:6px;display:block}
+  ul.notes{margin:14px 0 0;padding-left:20px;font-size:14px}ul.notes li{margin:4px 0}
+  ol.steps{list-style:none;margin:0;padding:0;counter-reset:s}
+  ol.steps li{counter-increment:s;position:relative;padding:0 0 18px 44px}
+  ol.steps li::before{content:counter(s);position:absolute;left:0;top:0;width:28px;height:28px;border-radius:50%;border:2px solid var(--accent);color:var(--accent);font-weight:700;font-size:13px;display:grid;place-items:center;background:var(--bg)}
+  ol.steps li:not(:last-child)::after{content:"";position:absolute;left:14px;top:30px;bottom:2px;border-left:2px dashed var(--line)}
+  ol.steps b{display:block}ol.steps span{color:var(--quiet);font-size:14px}
+  ul.check{list-style:none;margin:0;padding:0;background:var(--card);border:1px solid var(--line);border-radius:12px}
+  ul.check li{padding:12px 16px 12px 46px;border-bottom:1px solid var(--line);position:relative}
+  ul.check li:last-child{border-bottom:0}
+  ul.check li::before{content:"";position:absolute;left:16px;top:15px;width:16px;height:16px;border:2px solid #b9b5aa;border-radius:4px}
+  footer{margin-top:48px;color:var(--quiet);font-size:13px;border-top:1px solid var(--line);padding-top:16px}
+  @media (max-width:600px){h1{font-size:24px}td:first-child,.api td:nth-child(2){white-space:normal}}
+</style>
+<div class="wrap">
+<header>
+  <div class="eyebrow">Got It · Đề xuất cho đối tác POS</div>
+  <h1>Quy trình dùng voucher bằng QR tại quầy</h1>
+  <div class="meta">Bản lập kế hoạch · 06/10/2026 · Đặng Viết Tuấn</div>
+  <div class="lead">
+    <p>POS hiện mã QR theo hoá đơn, khách quét bằng app Got It, chọn voucher và xác nhận. Got It trừ voucher và báo kết quả về POS ngay trong giao dịch. Khách không còn đọc mã cho thu ngân, thu ngân không còn gõ tay mã 10–16 ký tự.</p>
+    <p>Tài liệu mô tả trải nghiệm của thu ngân và khách để hai bên thống nhất cách làm. Chi tiết kỹ thuật sẽ trao đổi sau khi chốt quy trình.</p>
+  </div>
+</header>
+
+<section>
+  <h2><span class="n">1</span>Quy trình tại quầy</h2>
+  <p>Thu ngân bấm một nút để hiện QR, khách tự quét và chọn voucher trên app, POS tự nhận kết quả.</p>
+  <figure><svg viewBox="0 0 760 290" role="img" aria-label="Dùng voucher bằng QR chỉ còn 5 bước" font-size="13" font-family="inherit"><defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#a8a499"/></marker></defs><text x="28" y="30" font-size="15" font-weight="600" fill="#141413">Dùng voucher bằng QR chỉ còn 5 bước, không ai phải đọc hay gõ mã</text><rect x="28" y="48" width="12" height="12" rx="3" fill="#2c6fd6" fill-opacity=".3" stroke="#2c6fd6"/><text x="46" y="58" font-size="11.5" fill="#6b6a64">Thu ngân làm trên POS</text><rect x="198" y="48" width="12" height="12" rx="3" fill="#e0662e" fill-opacity=".3" stroke="#e0662e"/><text x="216" y="58" font-size="11.5" fill="#6b6a64">Khách làm trên app Got It</text><g><rect x="28" y="84" width="128" height="140" rx="8" fill="#fff" stroke="#2c6fd6" stroke-width="1.5"/><rect x="40" y="96" width="104" height="22" rx="11" fill="#2c6fd6" fill-opacity=".14"/><line x1="40" x2="144" y1="172" y2="172" stroke="#e2dfd6"/><text x="92" y="111" text-anchor="middle" font-size="11.5" font-weight="600" fill="#141413">1 · Thu ngân</text><text text-anchor="middle" font-weight="600" fill="#141413"><tspan x="92" y="142">Bấm Dùng</tspan><tspan x="92" y="159">voucher Got It</tspan></text><text font-size="11.5" text-anchor="middle" fill="#6b6a64"><tspan x="92" y="194">POS hiện mã QR</tspan><tspan x="92" y="210">theo hoá đơn</tspan></text></g><path d="M158 154H170" stroke="#a8a499" stroke-width="1.25" fill="none" marker-end="url(#a)"/><g><rect x="172" y="84" width="128" height="140" rx="8" fill="#fff" stroke="#e0662e" stroke-width="1.5"/><rect x="184" y="96" width="104" height="22" rx="11" fill="#e0662e" fill-opacity=".14"/><line x1="184" x2="288" y1="172" y2="172" stroke="#e2dfd6"/><text x="236" y="111" text-anchor="middle" font-size="11.5" font-weight="600" fill="#141413">2 · Khách</text><text text-anchor="middle" font-weight="600" fill="#141413"><tspan x="236" y="142">Mở app,</tspan><tspan x="236" y="159">quét QR</tspan></text><text font-size="11.5" text-anchor="middle" fill="#6b6a64"><tspan x="236" y="194">bằng nút Quét QR</tspan><tspan x="236" y="210">trên trang chủ</tspan></text></g><path d="M302 154H314" stroke="#a8a499" stroke-width="1.25" fill="none" marker-end="url(#a)"/><g><rect x="316" y="84" width="128" height="140" rx="8" fill="#fff" stroke="#e0662e" stroke-width="1.5"/><rect x="328" y="96" width="104" height="22" rx="11" fill="#e0662e" fill-opacity=".14"/><line x1="328" x2="432" y1="172" y2="172" stroke="#e2dfd6"/><text x="380" y="111" text-anchor="middle" font-size="11.5" font-weight="600" fill="#141413">3 · Khách</text><text text-anchor="middle" font-weight="600" fill="#141413"><tspan x="380" y="142">Chọn</tspan><tspan x="380" y="159">voucher</tspan></text><text font-size="11.5" text-anchor="middle" fill="#6b6a64"><tspan x="380" y="194">app chỉ hiện</tspan><tspan x="380" y="210">voucher hợp lệ</tspan></text></g><path d="M446 154H458" stroke="#a8a499" stroke-width="1.25" fill="none" marker-end="url(#a)"/><g><rect x="460" y="84" width="128" height="140" rx="8" fill="#fff" stroke="#e0662e" stroke-width="1.5"/><rect x="472" y="96" width="104" height="22" rx="11" fill="#e0662e" fill-opacity=".14"/><line x1="472" x2="576" y1="172" y2="172" stroke="#e2dfd6"/><text x="524" y="111" text-anchor="middle" font-size="11.5" font-weight="600" fill="#141413">4 · Khách</text><text text-anchor="middle" font-weight="600" fill="#141413"><tspan x="524" y="142">Bấm</tspan><tspan x="524" y="159">Xác nhận</tspan></text><text font-size="11.5" text-anchor="middle" fill="#6b6a64"><tspan x="524" y="194">thấy số tiền trừ</tspan><tspan x="524" y="210">và số còn trả</tspan></text></g><path d="M590 154H602" stroke="#a8a499" stroke-width="1.25" fill="none" marker-end="url(#a)"/><g><rect x="604" y="84" width="128" height="140" rx="8" fill="#fff" stroke="#2c6fd6" stroke-width="1.5"/><rect x="616" y="96" width="104" height="22" rx="11" fill="#2c6fd6" fill-opacity=".14"/><line x1="616" x2="720" y1="172" y2="172" stroke="#e2dfd6"/><text x="668" y="111" text-anchor="middle" font-size="11.5" font-weight="600" fill="#141413">5 · Thu ngân</text><text text-anchor="middle" font-weight="600" fill="#141413"><tspan x="668" y="142">Thu phần còn</tspan><tspan x="668" y="159">lại, in hoá đơn</tspan></text><text font-size="11.5" text-anchor="middle" fill="#6b6a64"><tspan x="668" y="194">POS tự hiện</tspan><tspan x="668" y="210">số tiền đã trừ</tspan></text></g><rect x="460" y="240" width="272" height="32" rx="8" fill="#efede6" stroke="#a8a499"/><text x="596" y="260" text-anchor="middle" font-size="11.5" fill="#141413">Got It trừ voucher, báo kết quả về POS</text></svg></figure>
+</section>
+
+<section>
+  <h2><span class="n">2</span>Màn hình mỗi bên thấy</h2>
+  <p>Thu ngân chỉ thêm một nút trên POS; mọi thao tác chọn voucher do khách tự làm trên app.</p>
+  <div class="tbl"><table>
+    <thead><tr><th>Bước</th><th>POS – thu ngân thấy</th><th>App Got It – khách thấy</th></tr></thead>
+    <tbody>
+      <tr><td><b>1. Mở QR</b></td><td>Bấm <b>Dùng voucher Got It</b> → mã QR, số tiền hoá đơn, đồng hồ đếm ngược</td><td>Chưa cần làm gì</td></tr>
+      <tr><td><b>2. Quét</b></td><td>QR vẫn hiện, chờ khách</td><td>Nút <b>Quét QR</b> trên trang chủ</td></tr>
+      <tr><td><b>3. Chọn voucher</b></td><td>"Khách đang chọn voucher…"</td><td>Tên cửa hàng, số tiền hoá đơn, các voucher dùng được tại đây</td></tr>
+      <tr><td><b>4. Xác nhận</b></td><td>Vẫn chờ</td><td>Số tiền voucher trừ, số còn phải trả, nút <b>Xác nhận</b></td></tr>
+      <tr><td><b>5. Hoàn tất</b></td><td><span class="ok">✓</span> Đã dùng voucher: số tiền đã trừ, số cần thu thêm</td><td><span class="ok">✓</span> Đã dùng voucher tại cửa hàng, kèm số tiền và giờ</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section>
+  <h2><span class="n">3</span>Khi có sự cố</h2>
+  <p>Trường hợp nào không xử lý được bằng QR thì thu ngân quay về cách nhập mã voucher như hiện nay.</p>
+  <div class="tbl"><table>
+    <thead><tr><th>Tình huống</th><th>Khách thấy</th><th>Thu ngân làm gì</th></tr></thead>
+    <tbody>
+      <tr><td>Hoá đơn lớn hơn voucher</td><td>Số tiền còn phải trả trước khi xác nhận</td><td>Thu phần còn lại bằng tiền mặt/thẻ</td></tr>
+      <tr><td>Voucher lớn hơn hoá đơn</td><td>Tách được: số dư còn lại. Không tách: cảnh báo mất phần dư</td><td>Không cần làm gì thêm</td></tr>
+      <tr><td>QR hết giờ</td><td>"Mã QR đã hết hạn"</td><td>Bấm tạo QR mới</td></tr>
+      <tr><td>Khách đổi ý</td><td>"Giao dịch đã huỷ"</td><td>Bấm <b>Huỷ</b>, thu tiền bình thường</td></tr>
+      <tr><td>Không có voucher hợp lệ</td><td>"Chưa có voucher dùng được tại đây"</td><td>Huỷ QR, thu tiền bình thường</td></tr>
+      <tr><td>Mất mạng / không quét được</td><td>Báo lỗi kết nối</td><td>Nhập mã voucher như hiện nay</td></tr>
+      <tr><td>Huỷ hoá đơn đã dùng voucher</td><td>Voucher được trả lại trong app</td><td>Huỷ hoá đơn trên POS như bình thường</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section>
+  <h2><span class="n">4</span>Đối tác POS cần chuẩn bị gì</h2>
+  <p>Phía POS chỉ cần ba thay đổi nhỏ; phần chọn voucher và trừ giá trị do Got It làm.</p>
+  <div class="cards">
+    <div class="card"><span class="i">01</span><b>Thêm một nút</b><span>"Dùng voucher Got It" trên màn hình thanh toán hoá đơn.</span></div>
+    <div class="card"><span class="i">02</span><b>Chỗ hiện QR</b><span>Màn hình hướng khách, hoặc xoay màn hình thu ngân.</span></div>
+    <div class="card"><span class="i">03</span><b>Tự nhận kết quả</b><span>Điền số tiền voucher vào hoá đơn, thu ngân không gõ tay.</span></div>
+  </div>
+</section>
+
+<section>
+  <h2><span class="n">5</span>Tóm tắt API</h2>
+  <p>Bản đề xuất để góp ý; tài liệu chi tiết gửi kèm môi trường thử. HTTPS + JSON, số tiền tính bằng VND, mọi request ký HMAC-SHA256 bằng khoá Got It cấp.</p>
+  <div class="tbl"><table class="api">
+    <thead><tr><th>Khi nào</th><th>API</th><th>Dữ liệu chính</th></tr></thead>
+    <tbody>
+      <tr><td><b>Hiện QR</b> (bước 1)</td><td><code>POST /v1/redeem-requests</code></td><td>Gửi <code>order_id</code>, <code>amount</code>, <code>store_id</code>, <code>terminal_id</code> → nhận <code>qr_content</code>, <code>expires_at</code></td></tr>
+      <tr><td><b>Báo kết quả</b> (bước 5)</td><td><code>POST {callback_url}</code><br><span class="meta">Got It gọi POS</span></td><td><code>status</code>, <code>voucher_amount</code>, <code>remaining_amount</code>, <code>transaction_id</code></td></tr>
+      <tr><td><b>Quá 10 giây chưa có kết quả</b></td><td><code>GET /v1/redeem-requests/{id}</code></td><td>Giống callback</td></tr>
+      <tr><td><b>Khách đổi ý</b></td><td><code>POST /v1/redeem-requests/{id}/cancel</code></td><td>→ <code>CANCELLED</code></td></tr>
+      <tr><td><b>Huỷ hoá đơn đã dùng</b></td><td><code>POST /v1/redeem-requests/{id}/refund</code></td><td>→ <code>REFUNDED</code></td></tr>
+    </tbody>
+  </table></div>
+  <ul class="notes">
+    <li><b>Trạng thái:</b> <code>PENDING</code> → <code>SUCCESS</code> / <code>EXPIRED</code> (sau 180 giây) / <code>CANCELLED</code>, và <code>SUCCESS</code> → <code>REFUNDED</code>.</li>
+    <li><b>Không ghi trùng:</b> cùng <code>order_id</code> trả lại yêu cầu cũ; mỗi <code>request_id</code> POS chỉ ghi nhận một lần.</li>
+  </ul>
+</section>
+
+<section>
+  <h2><span class="n">6</span>Các bước triển khai</h2>
+  <ol class="steps">
+    <li><b>Chốt quy trình</b><span>Hai bên thống nhất luồng và màn hình trong tài liệu này.</span></li>
+    <li><b>Tích hợp và chạy thử</b><span>Got It gửi tài liệu kỹ thuật và môi trường thử; hai bên cùng thử các tình huống ở trên.</span></li>
+    <li><b>Thử tại 1–2 cửa hàng</b><span>Đào tạo thu ngân, vẫn giữ cách nhập mã cũ làm dự phòng.</span></li>
+    <li><b>Đánh giá và mở rộng</b><span>Xem số liệu, chỉnh lại rồi mở dần sang cửa hàng khác.</span></li>
+  </ol>
+</section>
+
+<section>
+  <h2><span class="n">7</span>Nhờ đối tác xác nhận</h2>
+  <ul class="check">
+    <li>Quy trình 5 bước có hợp với cách thu ngân đang làm không?</li>
+    <li>POS hiện QR ở đâu: màn hình hướng khách, màn hình thu ngân hay phiếu tạm tính?</li>
+    <li>Voucher áp dụng trước hay sau khuyến mãi và VAT?</li>
+    <li>Một hoá đơn có cần dùng nhiều voucher không?</li>
+    <li>Tình huống nào ở quầy mà tài liệu chưa nêu?</li>
+    <li>1–2 cửa hàng đề xuất chạy thử và đầu mối phụ trách.</li>
+  </ul>
+</section>
+
+<footer>Got It · Dự án Quét QR – Dùng voucher · Bản đề xuất, chưa phải tài liệu kỹ thuật chính thức.</footer>
+</div>
+
+</body></html>
