@@ -8,3 +8,4 @@ Các bản demo HTML tĩnh để chia sẻ công khai.
 | Đảo chiều quét mã — flow kỹ thuật | https://viettuans.github.io/artifact-public/dao-chieu-quet-ma/ |
 | Lộ trình Go-live Campaign Solution — kế hoạch release | https://viettuans.github.io/artifact-public/release-plan-campaign-solution/ |
 | Quy trình dùng voucher bằng QR tại quầy — đề xuất cho đối tác POS | https://viettuans.github.io/artifact-public/quy-trinh-voucher-qr-pos/ |
+| QR Scan – Voucher Redemption — slide deck (EN) | https://viettuans.github.io/artifact-public/quet-qr-dung-voucher/ |

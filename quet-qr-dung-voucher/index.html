@@ -1,0 +1,553 @@
+<!doctype html><html><head><title>QR Scan – Voucher Redemption</title><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap"><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style><style>
+body{background:#1b2236!important;overflow:hidden}
+#stage{position:fixed;inset:0 0 48px 0;display:flex;align-items:center;justify-content:center}
+#deck{width:1920px;height:1080px;position:relative;flex:none}
+.slide{position:absolute;inset:0;width:1920px;height:1080px;box-sizing:border-box;overflow:hidden;display:none!important}
+.slide.on{display:flex!important}
+.slide.grid.on{display:grid!important}
+.slide h1,.slide h2,.slide h3,.slide p,.slide ul,.slide ol{margin:0}
+.slide ul,.slide ol{padding-left:1.3em}
+.slide table{border-collapse:collapse;width:100%}
+.slide th,.slide td{padding:.35em .6em;border:1px solid #d9d3c7;text-align:left;vertical-align:top}
+#bar{position:fixed;left:0;right:0;bottom:0;height:48px;display:flex;gap:12px;justify-content:center;align-items:center;font:14px 'Be Vietnam Pro',sans-serif;color:#c9d3e3;background:#14213d}
+#bar button{font:inherit;background:#2c3a5c;color:#f3efe6;border:0;border-radius:6px;padding:6px 14px;cursor:pointer}
+</style></head><body><div id="stage"><div id="deck">
+<section class="slide" id="cover" data-transition="fade" style="background:#14213D;color:#F3EFE6;font-family:'Be Vietnam Pro', Arial, sans-serif;padding:128px;display:flex;flex-direction:column;justify-content:space-between">
+<p style="font-size:24px;font-weight:600;color:#F2A65A;letter-spacing:3px;text-transform:uppercase">IU HIPOs 2026 · H2 Special Project</p>
+<div style="display:flex;flex-direction:column;gap:32px">
+<h1 style="font-size:120px;font-weight:700;line-height:1.05;color:#F3EFE6">QR Scan – Voucher Redemption</h1>
+<p style="font-size:44px;line-height:1.3;color:#C9D3E3;width:1300px">Make voucher codes safer, with nothing for brands to change.</p>
+</div>
+<div style="display:flex;flex-direction:row;gap:64px;border-top:1px solid #3A4A6B;padding:32px 0 0 0">
+<p style="font-size:24px;color:#C9D3E3"><b>PM:</b> Đặng Viết Tuấn</p>
+<p style="font-size:24px;color:#C9D3E3"><b>Team:</b> Duyên Lê, Mai Hiên</p>
+<p style="font-size:24px;color:#C9D3E3"><b>Timeline:</b> Jul 21 – Oct 30, 2026</p>
+<p style="font-size:24px;color:#C9D3E3"><b>Mid-term review</b> · Oct 2026</p>
+</div>
+
+</section>
+
+<section class="slide" id="van-de" data-transition="fade" style="background:#F7F5F0;color:#14213D;font-family:'Be Vietnam Pro', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:48px">
+<div style="display:flex;flex-direction:column;gap:16px">
+<p style="font-size:24px;font-weight:600;color:#B5531A;letter-spacing:3px;text-transform:uppercase">Current flow · 1. Inconvenient</p>
+<h2 style="font-size:72px;font-weight:700;line-height:1.1">Too many steps for customers and cashiers</h2>
+</div>
+<div style="display:flex;flex-direction:row;gap:32px">
+<div style="flex:1;display:flex;flex-direction:column;gap:20px;background:#FFFDF8;border:1px solid #E2DDD2;border-radius:16px;padding:40px">
+<div style="display:flex;flex-direction:row;align-items:center;gap:20px">
+<i data-lucide="users" style="color:#B5531A;width:48px;height:48px;display:block;flex:none"></i>
+<h3 style="font-size:32px;font-weight:700">Customers</h3>
+</div>
+<ul style="font-size:26px;line-height:1.5;color:#4A5060">
+<li>Open the app, log in, sometimes wait for an OTP</li>
+<li>Find a voucher that works at this store</li>
+<li>Read the terms, branches and expiry themselves</li>
+<li>Read the code aloud in a crowd, or hand over an unlocked phone</li>
+</ul>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:20px;background:#FFFDF8;border:1px solid #E2DDD2;border-radius:16px;padding:40px">
+<div style="display:flex;flex-direction:row;align-items:center;gap:20px">
+<i data-lucide="wrench" style="color:#B5531A;width:48px;height:48px;display:block;flex:none"></i>
+<h3 style="font-size:32px;font-weight:700">POS staff</h3>
+</div>
+<ul style="font-size:26px;line-height:1.5;color:#4A5060">
+<li>Listen to or look at the code on the customer’s phone</li>
+<li>Type 10–16 characters by hand, mixing up 0/O and 1/I</li>
+<li>Barcodes fail to scan on glaring or cracked screens</li>
+<li>Every brand has a different flow</li>
+</ul>
+</div>
+</div>
+<p style="font-size:32px;line-height:1.4;color:#14213D"><b>8 steps</b> from opening the app to the voucher being marked as used, while the customer waits at the counter.</p>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#7A7F8A">Source: Item 1.1 – Current in-store voucher flow · 02</p>
+
+</section>
+
+<section class="slide" id="rui-ro" data-transition="fade" style="background:#F7F5F0;color:#14213D;font-family:'Be Vietnam Pro', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:48px">
+<div style="display:flex;flex-direction:column;gap:16px">
+<p style="font-size:24px;font-weight:600;color:#B5531A;letter-spacing:3px;text-transform:uppercase">Current flow · 2. Weak security</p>
+<h2 style="font-size:72px;font-weight:700;line-height:1.1">Voucher codes leak easily and can be reused</h2>
+</div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:24px">
+<div style="display:flex;flex-direction:column;gap:12px;background:#FFFDF8;border:1px solid #E2DDD2;border-radius:16px;padding:36px">
+<i data-lucide="search" style="color:#B5531A;width:48px;height:48px;display:block;flex:none"></i>
+<h3 style="font-size:32px;font-weight:700;line-height:1.2">Codes are shown in readable form</h3>
+<p style="font-size:26px;line-height:1.45;color:#4A5060">Screenshots, people behind in the queue and store cameras can all capture the code.</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:12px;background:#FFFDF8;border:1px solid #E2DDD2;border-radius:16px;padding:36px">
+<i data-lucide="key" style="color:#B5531A;width:48px;height:48px;display:block;flex:none"></i>
+<h3 style="font-size:32px;font-weight:700;line-height:1.2">No time limit, not tied to anyone</h3>
+<p style="font-size:26px;line-height:1.45;color:#4A5060">Whoever has the code can spend it, at any branch, at any time.</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:12px;background:#FFFDF8;border:1px solid #E2DDD2;border-radius:16px;padding:36px">
+<i data-lucide="clock" style="color:#B5531A;width:48px;height:48px;display:block;flex:none"></i>
+<h3 style="font-size:32px;font-weight:700;line-height:1.2">Codes are locked late</h3>
+<p style="font-size:26px;line-height:1.45;color:#4A5060">At non-integrated merchants, a code is locked minutes later, or only at reconciliation. Until then it can be reused.</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:12px;background:#FFFDF8;border:1px solid #E2DDD2;border-radius:16px;padding:36px">
+<i data-lucide="triangle-alert" style="color:#B5531A;width:48px;height:48px;display:block;flex:none"></i>
+<h3 style="font-size:32px;font-weight:700;line-height:1.2">Cashiers see the full code</h3>
+<p style="font-size:26px;line-height:1.45;color:#4A5060">They can copy it for later. Records stop at store level, so the operator cannot be traced.</p>
+</div>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#7A7F8A">Source: Item 1.1 – Current in-store voucher flow · 03</p>
+
+</section>
+
+<section class="slide" id="thi-truong" data-transition="fade" style="background:#EDE9E0;color:#14213D;font-family:'Be Vietnam Pro', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:48px">
+<div style="display:flex;flex-direction:column;gap:16px">
+<p style="font-size:24px;font-weight:600;color:#B5531A;letter-spacing:3px;text-transform:uppercase">Market</p>
+<h2 style="font-size:72px;font-weight:700;line-height:1.1">Customers already scan QR codes</h2>
+</div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:32px">
+<div style="display:flex;flex-direction:column;gap:12px;background:#FFFDF8;border-radius:16px;padding:40px">
+<p style="font-size:96px;font-weight:700;line-height:1.1;color:#B5531A">+61.6%</p>
+<p style="font-size:26px;line-height:1.4;color:#4A5060">QR transaction count, first 9 months of 2025, year on year</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:12px;background:#FFFDF8;border-radius:16px;padding:40px">
+<p style="font-size:96px;font-weight:700;line-height:1.1;color:#B5531A">+150.7%</p>
+<p style="font-size:26px;line-height:1.4;color:#4A5060">QR transaction value, first 9 months of 2025, year on year</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:12px;background:#FFFDF8;border-radius:16px;padding:40px">
+<p style="font-size:96px;font-weight:700;line-height:1.1;color:#14213D">~90 million</p>
+<p style="font-size:26px;line-height:1.4;color:#4A5060">Mobile banking accounts using VietQR (Oct 2025)</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:12px;background:#FFFDF8;border-radius:16px;padding:40px">
+<p style="font-size:96px;font-weight:700;line-height:1.1;color:#14213D">+52.4%</p>
+<p style="font-size:26px;line-height:1.4;color:#4A5060">QR transaction value, Q1 2026, year on year</p>
+</div>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#7A7F8A">Sources: baochinhphu.vn, NAPAS · H1 2026 figures not yet officially published · 04</p>
+
+</section>
+
+<section class="slide" id="doi-thu" data-transition="fade" style="background:#EDE9E0;color:#14213D;font-family:'Be Vietnam Pro', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:48px">
+<div style="display:flex;flex-direction:column;gap:16px">
+<p style="font-size:24px;font-weight:600;color:#B5531A;letter-spacing:3px;text-transform:uppercase">Competitors</p>
+<h2 style="font-size:72px;font-weight:700;line-height:1.1">No voucher platform offers in-store QR scanning yet</h2>
+</div>
+<div style="display:flex;flex-direction:row;gap:32px">
+<div style="flex:1;display:flex;flex-direction:column;gap:20px;background:#FFFDF8;border:3px solid #1F6F6A;border-radius:16px;padding:40px">
+<p style="font-size:24px;font-weight:700;color:#1F6F6A;letter-spacing:2px">DIRECT COMPETITORS</p>
+<h3 style="font-size:32px;font-weight:700;line-height:1.25">E-voucher platforms</h3>
+<ul style="font-size:26px;line-height:1.5;color:#4A5060">
+<li>Surveyed: [voucher platform names]</li>
+<li>Still use static codes or barcodes: the customer shows the code, the cashier types or scans it</li>
+<li><b>None lets customers scan a QR at the counter to redeem</b></li>
+</ul>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:20px;background:#F7F5F0;border:1px solid #D6D0C4;border-radius:16px;padding:40px">
+<p style="font-size:24px;font-weight:700;color:#7A7F8A;letter-spacing:2px">DIFFERENT MODEL</p>
+<h3 style="font-size:32px;font-weight:700;line-height:1.25">E-wallets and banks</h3>
+<ul style="font-size:26px;line-height:1.5;color:#4A5060">
+<li>MoMo, ZaloPay, VietQR use QR, but as payment gateways: they move the customer’s own money</li>
+<li>Their offers are discounts attached to a payment, unlike prepaid vouchers bought by companies as gifts</li>
+<li>Useful only as a reference for QR habits</li>
+</ul>
+</div>
+</div>
+<p style="font-size:32px;line-height:1.4;font-weight:600;color:#1F6F6A">Got It can be first, and must design the flow so it does not look like a payment gateway.</p>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#7A7F8A">Source: Item 1.2 – Market research (Mai Hiên) · 05</p>
+
+</section>
+
+<section class="slide" id="dao-chieu" data-transition="fade" style="background:#F7F5F0;color:#14213D;font-family:'Be Vietnam Pro', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:40px">
+<div style="display:flex;flex-direction:column;gap:16px">
+<p style="font-size:24px;font-weight:600;color:#B5531A;letter-spacing:3px;text-transform:uppercase">Solution</p>
+<h2 style="font-size:72px;font-weight:700;line-height:1.1">Reverse the scan: the code never leaves the app</h2>
+</div>
+<div style="display:flex;flex-direction:row;gap:32px">
+<div style="flex:1;display:flex;flex-direction:column;gap:16px;background:#FFFDF8;border:1px solid #E2DDD2;border-radius:16px;padding:36px 40px">
+<h3 style="font-size:32px;font-weight:700;color:#4A5060">Today · 8 steps</h3>
+<ol style="font-size:26px;line-height:1.5;color:#4A5060">
+<li>Open the app, log in</li>
+<li>Find the voucher in the gift wallet</li>
+<li>Read terms, branches, expiry</li>
+<li>Tap “Use” to show the code</li>
+<li><b>Read the code aloud to the cashier</b></li>
+<li><b>Cashier types 10–16 characters</b></li>
+<li>POS validates and deducts</li>
+<li>Confirm as used</li>
+</ol>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:16px;background:#E3F0EE;border:2px solid #1F6F6A;border-radius:16px;padding:36px 40px">
+<h3 style="font-size:32px;font-weight:700;color:#1F6F6A">Tier 0.5 · 5 steps</h3>
+<ol style="font-size:26px;line-height:1.5;color:#14213D">
+<li>Open the app, scan the QR sticker at the counter</li>
+<li>App filters vouchers valid at this store</li>
+<li>Pick a voucher; app creates a one-time code valid for 2–3 minutes</li>
+<li>Cashier scans the code on screen</li>
+<li>POS validates and confirms — same as today</li>
+</ol>
+</div>
+</div>
+<p style="font-size:32px;line-height:1.4;color:#14213D"><b>The read-aloud step is gone</b> — the step that causes leaks and reuse. Everything that touches the merchant’s POS stays the same.</p>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#7A7F8A">Source: Item 2.1 and discussion with the Merchant team · 06</p>
+
+</section>
+
+<section class="slide" id="bac-tich-hop" data-transition="fade" style="background:#F7F5F0;color:#14213D;font-family:'Be Vietnam Pro', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:48px">
+<div style="display:flex;flex-direction:column;gap:16px">
+<p style="font-size:24px;font-weight:600;color:#B5531A;letter-spacing:3px;text-transform:uppercase">Solution</p>
+<h2 style="font-size:72px;font-weight:700;line-height:1.1">Four integration tiers, brands choose their level</h2>
+</div>
+<div style="display:flex;flex-direction:row;gap:24px">
+<div style="flex:1;display:flex;flex-direction:column;gap:16px;background:#FFFDF8;border:1px solid #E2DDD2;border-radius:16px;padding:32px">
+<p style="font-size:24px;font-weight:700;color:#7A7F8A;letter-spacing:2px">TIER 0</p>
+<h3 style="font-size:32px;font-weight:700;line-height:1.2">No integration</h3>
+<p style="font-size:24px;line-height:1.4;color:#4A5060"><b>Brand does:</b> nothing</p>
+<p style="font-size:24px;line-height:1.4;color:#4A5060"><b>Cost:</b> zero</p>
+<p style="font-size:24px;line-height:1.4;color:#4A5060"><b>Fixes:</b> code leaks, reuse, typing errors</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:16px;background:#E3F0EE;border:3px solid #1F6F6A;border-radius:16px;padding:32px">
+<p style="font-size:24px;font-weight:700;color:#1F6F6A;letter-spacing:2px">TIER 0.5 · PROPOSED</p>
+<h3 style="font-size:32px;font-weight:700;line-height:1.2">QR sticker at the counter</h3>
+<p style="font-size:24px;line-height:1.4;color:#14213D"><b>Brand does:</b> put up a QR printed by Got It</p>
+<p style="font-size:24px;line-height:1.4;color:#14213D"><b>Cost:</b> close to zero</p>
+<p style="font-size:24px;line-height:1.4;color:#14213D"><b>Also fixes:</b> customers bringing vouchers for the wrong store</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:16px;background:#FFFDF8;border:1px solid #E2DDD2;border-radius:16px;padding:32px">
+<p style="font-size:24px;font-weight:700;color:#7A7F8A;letter-spacing:2px">TIER 1</p>
+<h3 style="font-size:32px;font-weight:700;line-height:1.2">Real-time results</h3>
+<p style="font-size:24px;line-height:1.4;color:#4A5060"><b>Brand does:</b> receive results via API or portal</p>
+<p style="font-size:24px;line-height:1.4;color:#4A5060"><b>Cost:</b> a few person-days</p>
+<p style="font-size:24px;line-height:1.4;color:#4A5060"><b>Also fixes:</b> balance mismatch on partial use</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:16px;background:#FFFDF8;border:1px solid #E2DDD2;border-radius:16px;padding:32px">
+<p style="font-size:24px;font-weight:700;color:#7A7F8A;letter-spacing:2px">TIER 2</p>
+<h3 style="font-size:32px;font-weight:700;line-height:1.2">Deep POS integration</h3>
+<p style="font-size:24px;line-height:1.4;color:#4A5060"><b>Brand does:</b> a small project on their side</p>
+<p style="font-size:24px;line-height:1.4;color:#4A5060"><b>Cost:</b> real, only if the brand wants it</p>
+<p style="font-size:24px;line-height:1.4;color:#4A5060"><b>Also fixes:</b> internal fraud at the counter</p>
+</div>
+</div>
+<p style="position:absolute;bottom:67.64px;left:50%;width:1664px;font-size:24px;color:#7A7F8A;transform:translateX(-50%)">Start at tier 0.5, move to tier 1 through POS vendors per the roadmap · 07</p>
+
+</section>
+
+<section class="slide" id="vendor-pos" data-transition="fade" style="background:#E8833A;color:#14213D;font-family:'Be Vietnam Pro', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;justify-content:center;gap:48px">
+<p style="font-size:24px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#14213D">Rollout</p>
+<h2 style="font-size:72px;font-weight:700;line-height:1.15;width:1500px">Integrate once with a POS vendor, reach hundreds of brands.</h2>
+<p style="font-size:32px;line-height:1.45;width:1400px;color:#14213D">Small and mid-size brands do not build their own POS — they use KiotViet, Sapo, iPOS, Haravan, Odoo. Got It brings a feature to the vendor instead of asking each brand.</p>
+<p style="font-size:26px;line-height:1.4;width:1400px;color:#14213D;border-top:2px solid #14213D;padding:24px 0 0 0"><b>Still needed:</b> Got It sales by POS vendor — not yet on the data list for item 1.3.</p>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#14213D">08</p>
+
+</section>
+
+<section class="slide" id="quy-trinh-pos" data-transition="fade" style="background:#F7F5F0;color:#14213D;font-family:'Be Vietnam Pro', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:48px">
+<div style="display:flex;flex-direction:column;gap:16px">
+<p style="font-size:24px;font-weight:600;color:#B5531A;letter-spacing:3px;text-transform:uppercase">Rollout</p>
+<h2 style="font-size:72px;font-weight:700;line-height:1.1">Integration process with POS vendors</h2>
+</div>
+<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:24px">
+<div style="display:flex;flex-direction:column;gap:12px;background:#FFFDF8;border:1px solid #E2DDD2;border-radius:16px;padding:32px">
+<h3 style="font-size:32px;font-weight:700;line-height:1.2"><span style="color:#B5531A">01</span> Pick priority vendors</h3>
+<p style="font-size:24px;line-height:1.4;color:#4A5060">Rank KiotViet, Sapo, iPOS, Haravan, Odoo by Got It sales through them and number of brands using them.</p>
+<p style="font-size:24px;font-weight:600;color:#1F6F6A">MC, Data/BI</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:12px;background:#FFFDF8;border:1px solid #E2DDD2;border-radius:16px;padding:32px">
+<h3 style="font-size:32px;font-weight:700;line-height:1.2"><span style="color:#B5531A">02</span> Sign a partnership</h3>
+<p style="font-size:24px;line-height:1.4;color:#4A5060">Got It becomes a feature in the vendor’s ecosystem. Agree on fees, service levels and data security.</p>
+<p style="font-size:24px;font-weight:600;color:#1F6F6A">MC, Legal</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:12px;background:#FFFDF8;border:1px solid #E2DDD2;border-radius:16px;padding:32px">
+<h3 style="font-size:32px;font-weight:700;line-height:1.2"><span style="color:#B5531A">03</span> Open API and sandbox</h3>
+<p style="font-size:24px;line-height:1.4;color:#4A5060">Got It provides APIs to validate codes, generate per-store QRs and push real-time results, plus a test environment.</p>
+<p style="font-size:24px;font-weight:600;color:#1F6F6A">Got It Engineering</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:12px;background:#FFFDF8;border:1px solid #E2DDD2;border-radius:16px;padding:32px">
+<h3 style="font-size:32px;font-weight:700;line-height:1.2"><span style="color:#B5531A">04</span> Vendor builds a plugin</h3>
+<p style="font-size:24px;line-height:1.4;color:#4A5060">Add a “Got It voucher” button to the checkout screen. Got It engineers support them directly throughout.</p>
+<p style="font-size:24px;font-weight:600;color:#1F6F6A">Vendor, Got It Engineering</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:12px;background:#FFFDF8;border:1px solid #E2DDD2;border-radius:16px;padding:32px">
+<h3 style="font-size:32px;font-weight:700;line-height:1.2"><span style="color:#B5531A">05</span> Test and pilot</h3>
+<p style="font-size:24px;line-height:1.4;color:#4A5060">Check security, offline cases, cancellations and refunds. Pilot with 1–2 brands on that vendor.</p>
+<p style="font-size:24px;font-weight:600;color:#1F6F6A">PD, Operations</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:12px;background:#E3F0EE;border:2px solid #1F6F6A;border-radius:16px;padding:32px">
+<h3 style="font-size:32px;font-weight:700;line-height:1.2"><span style="color:#1F6F6A">06</span> Switch on for more brands</h3>
+<p style="font-size:24px;line-height:1.4;color:#14213D">Brands just turn the feature on in their POS settings, no code. MC activates them from a list.</p>
+<p style="font-size:24px;font-weight:600;color:#1F6F6A">MC, Vendor</p>
+</div>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#7A7F8A">Brands with their own POS (tier 2) connect directly via API, sharing steps 03–05 · 09</p>
+
+</section>
+
+<section class="slide" id="loi-ich-merchant" data-transition="fade" style="background:#F7F5F0;color:#14213D;font-family:'Be Vietnam Pro', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:48px">
+<div style="display:flex;flex-direction:column;gap:16px">
+<p style="font-size:24px;font-weight:600;color:#B5531A;letter-spacing:3px;text-transform:uppercase">Winning merchants over</p>
+<h2 style="font-size:72px;font-weight:700;line-height:1.1">What merchants gain by upgrading</h2>
+</div>
+<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:24px">
+<div style="display:flex;flex-direction:column;gap:12px;background:#FFFDF8;border:1px solid #E2DDD2;border-radius:16px;padding:32px">
+<i data-lucide="lock" style="color:#1F6F6A;width:48px;height:48px;display:block;flex:none"></i>
+<h3 style="font-size:32px;font-weight:700;line-height:1.2">No more losses from reused codes</h3>
+<p style="font-size:24px;line-height:1.4;color:#4A5060">Codes are locked at the counter; only the first validation is accepted. Fake vouchers do not get through.</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:12px;background:#FFFDF8;border:1px solid #E2DDD2;border-radius:16px;padding:32px">
+<i data-lucide="zap" style="color:#1F6F6A;width:48px;height:48px;display:block;flex:none"></i>
+<h3 style="font-size:32px;font-weight:700;line-height:1.2">Faster checkout</h3>
+<p style="font-size:24px;line-height:1.4;color:#4A5060">One scan instead of typing 10–16 characters. Fewer errors, fewer arguments at peak hours.</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:12px;background:#FFFDF8;border:1px solid #E2DDD2;border-radius:16px;padding:32px">
+<i data-lucide="clock" style="color:#1F6F6A;width:48px;height:48px;display:block;flex:none"></i>
+<h3 style="font-size:32px;font-weight:700;line-height:1.2">Get paid sooner</h3>
+<p style="font-size:24px;line-height:1.4;color:#4A5060">Automatic reconciliation from real-time results. Payout cycle cut from [T+__] to [T+1].</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:12px;background:#FFFDF8;border:1px solid #E2DDD2;border-radius:16px;padding:32px">
+<i data-lucide="users" style="color:#1F6F6A;width:48px;height:48px;display:block;flex:none"></i>
+<h3 style="font-size:32px;font-weight:700;line-height:1.2">More customers from Got It</h3>
+<p style="font-size:24px;line-height:1.4;color:#4A5060">Priority placement in the app and in corporate gifting campaigns.</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:12px;background:#FFFDF8;border:1px solid #E2DDD2;border-radius:16px;padding:32px">
+<i data-lucide="bar-chart-3" style="color:#1F6F6A;width:48px;height:48px;display:block;flex:none"></i>
+<h3 style="font-size:32px;font-weight:700;line-height:1.2">Store-level data</h3>
+<p style="font-size:24px;line-height:1.4;color:#4A5060">Redemptions, peak hours and bill size per branch, available right away.</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:12px;background:#FFFDF8;border:1px solid #E2DDD2;border-radius:16px;padding:32px">
+<i data-lucide="check" style="color:#1F6F6A;width:48px;height:48px;display:block;flex:none"></i>
+<h3 style="font-size:32px;font-weight:700;line-height:1.2">Accurate partial use</h3>
+<p style="font-size:24px;line-height:1.4;color:#4A5060">The counter sends the exact amount used. No balance mismatches, no complaints to handle later.</p>
+</div>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#7A7F8A">Commission stays the same: merchants get more value, with no reason to renegotiate · 10</p>
+
+</section>
+
+<section class="slide" id="loi-ich-gotit" data-transition="fade" style="background:#EDE9E0;color:#14213D;font-family:'Be Vietnam Pro', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:48px">
+<div style="display:flex;flex-direction:column;gap:16px">
+<p style="font-size:24px;font-weight:600;color:#B5531A;letter-spacing:3px;text-transform:uppercase">Value for Got It</p>
+<h2 style="font-size:72px;font-weight:700;line-height:1.1">What Got It gains</h2>
+</div>
+<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:24px">
+<div style="display:flex;flex-direction:column;gap:12px;background:#FFFDF8;border-radius:16px;padding:32px">
+<i data-lucide="badge-check" style="color:#B5531A;width:48px;height:48px;display:block;flex:none"></i>
+<h3 style="font-size:32px;font-weight:700;line-height:1.2">Control over every transaction</h3>
+<p style="font-size:24px;line-height:1.4;color:#4A5060">Know where, when and for how much each code was used. Less fraud, fewer support tickets.</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:12px;background:#FFFDF8;border-radius:16px;padding:32px">
+<i data-lucide="star" style="color:#B5531A;width:48px;height:48px;display:block;flex:none"></i>
+<h3 style="font-size:32px;font-weight:700;line-height:1.2">Easier corporate sales</h3>
+<p style="font-size:24px;line-height:1.4;color:#4A5060">Secure vouchers with proof of use. First mover while no voucher platform does this.</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:12px;background:#FFFDF8;border-radius:16px;padding:32px">
+<i data-lucide="globe" style="color:#B5531A;width:48px;height:48px;display:block;flex:none"></i>
+<h3 style="font-size:32px;font-weight:700;line-height:1.2">Faster network growth</h3>
+<p style="font-size:24px;line-height:1.4;color:#4A5060">Each POS vendor opens up hundreds of brands. Adding a brand costs almost nothing.</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:12px;background:#FFFDF8;border-radius:16px;padding:32px">
+<i data-lucide="link" style="color:#B5531A;width:48px;height:48px;display:block;flex:none"></i>
+<h3 style="font-size:32px;font-weight:700;line-height:1.2">Merchant retention</h3>
+<p style="font-size:24px;line-height:1.4;color:#4A5060">Being built into the POS creates a lasting tie that competitors find hard to replace.</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:12px;background:#FFFDF8;border-radius:16px;padding:32px">
+<i data-lucide="lightbulb" style="color:#B5531A;width:48px;height:48px;display:block;flex:none"></i>
+<h3 style="font-size:32px;font-weight:700;line-height:1.2">Base for new products</h3>
+<p style="font-size:24px;line-height:1.4;color:#4A5060">Factory Rewards, QR scan campaigns, vouchers auto-applied from the wallet.</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:12px;background:#14213D;border-radius:16px;padding:32px">
+<i data-lucide="key" style="color:#F2A65A;width:48px;height:48px;display:block;flex:none"></i>
+<h3 style="font-size:32px;font-weight:700;line-height:1.2;color:#F3EFE6">In return</h3>
+<p style="font-size:24px;line-height:1.4;color:#C9D3E3">Got It covers most of the switching cost, but does not cut commission.</p>
+</div>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#7A7F8A">11</p>
+
+</section>
+
+<section class="slide" id="ho-tro-chi-phi" data-transition="fade" style="background:#F7F5F0;color:#14213D;font-family:'Be Vietnam Pro', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:40px">
+<div style="display:flex;flex-direction:column;gap:16px">
+<p style="font-size:24px;font-weight:600;color:#B5531A;letter-spacing:3px;text-transform:uppercase">Switching support</p>
+<h2 style="font-size:72px;font-weight:700;line-height:1.1">How Got It covers the switching cost</h2>
+</div>
+<table style="font-size:24px;color:#14213D;background:#FFFDF8">
+<tr style="background:#14213D"><th style="width:46%;color:#F3EFE6">Type of support</th><th style="width:28%;color:#F3EFE6">For</th><th style="width:26%;color:#F3EFE6">Got It spends</th></tr>
+<tr><td>Print and deliver QR stickers, train cashiers</td><td>All tier 0.5 brands</td><td>[__ VND/store]</td></tr>
+<tr><td>Pay plugin development on the brand’s behalf</td><td>POS vendors</td><td>[__ M VND/vendor]</td></tr>
+<tr><td>Got It engineers support integration directly</td><td>Brands with own POS</td><td>[__ person-days/brand]</td></tr>
+<tr><td>Faster payout, T+1</td><td>Tier 1 brands</td><td>Working capital</td></tr>
+<tr><td>Integration fee rebate based on volume</td><td>Brands above [__] uses/month</td><td>[__% of fee]</td></tr>
+<tr><td>Priority placement, co-funded campaigns</td><td>Early adopters</td><td>[__ M VND/brand]</td></tr>
+</table>
+<div style="display:flex;flex-direction:row;gap:24px">
+<div style="flex:1;display:flex;flex-direction:column;gap:8px;background:#E3F0EE;border-left:8px solid #1F6F6A;border-radius:12px;padding:24px 32px">
+<h3 style="font-size:26px;font-weight:700;color:#1F6F6A">Principle 1</h3>
+<p style="font-size:24px;line-height:1.4">Support with one-off spend, services or cash flow. Never by cutting commission.</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:8px;background:#E3F0EE;border-left:8px solid #1F6F6A;border-radius:12px;padding:24px 32px">
+<h3 style="font-size:26px;font-weight:700;color:#1F6F6A">Principle 2</h3>
+<p style="font-size:24px;line-height:1.4">Total support budget stays below the friction cost Got It saves.</p>
+</div>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#7A7F8A">Bracketed figures pending estimates from Finance and MC · 12</p>
+
+</section>
+
+<section class="slide" id="lo-trinh" data-transition="fade" style="background:#EDE9E0;color:#14213D;font-family:'Be Vietnam Pro', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:40px">
+<div style="display:flex;flex-direction:column;gap:16px">
+<p style="font-size:24px;font-weight:600;color:#B5531A;letter-spacing:3px;text-transform:uppercase">Roadmap</p>
+<h2 style="font-size:72px;font-weight:700;line-height:1.1">Rollout roadmap after approval</h2>
+</div>
+<div style="display:flex;flex-direction:row;gap:24px">
+<div style="flex:1;display:flex;flex-direction:column;gap:12px;background:#FFFDF8;border-top:8px solid #8A97B0;border-radius:12px;padding:28px">
+<p style="font-size:24px;font-weight:700;color:#7A7F8A">Phase 1 · [Nov–Dec 2026]</p>
+<h3 style="font-size:32px;font-weight:700;line-height:1.2">Tier 0 in the app</h3>
+<p style="font-size:24px;line-height:1.4;color:#4A5060">One-time, time-limited codes. Nobody outside Got It changes anything.</p>
+<p style="font-size:24px;line-height:1.4;color:#B5531A"><b>Gate:</b> Engineering confirms the code format</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:12px;background:#FFFDF8;border-top:8px solid #1F6F6A;border-radius:12px;padding:28px">
+<p style="font-size:24px;font-weight:700;color:#1F6F6A">Phase 2 · [Q1 2027]</p>
+<h3 style="font-size:32px;font-weight:700;line-height:1.2">QR sticker pilot</h3>
+<p style="font-size:24px;line-height:1.4;color:#4A5060">1–2 brands, [__] stores. Measure real results at the counter.</p>
+<p style="font-size:24px;line-height:1.4;color:#B5531A"><b>Gate:</b> BOD approves the study</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:12px;background:#FFFDF8;border-top:8px solid #E8833A;border-radius:12px;padding:28px">
+<p style="font-size:24px;font-weight:700;color:#B5531A">Phase 3 · [Q2 2027]</p>
+<h3 style="font-size:32px;font-weight:700;line-height:1.2">First POS vendor</h3>
+<p style="font-size:24px;line-height:1.4;color:#4A5060">Sign 1 vendor, build a tier 1 plugin, enable [__] brands.</p>
+<p style="font-size:24px;line-height:1.4;color:#B5531A"><b>Gate:</b> a number on commission risk</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:12px;background:#FFFDF8;border-top:8px solid #14213D;border-radius:12px;padding:28px">
+<p style="font-size:24px;font-weight:700;color:#14213D">Phase 4 · [H2 2027]</p>
+<h3 style="font-size:32px;font-weight:700;line-height:1.2">Scale up</h3>
+<p style="font-size:24px;line-height:1.4;color:#4A5060">More vendors. Offer tier 2 to brands that run their own POS.</p>
+<p style="font-size:24px;line-height:1.4;color:#B5531A"><b>Gate:</b> pilot meets KPIs</p>
+</div>
+</div>
+<div style="display:flex;flex-direction:column;gap:12px;background:#FFFDF8;border-radius:12px;padding:28px 32px">
+<h3 style="font-size:26px;font-weight:700">KPIs</h3>
+<p style="font-size:24px;line-height:1.4;color:#4A5060">First-time success rate · Time at the counter · Code reuse cases · Brands and stores onboarded · Integration cost per brand</p>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#7A7F8A">Dates are proposals, to be confirmed in item 3.2 · 13</p>
+
+</section>
+
+<section class="slide" id="y-kien-mc" data-transition="fade" style="background:#F7F5F0;color:#14213D;font-family:'Be Vietnam Pro', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:48px">
+<div style="display:flex;flex-direction:column;gap:16px">
+<p style="font-size:24px;font-weight:600;color:#B5531A;letter-spacing:3px;text-transform:uppercase">Pushback</p>
+<h2 style="font-size:72px;font-weight:700;line-height:1.1">Three concerns from the Merchant team</h2>
+</div>
+<div style="display:flex;flex-direction:row;gap:32px">
+<div style="flex:1;display:flex;flex-direction:column;gap:20px;background:#FFFDF8;border:1px solid #E2DDD2;border-radius:16px;padding:40px">
+<p style="font-size:24px;font-weight:700;color:#7A7F8A;letter-spacing:2px">MC-1 · COST</p>
+<p style="font-size:26px;line-height:1.45;font-style:italic;color:#4A5060">“Brands won’t accept another integration because it costs them — and Got It is the one who needs them.”</p>
+<p style="font-size:26px;line-height:1.45;border-top:1px solid #E2DDD2;padding:20px 0 0 0">Tiers 0 and 0.5: brands write no code, pay nothing, change nothing at the counter.</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:20px;background:#FBEDE0;border:3px solid #B5531A;border-radius:16px;padding:40px">
+<p style="font-size:24px;font-weight:700;color:#B5531A;letter-spacing:2px">MC-2 · COMMISSION</p>
+<p style="font-size:26px;line-height:1.45;font-style:italic;color:#4A5060">“It will look like a payment gateway, and brands will push for lower commission.”</p>
+<p style="font-size:26px;line-height:1.45;border-top:1px solid #E2C4A8;padding:20px 0 0 0">No contract changes. No “payment” wording in the app, no amount field. <b>But design alone cannot fully solve this — we need a number.</b></p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:20px;background:#FFFDF8;border:1px solid #E2DDD2;border-radius:16px;padding:40px">
+<p style="font-size:24px;font-weight:700;color:#7A7F8A;letter-spacing:2px">MC-3 · EASE OF USE</p>
+<p style="font-size:26px;line-height:1.45;font-style:italic;color:#4A5060">“How do we make it convenient and generate the best voucher code?”</p>
+<p style="font-size:26px;line-height:1.45;border-top:1px solid #E2DDD2;padding:20px 0 0 0">Convenience comes from removing read-aloud and typing 10–16 characters — not from how the code is generated.</p>
+</div>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#7A7F8A">Source: discussion with the Merchant team, Sep 15, 2026 · 14</p>
+
+</section>
+
+<section class="slide" id="gia-dinh" data-transition="fade" style="background:#F7F5F0;color:#14213D;font-family:'Be Vietnam Pro', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:48px">
+<div style="display:flex;flex-direction:column;gap:16px">
+<p style="font-size:24px;font-weight:600;color:#B5531A;letter-spacing:3px;text-transform:uppercase">Unknowns</p>
+<h2 style="font-size:72px;font-weight:700;line-height:1.1">Biggest assumption and missing data</h2>
+</div>
+<div style="display:flex;flex-direction:row;gap:48px">
+<div style="flex:1;display:flex;flex-direction:column;gap:24px;background:#FFFDF8;border:1px solid #E2DDD2;border-left:8px solid #B5531A;border-radius:12px;padding:40px">
+<h3 style="font-size:32px;font-weight:700;line-height:1.25">Engineering must confirm first</h3>
+<p style="font-size:26px;line-height:1.45">The current validation system accepts <b>one-time codes in the same format as today’s codes</b>.</p>
+<p style="font-size:26px;line-height:1.45;color:#4A5060">If this is wrong, tier 0 does not exist and the answer to MC-1 must be rewritten.</p>
+</div>
+<div style="flex:1.4;display:flex;flex-direction:column;gap:16px">
+<h3 style="font-size:32px;font-weight:700">Data needed to conclude</h3>
+<table style="font-size:26px;color:#14213D;background:#FFFDF8">
+<tr style="background:#14213D"><th style="width:62%;color:#F3EFE6">Data</th><th style="width:38%;color:#F3EFE6">Owner</th></tr>
+<tr><td>Commission rate by merchant group</td><td>MC, Finance</td></tr>
+<tr><td>Sales by POS vendor</td><td>Data/BI, MC</td></tr>
+<tr><td>Counter scanner type: 1D or 2D</td><td>MC</td></tr>
+<tr><td>Current friction cost in money</td><td>Data/BI, Operations</td></tr>
+</table>
+</div>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#7A7F8A">15</p>
+
+</section>
+
+<section class="slide" id="tien-do" data-transition="fade" style="background:#EDE9E0;color:#14213D;font-family:'Be Vietnam Pro', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:40px">
+<div style="display:flex;flex-direction:column;gap:16px">
+<p style="font-size:24px;font-weight:600;color:#B5531A;letter-spacing:3px;text-transform:uppercase">Progress</p>
+<h2 style="font-size:72px;font-weight:700;line-height:1.1">Item 1.3 is blocking the conclusion</h2>
+</div>
+<table style="font-size:24px;color:#14213D;background:#FFFDF8">
+<tr style="background:#14213D"><th style="width:42%;color:#F3EFE6">Item</th><th style="width:24%;color:#F3EFE6">Owner</th><th style="width:10%;color:#F3EFE6">Due</th><th style="width:24%;color:#F3EFE6">Status</th></tr>
+<tr><td>1.1 Current flow survey</td><td>Duyên Lê</td><td>Jul 31</td><td>Draft ready</td></tr>
+<tr><td>1.2 Market research</td><td>Mai Hiên</td><td>Sep 30</td><td><span style="color:#1F6F6A"><b>Done</b></span></td></tr>
+<tr style="background:#FBEDE0"><td><b>1.3 Data and evaluation criteria</b></td><td>Duyên, Data/BI, MC</td><td>Aug 14</td><td><span style="color:#B5531A"><b>Overdue, blocking</b></span></td></tr>
+<tr><td>2.1 QR voucher redemption flow</td><td>Viết Tuấn</td><td>Sep 15</td><td>Draft ready</td></tr>
+<tr><td>2.2 Benefits, challenges, risks</td><td>Hiên, Duyên, Tuấn</td><td>Oct 15</td><td>Not started</td></tr>
+<tr><td>2.3 POS vendor integration process</td><td>Hiên, Duyên</td><td>Oct 10</td><td>Not started</td></tr>
+<tr><td>3.1 Feasibility conclusion</td><td>Whole team</td><td>[Oct __]</td><td>Not started</td></tr>
+<tr><td>3.2 Post-approval roadmap</td><td>Viết Tuấn</td><td>Oct 23</td><td>Not started</td></tr>
+</table>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#7A7F8A">Project deadline: Oct 30, 2026 · 16</p>
+
+</section>
+
+<section class="slide" id="quyet-dinh" data-transition="fade" style="background:#14213D;color:#F3EFE6;font-family:'Be Vietnam Pro', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:40px">
+<div style="display:flex;flex-direction:column;gap:16px">
+<p style="font-size:24px;font-weight:600;color:#F2A65A;letter-spacing:3px;text-transform:uppercase">Proposal</p>
+<h2 style="font-size:72px;font-weight:700;line-height:1.1;color:#F3EFE6">Four decisions needed today</h2>
+</div>
+<div style="display:flex;flex-direction:column;gap:24px">
+<div style="display:flex;flex-direction:row;gap:40px;align-items:start;border-top:1px solid #3A4A6B;padding:24px 0 0 0">
+<p style="font-size:72px;font-weight:700;line-height:1;color:#F2A65A;width:80px">1</p>
+<div style="flex:1;display:flex;flex-direction:column;gap:8px">
+<h3 style="font-size:32px;font-weight:700;color:#F3EFE6">Approve the roadmap: tier 0.5 pilot, then tier 1 via POS vendors</h3>
+<p style="font-size:26px;line-height:1.4;color:#C9D3E3">Each phase only proceeds once the previous gate is met.</p>
+</div>
+</div>
+<div style="display:flex;flex-direction:row;gap:40px;align-items:start;border-top:1px solid #3A4A6B;padding:24px 0 0 0">
+<p style="font-size:72px;font-weight:700;line-height:1;color:#F2A65A;width:80px">2</p>
+<div style="flex:1;display:flex;flex-direction:column;gap:8px">
+<h3 style="font-size:32px;font-weight:700;color:#F3EFE6">Approve a switching-support budget of [__ M VND]</h3>
+<p style="font-size:26px;line-height:1.4;color:#C9D3E3">Support through spend, services or cash flow. No commission cuts.</p>
+</div>
+</div>
+<div style="display:flex;flex-direction:row;gap:40px;align-items:start;border-top:1px solid #3A4A6B;padding:24px 0 0 0">
+<p style="font-size:72px;font-weight:700;line-height:1;color:#F2A65A;width:80px">3</p>
+<div style="flex:1;display:flex;flex-direction:column;gap:8px">
+<h3 style="font-size:32px;font-weight:700;color:#F3EFE6">Ask Data/BI and MC for the 4 data sets</h3>
+<p style="font-size:26px;line-height:1.4;color:#C9D3E3">Due [Oct __] so item 3.1 can conclude before Oct 30.</p>
+</div>
+</div>
+<div style="display:flex;flex-direction:row;gap:40px;align-items:start;border-top:1px solid #3A4A6B;padding:24px 0 0 0">
+<p style="font-size:72px;font-weight:700;line-height:1;color:#F2A65A;width:80px">4</p>
+<div style="flex:1;display:flex;flex-direction:column;gap:8px">
+<h3 style="font-size:32px;font-weight:700;color:#F3EFE6">Agree on the decision metric</h3>
+<p style="font-size:26px;line-height:1.4;color:#C9D3E3">Current friction cost versus revenue lost if commission drops by 1 point.</p>
+</div>
+</div>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#8A97B0">17</p>
+
+</section>
+
+</div></div>
+<div id="bar"><button id="prev" aria-label="Previous slide">←</button><span id="n"></span><button id="next" aria-label="Next slide">→</button><button id="fs">Fullscreen</button></div>
+<script src="https://unpkg.com/lucide@0.460.0/dist/umd/lucide.min.js"></script>
+<script>
+try{lucide.createIcons()}catch(e){}
+const S=[...document.querySelectorAll('.slide')],deck=document.getElementById('deck');let i=0;
+S.forEach(s=>{if(/display:\s*grid/.test(s.getAttribute('style')))s.classList.add('grid')});
+function fit(){const s=Math.min(innerWidth/1920,(innerHeight-48)/1080);deck.style.transform='scale('+s+')'}
+function go(k){i=Math.max(0,Math.min(S.length-1,k));S.forEach((s,j)=>s.classList.toggle('on',j===i));document.getElementById('n').textContent=(i+1)+' / '+S.length;history.replaceState(null,'','#'+(i+1))}
+addEventListener('resize',fit);fit();go((parseInt(location.hash.slice(1))||1)-1);
+addEventListener('keydown',e=>{if(['ArrowRight','PageDown',' '].includes(e.key)){e.preventDefault();go(i+1)}if(['ArrowLeft','PageUp'].includes(e.key))go(i-1)});
+prev.onclick=()=>go(i-1);next.onclick=()=>go(i+1);
+deck.onclick=e=>go(e.clientX>innerWidth/2?i+1:i-1);
+fs.onclick=()=>document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen();
+</script>
+</body></html>
