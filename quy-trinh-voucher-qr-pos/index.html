@@ -38,6 +38,9 @@
   ul.check{list-style:none;margin:0;padding:0;background:var(--card);border:1px solid var(--line);border-radius:12px}
   ul.check li{padding:12px 16px 12px 46px;border-bottom:1px solid var(--line);position:relative}
   ul.check li:last-child{border-bottom:0}
+  ul.opts{list-style:none;margin:8px 0 0;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:4px 16px;font-size:14px}
+  ul.check ul.opts li{border:0;padding:3px 0 3px 24px}
+  ul.check ul.opts li::before{left:0;top:6px;width:12px;height:12px;border-width:1.5px;border-radius:3px}
   ul.check li::before{content:"";position:absolute;left:16px;top:15px;width:16px;height:16px;border:2px solid #b9b5aa;border-radius:4px}
   footer{margin-top:48px;color:var(--quiet);font-size:13px;border-top:1px solid var(--line);padding-top:16px}
   @media (max-width:600px){h1{font-size:24px}td:first-child,.api td:nth-child(2){white-space:normal}}
@@ -133,12 +136,22 @@
 <section>
   <h2><span class="n">7</span>Nhờ đối tác xác nhận</h2>
   <ul class="check">
-    <li>Quy trình 5 bước có hợp với cách thu ngân đang làm không?</li>
-    <li>POS hiện QR ở đâu: màn hình hướng khách, màn hình thu ngân hay phiếu tạm tính?</li>
-    <li>Voucher áp dụng trước hay sau khuyến mãi và VAT?</li>
-    <li>Một hoá đơn có cần dùng nhiều voucher không?</li>
-    <li>Tình huống nào ở quầy mà tài liệu chưa nêu?</li>
-    <li>1–2 cửa hàng đề xuất chạy thử và đầu mối phụ trách.</li>
+    <li><b>Tính khả thi:</b> POS có khả năng tích hợp tính năng gen QR để user quét và trừ điểm/voucher Got It trực tiếp trên hóa đơn không? Thời gian và nguồn lực cần thiết là bao lâu?</li>
+    <li><b>Động lực hợp tác:</b> Những lợi ích/điều kiện nào sẽ khiến POS sẵn sàng hợp tác tích hợp với Got It? <i>(Có thể chọn nhiều phương án)</i>
+      <ul class="opts">
+        <li>Chia sẻ % doanh thu từ giao dịch</li>
+        <li>Phí tích hợp ban đầu</li>
+        <li>Phí duy trì/vận hành hệ thống</li>
+        <li>Chia sẻ % phí giao dịch</li>
+        <li>Gia tăng giá trị sản phẩm, thu hút và giữ chân merchant</li>
+        <li>Mở rộng hệ sinh thái đối tác, gia tăng tệp khách hàng</li>
+        <li>Got It cam kết số lượng merchant/giao dịch tối thiểu</li>
+        <li>Khác: ……………………………</li>
+      </ul>
+    </li>
+    <li><b>Vận hành &amp; kỹ thuật:</b> Các yêu cầu về API, bảo mật, đối soát và xử lý giao dịch lỗi/hủy giao dịch cần đáp ứng những gì?</li>
+    <li><b>Pilot &amp; mở rộng:</b> Điều kiện để triển khai thử nghiệm tại một số merchant và nhân rộng trên toàn hệ thống POS là gì?</li>
+    <li><b>Thời điểm triển khai:</b> Dự kiến thời điểm nào trong năm bên bạn có thể bố trí nguồn lực để thực hiện tích hợp với Got It? Thời gian dự kiến bắt đầu và hoàn thành tích hợp là khi nào?</li>
   </ul>
 </section>
 
