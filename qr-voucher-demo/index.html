@@ -280,6 +280,22 @@
   .pos-btn.ghost{background:transparent;border:1px solid #2A313C;color:#98A1AE}
   .pos-btn.ghost:hover{color:#fff;border-color:#3C4553}
 
+  /* ---- POS: tính tiền + chọn phương thức ---- */
+  .cart{text-align:left;border-top:1px dashed #2A313C}
+  .cart-row{display:flex;justify-content:space-between;gap:10px;font-size:12.5px;padding:8px 0;border-bottom:1px dashed #2A313C;color:#C9D2DF}
+  .cart-row small{display:block;color:#6E7887;font-size:11px;margin-top:1px}
+  .cart-row b{color:#fff;font-weight:600;white-space:nowrap}
+  .pos-total{display:flex;justify-content:space-between;align-items:baseline;padding:12px 0 2px;font-size:13px;color:#9AA4B2}
+  .pos-total b{font-size:24px;font-weight:800;color:#fff;letter-spacing:-.02em}
+  .pos-btn.wide{display:block;width:100%;height:44px;font-size:14px;font-weight:700}
+  .paygrid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:14px}
+  .pay{display:flex;flex-direction:column;align-items:center;gap:7px;padding:13px 6px;border-radius:12px;background:#1F242D;border:1px solid #2A313C;font-size:12px;font-weight:600;color:#9AA4B2}
+  .pay.dis{opacity:.45;cursor:not-allowed}
+  .pay.gotit{border-color:rgba(232,50,42,.6);background:rgba(232,50,42,.12);color:#FFCFCC;box-shadow:0 0 0 3px rgba(232,50,42,.12)}
+  .pay.gotit:hover{background:rgba(232,50,42,.22)}
+  .pay .pi{width:30px;height:30px;border-radius:8px;display:grid;place-items:center;background:#2A313C}
+  .pay.gotit .pi{background:var(--red);color:#fff;font-size:8.5px;font-weight:800;line-height:1.05}
+
   /* ---- Portal Got It trên máy thu ngân ---- */
   .browser{background:#fff;border-radius:12px;overflow:hidden;color:var(--ink);box-shadow:0 10px 30px rgba(0,0,0,.35)}
   .br-bar{display:flex;align-items:center;gap:6px;padding:8px 10px;background:#E4E7EC}
@@ -419,6 +435,10 @@ const SCENARIOS = {
   expired: {label:'QR đã hết hạn',               desc:'Khách quét sau 3 phút kể từ lúc tạo mã',                    amount:358000,  err:'expired'},
   paid:    {label:'Đơn đã được thanh toán',      desc:'Khách quét lại mã cũ',                                      amount:358000,  err:'paid'},
 };
+const CART_358 = [['Trà Sen Vàng (L)',2,65000],['Trà Sữa Phúc Long',2,59000],['Bánh Mì Chà Bông',2,35000],['Bánh Croissant',1,40000]];
+const CARTS = {full:CART_358, expired:CART_358, paid:CART_358,
+  partial:[['Hộp quà Trà Phúc Long',2,450000],['Cà Phê Hạt 500g',2,320000],['Trà Sen Vàng (L)',4,65000],['Bánh Tiramisu',1,50000]],
+  over:[['Trà Đào (M)',1,40000]]};
 const MERCHANT = {name:'Phúc Long Coffee & Tea', code:'PL', brand:'phuclong',
                   addr:{pos:'Lê Lợi, Quận 1 · POS 02', portal:'Lê Lợi, Quận 1 · Quầy 02 · Portal'}};
 const money = n => n.toLocaleString('vi-VN') + 'đ';
@@ -455,13 +475,13 @@ const I = {
 let CH = location.hash==='#portal' ? 'portal' : 'pos';   // kênh: POS tích hợp | Portal trên máy thu ngân
 let AUTH = false;                                         // portal đã đăng nhập — giữ khi đổi kịch bản
 let S = {};
-/* posState — POS: waiting|scanned|paid|expired|idle · Portal: login|create|waiting|scanned|paid|expired */
+/* posState — POS: cart|method|waiting|scanned|paid|expired · Portal: login|create|waiting|scanned|paid|expired */
 function reset(sc){
   const key = sc || S.scenario || 'full', amt = SCENARIOS[key].amount;
   S = {scenario:key, amount:amt, amtStr:String(amt), err:SCENARIOS[key].err, phoneErr:null,
        orderId:newOrderId(), billNo:'HD-'+rnd4(), qrN:0, wpTab:'qr',
        screen:'home', picking:false, selected:[], modal:false,
-       posState: CH==='portal' ? (AUTH?'create':'login') : 'waiting'};
+       posState: CH==='portal' ? (AUTH?'create':'login') : 'cart'};
   S.selected = suggest();
   render();
 }
@@ -541,13 +561,32 @@ function renderCashier(){
 
 function posHTML(){
   const st=S.posState;
-  const badge = st==='waiting'?'<span class="pos-status wait">● Chờ khách quét</span>'
+  const badge = st==='cart'?'<span class="pos-status">● Đang tính tiền</span>'
+              : st==='method'?'<span class="pos-status wait">● Chọn phương thức</span>'
+              : st==='waiting'?'<span class="pos-status wait">● Chờ khách quét</span>'
               : st==='scanned'?'<span class="pos-status live">● Khách đang chọn voucher</span>'
               : st==='paid'?'<span class="pos-status ok">● Đã thanh toán</span>'
-              : st==='expired'?'<span class="pos-status">● Mã đã hết hạn</span>'
-              : '<span class="pos-status">● Hoá đơn đang mở</span>';
+              : '<span class="pos-status">● Mã đã hết hạn</span>';
   let body;
-  if(st==='paid'){
+  if(st==='cart'){
+    body=`<div class="pos-order" style="text-align:left;margin-bottom:10px">Đơn ${S.orderId} · thu ngân Ngọc Anh</div>
+      <div class="cart">${CARTS[S.scenario].map(([n,q,p])=>`<div class="cart-row"><span>${n}<small>${q} × ${money(p)}</small></span><b>${money(q*p)}</b></div>`).join('')}</div>
+      <div class="pos-total"><span>Tổng cộng</span><b>${money(S.amount)}</b></div>
+      <button class="pos-btn wide" onclick="S.posState='method';render()">Thanh toán</button>`;
+  }else if(st==='method'){
+    const pi = {cash:'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2.5" y="6" width="19" height="12" rx="2"/><circle cx="12" cy="12" r="2.6"/></svg>',
+                card:'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2.5" y="5" width="19" height="14" rx="2"/><path d="M2.5 10h19"/></svg>',
+                bank:'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3.5" y="3.5" width="7" height="7" rx="1"/><rect x="13.5" y="3.5" width="7" height="7" rx="1"/><rect x="3.5" y="13.5" width="7" height="7" rx="1"/><path d="M14 14h2v2h-2zM18 18h2v2h-2z"/></svg>'};
+    body=`<div class="pos-amount">${money(S.amount)}</div>
+      <div class="pos-order" style="margin-bottom:0">Đơn ${S.orderId} · chọn cách khách trả</div>
+      <div class="paygrid">
+        <button class="pay dis" title="Ngoài phạm vi demo"><span class="pi">${pi.cash}</span>Tiền mặt</button>
+        <button class="pay dis" title="Ngoài phạm vi demo"><span class="pi">${pi.card}</span>Thẻ</button>
+        <button class="pay dis" title="Ngoài phạm vi demo"><span class="pi">${pi.bank}</span>Chuyển khoản</button>
+        <button class="pay gotit" onclick="createQR()"><span class="pi">got<br>it</span>Voucher Got It</button>
+      </div>
+      <button class="pos-btn ghost" onclick="S.posState='cart';render()">‹ Quay lại đơn</button>`;
+  }else if(st==='paid'){
     const k=calc();
     body=`<div class="pos-done"><div class="tick">✓</div><h4>Đã nhận thanh toán</h4><p>Giao dịch Got It ${S.orderId}</p></div>
       <div style="text-align:left">
@@ -558,12 +597,7 @@ function posHTML(){
       <button class="pos-btn ghost" onclick="newOrder()">Đơn mới</button>`;
   }else if(st==='expired'){
     body=`<div class="pos-done"><div class="tick" style="background:rgba(232,50,42,.15);color:#FF8A84">⏱</div><h4>Mã QR đã hết hạn</h4><p>Không có voucher nào bị trừ</p></div>
-      <button class="pos-btn" onclick="renewQR()">Tạo mã mới</button> <button class="pos-btn ghost" onclick="cancelQR()">Huỷ</button>`;
-  }else if(st==='idle'){
-    body=`<div class="pos-amount">${money(S.amount)}</div>
-      <div class="pos-order">Đơn ${S.orderId} · thu ngân Ngọc Anh</div>
-      <div class="qr-hint">Đã huỷ mã QR. Thu tiền bình thường,<br>hoặc mở lại nếu khách vẫn muốn dùng voucher.</div>
-      <button class="pos-btn" onclick="renewQR()">Dùng voucher Got It</button>`;
+      <button class="pos-btn" onclick="renewQR()">Tạo mã mới</button> <button class="pos-btn ghost" onclick="cancelQR()">Chọn cách trả khác</button>`;
   }else{
     body=`<div class="pos-amount">${money(S.amount)}</div>
       <div class="pos-order">Đơn ${S.orderId} · thu ngân Ngọc Anh</div>
@@ -721,7 +755,7 @@ function scScan(){
         ${live?'<div class="qrcard"><canvas id="scanqr"></canvas><div class="qrnum">46323141</div><div class="pw">Powered by</div></div>'
               :'<div class="qrcard" style="width:92px;padding:34px 6px;font-size:9px;font-weight:700;color:#8A8F98">Chưa có QR</div>'}</div></div>`;
   const hint = live ? `Chạm vào khung để mô phỏng quét mã trên ${CH==='portal'?'portal':'POS'}`
-             : CH==='portal' ? 'Thu ngân chưa tạo mã QR — làm bước bên máy thu ngân trước' : 'Màn hình quầy chưa có mã QR';
+             : CH==='portal' ? 'Thu ngân chưa tạo mã QR — làm bước bên máy thu ngân trước' : 'POS chưa hiện mã QR — thu ngân tính tiền và chọn thanh toán Got It trước';
   return `<div class="scanner">
     <div class="cam">
       <div class="paper"></div>
@@ -902,7 +936,7 @@ function createQR(){ if(!S.amount) return; S.qrN++; S.posState='waiting'; S.sele
 function renewQR(){ S.err=null; S.qrN++; S.posState='waiting'; render(); }
 function cancelQR(){
   if(S.screen==='processing') return;
-  S.posState = CH==='portal' ? 'create' : 'idle';
+  S.posState = CH==='portal' ? 'create' : 'method';
   if(S.screen==='verify'||S.screen==='review'){ S.screen='error'; S.phoneErr='cancelled'; S.modal=false; S.picking=false; }
   render();
 }
@@ -910,7 +944,7 @@ function newOrder(){
   S.orderId=newOrderId(); S.billNo='HD-'+rnd4(); S.qrN++;
   S.err=null; S.selected=[]; S.picking=false; S.modal=false; S.screen='home';
   if(CH==='portal'){ S.posState='create'; S.amtStr=''; S.amount=0; }
-  else S.posState='waiting';
+  else S.posState='cart';
   render();
 }
 
@@ -927,6 +961,10 @@ const NOTES = {
   success:`<b>Xong.</b> Hai màn hình cùng hiện kết quả. Phần dư của voucher link E giữ lại trong kho quà, phần thiếu quầy thu tiếp.`,
   error:`<b>Nhánh lỗi.</b> App nói rõ chuyện gì xảy ra và bước tiếp theo, không hiện mã lỗi kỹ thuật cho khách. Màn hình quầy có nút xử lý tương ứng.`,
 
+  pos_cart:`<b>Thu ngân tính tiền.</b> POS lên đơn như bình thường: quét món, ra tổng tiền. Chưa có gì liên quan tới Got It.
+        <ul><li>Bấm <b>Thanh toán</b> trên POS.</li></ul>`,
+  pos_method:`<b>Chọn phương thức thanh toán.</b> <b>Voucher Got It</b> là một nút mới, nằm cạnh Tiền mặt, Thẻ, Chuyển khoản.
+        <ul><li>Bấm <b>Voucher Got It</b>: POS gửi <code>order_id</code> + số tiền sang Got It (<code>POST /v1/redeem-requests</code>) và nhận về mã QR.</li><li>QR chỉ sinh ra lúc này, gắn với đúng hoá đơn và số tiền — không có QR dán sẵn ở quầy.</li></ul>`,
   p_login:`<b>Thu ngân đăng nhập portal.</b> Cửa hàng chưa tích hợp POS vẫn dùng được QR: thu ngân mở <code>pos.gotit.vn</code> trên máy tính hoặc máy tính bảng tại quầy, đăng nhập bằng ID, mật khẩu và mã PIN cửa hàng do Got It cấp — như hôm nay.
         <ul><li>Bấm <b>Đăng nhập</b>.</li></ul>`,
   p_create:`<b>Nhập số tiền, tạo QR.</b> Portal có thêm tab <b>Tạo QR</b>, nằm cạnh tab nhập mã cũ.
@@ -940,7 +978,7 @@ const NOTES = {
 };
 const TECH = {
   pos:`<ul>
-        <li>QR mang <code>order_token</code> sống 3 phút, gắn cứng số tiền — không chứa mã voucher.</li>
+        <li>QR chỉ được tạo khi thu ngân chọn <b>Voucher Got It</b>: mang <code>order_token</code> sống 3 phút, gắn cứng số tiền — không chứa mã voucher. Huỷ hoặc tạo mã mới thì mã cũ chết.</li>
         <li>Xác nhận gửi kèm <code>Idempotency-Key</code>; trừ voucher chạy trong transaction, chặn double-spend ở tầng DB.</li>
         <li>Server tự tính lại thứ tự ưu tiên và ngưỡng dư 20.000đ — không tin client.</li>
         <li>Quét lại đơn đã trả trả về <code>ALREADY_PAID</code>, không tạo giao dịch mới.</li>
@@ -954,11 +992,11 @@ const TECH = {
       </ul>`,
 };
 const SUB = {
-  pos:'POS hiện mã QR · Khách quét bằng Got It App · Server xác thực &amp; trừ voucher',
+  pos:'Thu ngân tính tiền · Chọn thanh toán Got It, POS hiện mã QR · Khách quét bằng Got It App · Server xác thực &amp; trừ voucher',
   portal:'Cửa hàng chưa tích hợp POS · Thu ngân tạo QR trên portal pos.gotit.vn · Khách quét bằng Got It App · Portal tự nhận kết quả',
 };
 const STEPS = {
-  pos:['Quầy hiện mã QR','Khách quét mã','App gợi ý voucher','Bấm xác nhận'],
+  pos:['Thu ngân tính tiền','Chọn Got It → POS hiện QR','Khách quét mã','App gợi ý voucher','Bấm xác nhận'],
   portal:['Thu ngân đăng nhập portal','Nhập số tiền, tạo QR','Khách quét mã','Chọn voucher & xác nhận'],
 };
 function curStep(){
@@ -967,7 +1005,9 @@ function curStep(){
     if(S.posState==='create') return 2;
     return {home:3,scan:3,verify:3,error:3,review:4,processing:4,success:4}[S.screen];
   }
-  return {home:1,scan:2,verify:2,review:3,processing:4,success:4,error:2}[S.screen];
+  if(S.posState==='cart') return 1;
+  if(S.posState==='method') return 2;
+  return {home:2,scan:3,verify:3,error:3,review:4,processing:5,success:5}[S.screen];
 }
 function noteKey(){
   if(CH==='portal'){
@@ -977,6 +1017,8 @@ function noteKey(){
     if(['home','verify','processing'].includes(S.screen)) return 'p_'+S.screen;
     return S.screen;
   }
+  if(S.posState==='cart') return 'pos_cart';
+  if(S.posState==='method') return S.screen==='error' ? 'error' : 'pos_method';
   return S.posState==='paid' ? 'success' : S.screen;
 }
 
