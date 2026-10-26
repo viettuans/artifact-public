@@ -135,7 +135,7 @@
     border:1px solid #ECEDF0;transform:translateX(-50%)}
   .tk-notch.t{top:-9px;clip-path:inset(50% 0 0 0)}
   .tk-notch.b{bottom:-9px;clip-path:inset(0 0 50% 0)}
-  .tk-right{flex:1;padding:14px 16px 14px 20px}
+  .tk-right{flex:1;padding:26px 16px 14px 20px}
   .tk-right .tag{font-size:12.5px;color:#8A8F98}
   .tk-right .nm{font-size:17px;font-weight:500;margin:3px 0 4px;letter-spacing:-.01em}
   .tk-right .pr{font-size:23px;font-weight:800;letter-spacing:-.025em}
@@ -262,78 +262,171 @@
   .rcpt{width:100%;margin-top:24px;border:1px solid var(--line);border-radius:14px;padding:4px 0;text-align:left}
   .rcpt .r{display:flex;justify-content:space-between;gap:10px;padding:10px 14px;font-size:12.5px;color:#5A616B}
   .rcpt .r b{color:var(--ink);font-weight:600;text-align:right}
+  .pill.linke{background:#E7F6F5;color:var(--teal)}
+  .pill.linkv{background:#EEF0FF;color:#4F46E5}
+  .pill.soon{background:#FFF3E0;color:#B26A00}
+  .vamt .u.lost{color:#B26A00}
+  .sumrow .lostc{color:#B26A00;font-weight:700}
+
+  /* ---- Chọn kênh ---- */
+  .chan{display:inline-flex;gap:4px;margin-top:16px;padding:4px;border-radius:999px;background:var(--panel);border:1px solid #262C36}
+  .chan button{padding:8px 16px;border-radius:999px;font-size:12.5px;font-weight:600;color:#98A1AE;display:flex;align-items:center;gap:7px;transition:.18s}
+  .chan button:hover{color:#fff}
+  .chan button.on{background:var(--red);color:#fff}
+  .chan em{font-style:normal;font-size:9.5px;font-weight:800;padding:2px 6px;border-radius:999px;background:rgba(18,161,80,.2);color:#4ADE80}
+  .chan button.on em{background:rgba(255,255,255,.22);color:#fff}
+  @media(max-width:1080px){.stage.portal>.col-pos{order:1}.stage.portal>.col-phone{order:2}}
+  .pos-btn{margin-top:14px;padding:9px 16px;border-radius:10px;font-size:12.5px;font-weight:600;background:var(--red);color:#fff}
+  .pos-btn.ghost{background:transparent;border:1px solid #2A313C;color:#98A1AE}
+  .pos-btn.ghost:hover{color:#fff;border-color:#3C4553}
+
+  /* ---- Portal Got It trên máy thu ngân ---- */
+  .browser{background:#fff;border-radius:12px;overflow:hidden;color:var(--ink);box-shadow:0 10px 30px rgba(0,0,0,.35)}
+  .br-bar{display:flex;align-items:center;gap:6px;padding:8px 10px;background:#E4E7EC}
+  .br-bar>i{width:9px;height:9px;border-radius:50%;background:#FF5F57;flex:none}
+  .br-bar>i:nth-child(2){background:#FEBC2E}
+  .br-bar>i:nth-child(3){background:#28C840}
+  .br-url{flex:1;min-width:0;margin-left:6px;background:#fff;border-radius:6px;font-size:11px;color:#5A616B;padding:4px 9px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .wp-head{background:#F25C54;color:#fff;display:flex;align-items:center;justify-content:space-between;gap:8px;padding:10px 12px}
+  .wp-head b{font-size:13.5px;font-weight:800}
+  .wp-head span{font-size:10.5px;font-weight:600;opacity:.92}
+  .wp-store{display:flex;gap:10px;align-items:center;padding:12px 14px;border-bottom:1px solid var(--line)}
+  .wp-store .mlogo{width:36px;height:36px;border-radius:9px;font-size:11px}
+  .wp-store .nm{font-size:13px;font-weight:700}
+  .wp-store .ad{font-size:11px;color:var(--muted);margin-top:1px}
+  .wp-tabs{display:flex;gap:3px;margin:12px 14px 0;background:#F2F3F5;border-radius:10px;padding:3px}
+  .wp-tabs button{flex:1;font-size:11.5px;font-weight:700;padding:7px 4px;border-radius:8px;color:#6B7280}
+  .wp-tabs button.on{background:#fff;color:var(--red);box-shadow:0 1px 3px rgba(0,0,0,.1)}
+  .wp-body{padding:14px}
+  .wp-title{font-size:15px;font-weight:800;text-align:center;margin:2px 0 4px}
+  .wp-label{font-size:11.5px;font-weight:700;color:#4A505A;margin:12px 0 6px;display:flex;justify-content:space-between}
+  .wp-body>.wp-label:first-child{margin-top:0}
+  .wp-label i{font-style:normal;font-weight:500;color:var(--muted)}
+  .wp-label button{font-size:11px;font-weight:700;color:var(--red)}
+  .wp-amt-in{height:46px;border:1.5px solid var(--red);border-radius:10px;display:flex;align-items:center;justify-content:flex-end;padding:0 12px;font-size:21px;font-weight:800;letter-spacing:-.02em}
+  .wp-amt-in.empty{color:#B8BDC5}
+  .wp-text{width:100%;height:40px;border:1.5px solid #E4E6EA;border-radius:10px;padding:0 12px;font:inherit;font-size:13.5px;font-weight:600;color:var(--ink);outline:none;background:#fff}
+  .wp-text:focus{border-color:#9AA0A8}
+  .keypad{display:grid;grid-template-columns:repeat(3,1fr);border:1px solid var(--line);border-radius:10px;overflow:hidden;margin-top:8px}
+  .keypad button{height:40px;font-size:15px;font-weight:700;color:#2C3138;background:#FAFAFB;border-right:1px solid var(--line);border-bottom:1px solid var(--line)}
+  .keypad button:nth-child(3n){border-right:none}
+  .keypad button:nth-last-child(-n+3){border-bottom:none}
+  .keypad button:active{background:#ECEEF1}
+  .wp-btn{display:block;width:100%;height:44px;border-radius:10px;background:var(--red);color:#fff;font-size:14px;font-weight:700;margin-top:14px}
+  .wp-btn:active{background:var(--red-dark)}
+  .wp-btn.ghost{background:#fff;border:1.5px solid #E4E6EA;color:#4A505A;height:40px;margin-top:8px;font-size:13px}
+  .wp-btn[disabled]{background:#E4E6EA;color:#A6ABB3;border-color:#E4E6EA;cursor:not-allowed}
+  .wp-hint{font-size:11px;color:var(--muted);line-height:1.6;margin-top:10px}
+  .wp-hint b{color:#4A505A}
+  .wp-center{text-align:center}
+  .wp-big{font-size:28px;font-weight:800;letter-spacing:-.03em;margin-top:12px}
+  .wp-sub{font-size:11.5px;color:var(--muted);margin-top:3px}
+  .wp-qr{border:1px solid var(--line);margin:12px 0 2px;padding:10px}
+  .wp-line{display:flex;justify-content:space-between;gap:10px;font-size:12.5px;padding:8px 0;border-top:1px dashed #E2E4E8;color:#5A616B}
+  .wp-line b{color:var(--ink)}
+  .wp-collect{margin-top:10px;border-radius:10px;padding:11px 12px;font-size:12.5px;line-height:1.5;background:#FFF8E6;border:1px solid #F7E2A8;color:#7A5A00}
+  .wp-collect.ok{background:#E9F7EF;border-color:#BFE5CE;color:#0B6B36}
+  .wp-collect b{font-size:16px}
+  .wp-tick{width:48px;height:48px;border-radius:50%;background:#E9F7EF;color:var(--green);display:grid;place-items:center;font-size:24px;font-weight:700;margin:4px auto 10px}
+  .wp-tick.bad{background:#FDECEB;color:var(--red)}
+  .browser .pos-status{background:#F1F2F4;color:#6B7280}
+  .browser .pos-status.wait{background:#FFF3E0;color:#B26A00}
+  .browser .pos-status.live{background:#E8F1FD;color:#1F6FD1}
+
+  /* màn hình portal khi khách nhìn qua camera */
+  .tablet{position:absolute;inset:0;background:#F4F5F7;display:flex;flex-direction:column;align-items:center}
+  .tb-head{align-self:stretch;background:#F25C54;color:#fff;font-size:11px;font-weight:800;padding:8px;text-align:center}
+  .tb-amt{font-size:18px;font-weight:800;color:#131313;margin:12px 0 8px}
+  .tb-qr{background:#fff;padding:6px;border-radius:6px;box-shadow:0 1px 4px rgba(0,0,0,.12)}
+  .tb-empty{margin:auto;font-size:13px;color:#8A8F98;font-weight:600}
+
+  .cmp{width:100%;border-collapse:collapse;font-size:11.5px;line-height:1.5}
+  .cmp th{font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:#6E7887;text-align:left;padding:0 6px 6px;font-weight:700}
+  .cmp td{padding:7px 6px;border-top:1px solid #262C36;color:#98A1AE;vertical-align:top}
+  .cmp td:first-child{color:#E7EAF0;font-weight:600;width:26%}
+  .cmp td:last-child{color:#A7E3BF}
 </style>
 
 </head>
 <body>
 <div class="head">
   <h1>Thanh toán voucher bằng QR — bản demo tương tác</h1>
-  <p>POS hiện mã QR · Khách quét bằng Got It App · Server xác thực &amp; trừ voucher</p>
-  <div class="steps" id="steps">
-    <div class="step" data-s="1"><b>1</b> Quầy hiện mã QR</div>
-    <div class="step" data-s="2"><b>2</b> Khách quét mã</div>
-    <div class="step" data-s="3"><b>3</b> App gợi ý voucher</div>
-    <div class="step" data-s="4"><b>4</b> Bấm xác nhận</div>
-  </div>
+  <p id="sub"></p>
+  <div class="chan" id="chan"></div>
+  <div class="steps" id="steps"></div>
 </div>
 
-<div class="stage">
+<div class="stage" id="stage">
   <div class="col-pos">
-    <div class="card"><div class="card-title">Màn hình quầy · POS</div><div class="pos" id="pos"></div></div>
+    <div class="card"><div class="card-title" id="cashier-title">Màn hình quầy · POS</div><div id="pos"></div></div>
     <div class="card" style="margin-top:18px"><div class="card-title">Kịch bản demo</div><div class="ctrl" id="scenarios"></div></div>
   </div>
 
   <div class="col-phone">
     <div class="phone"><div class="notch"></div><div class="screen" id="screen"></div></div>
     <div style="display:flex;gap:9px;flex-wrap:wrap;justify-content:center">
-      <button style="font-size:12.5px;color:#7E8896;padding:9px 16px;border:1px solid #2A313C;border-radius:10px;background:#171B22" onclick="reset()">↺ Chạy lại từ đầu</button>
+      <button style="font-size:12.5px;color:#7E8896;padding:9px 16px;border:1px solid #2A313C;border-radius:10px;background:#171B22" onclick="restart()">↺ Chạy lại từ đầu</button>
       <button style="font-size:12.5px;color:#FFCFCC;padding:9px 16px;border:1px solid rgba(232,50,42,.5);border-radius:10px;background:rgba(232,50,42,.13)" onclick="showPopup()">Xem popup xác nhận</button>
     </div>
   </div>
 
   <div class="col-notes">
     <div class="card"><div class="card-title">Đang ở bước nào</div><div class="note" id="note"></div></div>
+    <div class="card" id="cmp-card" style="margin-top:18px">
+      <div class="card-title">Portal hôm nay → Portal có QR</div>
+      <table class="cmp">
+        <tr><th></th><th>Hôm nay</th><th>Có QR</th></tr>
+        <tr><td>Thu ngân gõ</td><td>Từng mã voucher 10 số</td><td>Số tiền hoá đơn, một lần</td></tr>
+        <tr><td>Ai thấy mã</td><td>Thu ngân, người xếp hàng phía sau</td><td>Không ai — QR chỉ chứa token</td></tr>
+        <tr><td>Trừ bao nhiêu</td><td>Trọn mệnh giá khi bấm “Đánh dấu sử dụng”</td><td>Đúng số cần trả; phần dư link E giữ lại</td></tr>
+        <tr><td>Báo cáo</td><td>Theo mã, cột Bill Number thường trống</td><td>Theo hoá đơn, có số hoá đơn</td></tr>
+      </table>
+    </div>
     <div class="card" style="margin-top:18px">
       <div class="card-title">Quy tắc chọn voucher</div>
       <div class="note"><ul>
-        <li><b>Không cho chọn voucher có mệnh giá lớn hơn số tiền còn phải trả</b>, nếu voucher đó không tách được. Hàng bị làm mờ kèm lý do rõ ràng.</li>
-        <li>Voucher <b>tách dùng nhiều lần</b> chỉ trừ đúng phần cần trả, phần dư giữ nguyên trong kho quà.</li>
-        <li>Ưu tiên gợi ý voucher <b>đúng thương hiệu</b> của quầy, rồi tới voucher <b>sắp hết hạn</b>.</li>
-        <li>Voucher khoá thương hiệu khác vẫn hiện trong nhóm riêng, không ẩn đi.</li>
+        <li>Ưu tiên dùng trước: voucher <b>sắp hết hạn</b> (còn ≤ 30 ngày — ngưỡng giả định của demo), rồi voucher <b>không tách được</b> (link V).</li>
+        <li><b>Link V</b> đã gắn thương hiệu, không tách giá trị. <b>Link E</b> chưa gắn thương hiệu — tại quầy được tách đúng số tiền cần trả thành link V của thương hiệu đó, phần còn lại vẫn là link E trong kho quà.</li>
+        <li>Voucher không tách lớn hơn số tiền cần trả <b>từ 20.000đ trở xuống</b>: vẫn cho dùng, hiện cảnh báo mất phần dư. Lớn hơn 20.000đ: khoá kèm lý do.</li>
+        <li>Voucher khoá thương hiệu khác vẫn hiện trong danh sách, làm mờ kèm lý do.</li>
         <li>Thiếu bao nhiêu, quầy thu tiếp bằng tiền mặt hoặc thẻ.</li>
       </ul></div>
     </div>
     <div class="card" style="margin-top:18px">
       <div class="card-title">Điểm cần chốt với kỹ thuật</div>
-      <div class="note"><ul>
-        <li>QR mang <code>order_token</code> có TTL ngắn, gắn cứng số tiền — không chứa mã voucher.</li>
-        <li>Xác nhận gửi kèm <code>Idempotency-Key</code>; trừ voucher chạy trong transaction, chặn double-spend ở tầng DB.</li>
-        <li>Server phải kiểm lại luật "voucher không lớn hơn số tiền" — không tin client.</li>
-        <li>Quét lại đơn đã trả trả về <code>ALREADY_PAID</code>, không tạo giao dịch mới.</li>
-      </ul></div>
+      <div class="note" id="tech"></div>
     </div>
   </div>
 </div>
 
 <script>
 /* ================= DỮ LIỆU ================= */
+const TODAY = '26/10/2026';
+const SOON_DAYS = 30;     // "sắp hết hạn" = còn ≤ 30 ngày (giả định của demo)
+const OVER_MAX = 20000;   // voucher không tách được phép lớn hơn số cần trả tối đa 20k
+/* split:true = link E (chưa gắn brand, tách được) · split:false = link V (đã gắn brand, không tách) */
 const VOUCHERS = [
-  {id:'v1', name:'Quà Tặng Got It',        value:25000,  split:true,  exp:'04/09/2026', brand:'any'},
+  {id:'v1', name:'Quà Tặng Got It',        value:25000,  split:true,  exp:'05/11/2026', brand:'any'},
   {id:'v2', name:'Got It eGift',           value:500000, split:true,  exp:'31/12/2026', brand:'any'},
-  {id:'v3', name:'Phúc Long eGift',        value:500000, split:true,  exp:'15/10/2026', brand:'phuclong'},
-  {id:'v4', name:'Got It eGift',           value:500000, split:false, exp:'20/11/2026', brand:'any'},
-  {id:'v5', name:'Highlands Coffee eGift', value:96000,  split:false, exp:'01/09/2026', brand:'highlands'},
+  {id:'v3', name:'Phúc Long eGift',        value:100000, split:false, exp:'15/01/2027', brand:'phuclong',  brandName:'Phúc Long'},
+  {id:'v4', name:'Phúc Long eGift',        value:50000,  split:false, exp:'10/11/2026', brand:'phuclong',  brandName:'Phúc Long'},
+  {id:'v5', name:'Highlands Coffee eGift', value:96000,  split:false, exp:'01/12/2026', brand:'highlands', brandName:'Highlands Coffee'},
 ];
 const SCENARIOS = {
-  full:    {label:'Voucher đủ trả cả đơn', desc:'Đơn 358.000đ · gợi ý 1 voucher',            amount:358000,  err:null},
-  partial: {label:'Voucher không đủ',       desc:'Đơn 1.850.000đ · thiếu, trả thêm tại quầy', amount:1850000, err:null},
-  expired: {label:'QR đã hết hạn',          desc:'Mã quá 5 phút kể từ lúc quầy tạo đơn',      amount:358000,  err:'expired'},
-  paid:    {label:'Đơn đã được thanh toán', desc:'Khách quét lại mã cũ',                      amount:358000,  err:'paid'},
+  full:    {label:'Voucher đủ trả cả đơn',      desc:'Đơn 358.000đ · gợi ý 4 voucher, không phải trả thêm',       amount:358000,  err:null},
+  partial: {label:'Voucher không đủ',            desc:'Đơn 1.850.000đ · thiếu, trả thêm tại quầy',                 amount:1850000, err:null},
+  over:    {label:'Voucher không tách dư ≤ 20k', desc:'Đơn 40.000đ · link V 50.000đ dư 10.000đ, dùng kèm cảnh báo', amount:40000,   err:null},
+  expired: {label:'QR đã hết hạn',               desc:'Khách quét sau 3 phút kể từ lúc tạo mã',                    amount:358000,  err:'expired'},
+  paid:    {label:'Đơn đã được thanh toán',      desc:'Khách quét lại mã cũ',                                      amount:358000,  err:'paid'},
 };
-const MERCHANT = {name:'Phúc Long Coffee & Tea', addr:'Lê Lợi, Quận 1 · POS 02', code:'PL', brand:'phuclong'};
+const MERCHANT = {name:'Phúc Long Coffee & Tea', code:'PL', brand:'phuclong',
+                  addr:{pos:'Lê Lợi, Quận 1 · POS 02', portal:'Lê Lợi, Quận 1 · Quầy 02 · Portal'}};
 const money = n => n.toLocaleString('vi-VN') + 'đ';
 const applicable = v => v.brand==='any' || v.brand===MERCHANT.brand;
 const toDate = s => {const[d,m,y]=s.split('/');return new Date(+y,+m-1,+d)};
+const soon = v => (toDate(v.exp)-toDate(TODAY))/864e5 <= SOON_DAYS;
+const rnd4 = () => 1000+Math.floor(Math.random()*8999);
+const newOrderId = () => '#PL2610'+rnd4();
 
 /* ================= ICON ================= */
 const I = {
@@ -359,56 +452,65 @@ const I = {
 };
 
 /* ================= STATE ================= */
+let CH = location.hash==='#portal' ? 'portal' : 'pos';   // kênh: POS tích hợp | Portal trên máy thu ngân
+let AUTH = false;                                         // portal đã đăng nhập — giữ khi đổi kịch bản
 let S = {};
+/* posState — POS: waiting|scanned|paid|expired|idle · Portal: login|create|waiting|scanned|paid|expired */
 function reset(sc){
-  const key = sc || S.scenario || 'full';
-  S = {scenario:key, amount:SCENARIOS[key].amount, err:SCENARIOS[key].err,
-       orderId:'#PL2608'+(1000+Math.floor(Math.random()*8999)),
-       screen:'home', picking:false, selected:[], modal:false, posState:'waiting'};
+  const key = sc || S.scenario || 'full', amt = SCENARIOS[key].amount;
+  S = {scenario:key, amount:amt, amtStr:String(amt), err:SCENARIOS[key].err, phoneErr:null,
+       orderId:newOrderId(), billNo:'HD-'+rnd4(), qrN:0, wpTab:'qr',
+       screen:'home', picking:false, selected:[], modal:false,
+       posState: CH==='portal' ? (AUTH?'create':'login') : 'waiting'};
   S.selected = suggest();
   render();
 }
+function restart(){ AUTH=false; reset(); }
+function setChannel(c){
+  CH=c; history.replaceState(null,'',c==='portal'?'#portal':location.pathname+location.search);
+  reset();
+}
 
-/* gợi ý: đúng brand → HSD gần → không lấy voucher không tách mà lớn hơn phần còn lại */
+/* thứ tự ưu tiên: sắp hết hạn → không tách (link V) → HSD gần hơn */
+const rank = v => [soon(v)?0:1, v.split?1:0, toDate(v.exp)];
+function byPriority(a,b){ const x=rank(a), y=rank(b); return x[0]-y[0] || x[1]-y[1] || x[2]-y[2]; }
+
 function suggest(){
-  const ok = VOUCHERS.filter(applicable).sort((a,b)=>{
-    const ab = a.brand===MERCHANT.brand?0:1, bb = b.brand===MERCHANT.brand?0:1;
-    return ab!==bb ? ab-bb : toDate(a.exp)-toDate(b.exp);
-  });
   const picked=[]; let left=S.amount;
-  for(const v of ok){
+  for(const v of VOUCHERS.filter(applicable).sort(byPriority)){
     if(left<=0) break;
-    if(!v.split && v.value>left) continue;   // luật mới: không dùng voucher lớn hơn
-    picked.push(v.id); left -= v.value;
+    if(!v.split && v.value-left>OVER_MAX) continue;   // không tách mà dư quá 20k thì bỏ qua
+    picked.push(v.id); left -= Math.min(v.value,left);
   }
   return picked;
 }
 
 /* voucher có được phép chọn thêm không */
 function blockReason(v, restBefore){
-  if(!applicable(v)) return 'Chỉ dùng tại thương hiệu khác';
-  if(!v.split && v.value > restBefore) return 'Mệnh giá lớn hơn số tiền cần trả';
+  if(!applicable(v)) return 'Chỉ dùng tại '+v.brandName;
+  if(restBefore<=0) return 'Đơn đã đủ tiền';
+  if(!v.split && v.value-restBefore>OVER_MAX) return 'Lớn hơn số cần trả quá 20.000đ';
   return null;
 }
 function restExcluding(id){
   let left = S.amount;
   for(const vid of S.selected){
     if(vid===id) continue;
-    const v = VOUCHERS.find(x=>x.id===vid);
-    left -= v.split ? Math.min(v.value, Math.max(left,0)) : v.value;
+    left -= Math.min(VOUCHERS.find(x=>x.id===vid).value, Math.max(left,0));
   }
   return Math.max(left,0);
 }
 function calc(){
-  let left=S.amount, applied=[], refund=0;
+  let left=S.amount, applied=[], refund=0, lost=0;
   for(const id of S.selected){
     const v = VOUCHERS.find(x=>x.id===id);
     const use = Math.min(v.value, Math.max(left,0));
-    applied.push({v, use, keep:v.split ? v.value-use : 0});
-    if(v.split) refund += v.value-use;
-    left -= use;
+    const keep = v.split ? v.value-use : 0, loss = v.split ? 0 : v.value-use;
+    applied.push({v, use, keep, lost:loss});
+    refund += keep; lost += loss; left -= use;
   }
-  return {applied, rest:Math.max(left,0), refund, paid:S.amount-Math.max(left,0)};
+  const rest = Math.max(left,0);
+  return {applied, rest, refund, lost, paid:S.amount-rest};
 }
 
 /* ================= QR ================= */
@@ -425,13 +527,25 @@ function drawQR(cv,size,seed){
     c.fillStyle='#0B0E13';c.fillRect((ox+2)*px,(oy+2)*px,3*px,3*px)};
   f(0,0); f(N-7,0); f(0,N-7);
 }
+const qrSeed = () => +S.orderId.replace(/\D/g,'') + S.qrN*7919;
+const qrLive = () => S.posState==='waiting' || S.posState==='scanned';
 
-/* ================= POS ================= */
-function renderPOS(){
+/* ================= MÁY THU NGÂN ================= */
+function renderCashier(){
+  document.getElementById('cashier-title').textContent = CH==='portal' ? 'Máy thu ngân · Portal Got It' : 'Màn hình quầy · POS';
+  const box = document.getElementById('pos');
+  box.className = CH==='portal' ? 'browser' : 'pos';
+  box.innerHTML = CH==='portal' ? portalHTML() : posHTML();
+  const cv = document.getElementById('posqr'); if(cv) drawQR(cv, CH==='portal'?150:168, qrSeed());
+}
+
+function posHTML(){
   const st=S.posState;
   const badge = st==='waiting'?'<span class="pos-status wait">● Chờ khách quét</span>'
               : st==='scanned'?'<span class="pos-status live">● Khách đang chọn voucher</span>'
-              : '<span class="pos-status ok">● Đã thanh toán</span>';
+              : st==='paid'?'<span class="pos-status ok">● Đã thanh toán</span>'
+              : st==='expired'?'<span class="pos-status">● Mã đã hết hạn</span>'
+              : '<span class="pos-status">● Hoá đơn đang mở</span>';
   let body;
   if(st==='paid'){
     const k=calc();
@@ -440,15 +554,86 @@ function renderPOS(){
         <div class="pos-line"><span>Voucher Got It</span><b>−${money(k.paid)}</b></div>
         ${k.rest>0?`<div class="pos-line"><span>Thu thêm tại quầy</span><b>${money(k.rest)}</b></div>`:''}
         <div class="pos-line"><span>Tổng đơn</span><b>${money(S.amount)}</b></div>
-      </div>`;
+      </div>
+      <button class="pos-btn ghost" onclick="newOrder()">Đơn mới</button>`;
+  }else if(st==='expired'){
+    body=`<div class="pos-done"><div class="tick" style="background:rgba(232,50,42,.15);color:#FF8A84">⏱</div><h4>Mã QR đã hết hạn</h4><p>Không có voucher nào bị trừ</p></div>
+      <button class="pos-btn" onclick="renewQR()">Tạo mã mới</button> <button class="pos-btn ghost" onclick="cancelQR()">Huỷ</button>`;
+  }else if(st==='idle'){
+    body=`<div class="pos-amount">${money(S.amount)}</div>
+      <div class="pos-order">Đơn ${S.orderId} · thu ngân Ngọc Anh</div>
+      <div class="qr-hint">Đã huỷ mã QR. Thu tiền bình thường,<br>hoặc mở lại nếu khách vẫn muốn dùng voucher.</div>
+      <button class="pos-btn" onclick="renewQR()">Dùng voucher Got It</button>`;
   }else{
     body=`<div class="pos-amount">${money(S.amount)}</div>
       <div class="pos-order">Đơn ${S.orderId} · thu ngân Ngọc Anh</div>
       <div class="qrbox"><canvas id="posqr"></canvas><div class="qrlogo"><span>got<br>it</span></div></div>
-      <div class="qr-hint">${st==='scanned'?'Khách đã quét mã.<br>Đang chờ khách xác nhận trong app…':'Mời khách quét mã bằng Got It App<br>Mã hết hạn sau 05:00'}</div>`;
+      <div class="qr-hint">${st==='scanned'?'Khách đã quét mã.<br>Đang chờ khách xác nhận trong app…':'Mời khách quét mã bằng Got It App<br>Mã hết hạn sau 03:00'}</div>
+      <button class="pos-btn ghost" onclick="cancelQR()">Huỷ mã QR</button>`;
   }
-  document.getElementById('pos').innerHTML=`<div class="pos-brand"><div class="pos-logo"><i>H</i> HIPOS</div>${badge}</div>${body}`;
-  const cv=document.getElementById('posqr'); if(cv) drawQR(cv,168,20260811);
+  return `<div class="pos-brand"><div class="pos-logo"><i>H</i> HIPOS</div>${badge}</div>${body}`;
+}
+
+function portalHTML(){
+  const st=S.posState;
+  const bar = `<div class="br-bar"><i></i><i></i><i></i><div class="br-url">🔒 pos.gotit.vn</div></div>
+    <div class="wp-head"><b>Got It Merchant WebPos</b><span>EN · <u>VN</u></span></div>`;
+  if(st==='login') return bar + `<div class="wp-body">
+      <div class="wp-title">Đăng nhập cửa hàng</div>
+      <div class="wp-label">ID cửa hàng</div><input class="wp-text" value="PL-LELOI-02">
+      <div class="wp-label">Mật khẩu</div><input class="wp-text" type="password" value="gotit2026">
+      <div class="wp-label">Mã PIN cửa hàng</div><input class="wp-text" type="password" value="2468">
+      <button class="wp-btn" onclick="login()">Đăng nhập</button>
+      <div class="wp-hint">Got It cấp ID, mật khẩu và mã PIN cho từng cửa hàng — giữ nguyên như hiện nay.</div></div>`;
+
+  const store = `<div class="wp-store"><div class="mlogo">${MERCHANT.code}</div>
+    <div><div class="nm">${MERCHANT.name}</div><div class="ad">${MERCHANT.addr.portal}</div></div></div>`;
+  let body;
+  if(st==='create'){
+    const tabs = `<div class="wp-tabs">
+      <button class="${S.wpTab==='qr'?'on':''}" onclick="S.wpTab='qr';render()">Tạo QR</button>
+      <button class="${S.wpTab==='code'?'on':''}" onclick="S.wpTab='code';render()">Nhập mã voucher</button></div>`;
+    body = tabs + (S.wpTab==='code' ? `<div class="wp-body">
+        <div class="wp-label">Mã voucher khách đọc</div>
+        <div style="display:flex;gap:8px"><input class="wp-text" placeholder="0123456789"><button class="wp-btn ghost" style="width:auto;padding:0 14px;margin:0" disabled>Kiểm tra</button></div>
+        <div class="wp-hint">Cách cũ: khách đọc mã, thu ngân gõ từng mã rồi bấm <b>Đánh dấu sử dụng</b> — trừ trọn mệnh giá. Giữ nguyên làm đường lùi khi khách không có app hoặc mất mạng.</div></div>`
+      : `<div class="wp-body">
+        <div class="wp-label"><span>Số tiền hoá đơn</span><button onclick="keyIn('clr')">Xoá</button></div>
+        <div class="wp-amt-in ${S.amount?'':'empty'}">${money(S.amount)}</div>
+        <div class="keypad">${['1','2','3','4','5','6','7','8','9','000','0','del'].map(k=>`<button onclick="keyIn('${k}')">${k==='del'?'⌫':k}</button>`).join('')}</div>
+        <div class="wp-label"><span>Số hoá đơn <i>· để đối soát</i></span></div>
+        <input class="wp-text" value="${S.billNo}" oninput="S.billNo=this.value">
+        <button class="wp-btn" ${S.amount?'':'disabled'} onclick="createQR()">Tạo mã QR</button></div>`);
+  }else if(st==='waiting'||st==='scanned'){
+    body = `<div class="wp-body wp-center">
+      ${st==='scanned'?'<span class="pos-status live">● Khách đang chọn voucher</span>':'<span class="pos-status wait">● Chờ khách quét</span>'}
+      <div class="wp-big">${money(S.amount)}</div>
+      <div class="wp-sub">Hoá đơn ${S.billNo||'—'} · mã hết hạn sau 03:00</div>
+      <div class="qrbox wp-qr"><canvas id="posqr"></canvas><div class="qrlogo"><span>got<br>it</span></div></div>
+      <div class="wp-hint">${st==='scanned'?'Khách đã quét mã. Đang chờ khách xác nhận trong app…':'Xoay màn hình về phía khách, mời khách quét bằng Got It App.'}</div>
+      <button class="wp-btn ghost" onclick="cancelQR()">Huỷ mã QR</button></div>`;
+  }else if(st==='paid'){
+    const k=calc();
+    body = `<div class="wp-body">
+      <div class="wp-center"><div class="wp-tick">✓</div><div class="wp-title" style="margin:0">Khách đã dùng voucher</div>
+        <div class="wp-sub">Hoá đơn ${S.billNo||'—'} · GD ${S.orderId}</div></div>
+      <div style="margin-top:12px">
+        <div class="wp-line"><span>Tổng hoá đơn</span><b>${money(S.amount)}</b></div>
+        <div class="wp-line"><span>Voucher Got It trừ</span><b style="color:var(--green)">−${money(k.paid)}</b></div>
+        <div class="wp-line"><span>Còn phải thu</span><b>${money(k.rest)}</b></div>
+      </div>
+      <div class="wp-collect ${k.rest?'':'ok'}">${k.rest?`Thu thêm <b>${money(k.rest)}</b> bằng tiền mặt hoặc thẻ.`:'Hoá đơn đã trả đủ bằng voucher — không thu thêm.'}</div>
+      <button class="wp-btn" onclick="newOrder()">Tạo đơn mới</button>
+      <button class="wp-btn ghost">In biên nhận</button>
+      <div class="wp-hint">Giao dịch đã lên report.gotit.vn kèm số hoá đơn — không cần bấm “Đánh dấu sử dụng”.</div></div>`;
+  }else{
+    body = `<div class="wp-body wp-center"><div class="wp-tick bad">⏱</div>
+      <div class="wp-title" style="margin:0">Mã QR đã hết hạn</div>
+      <div class="wp-sub">Không có voucher nào bị trừ.</div>
+      <button class="wp-btn" onclick="renewQR()">Tạo mã mới · ${money(S.amount)}</button>
+      <button class="wp-btn ghost" onclick="cancelQR()">Huỷ, thu tiền bình thường</button></div>`;
+  }
+  return bar + store + body;
 }
 
 /* ================= MÀN HÌNH APP ================= */
@@ -457,6 +642,7 @@ const sbar = (dark)=>`<div class="sbar ${dark?'dark':''}"><span class="t">${dark
 
 function scHome(){
   const total = VOUCHERS.reduce((s,v)=>s+v.value,0);
+  const top = VOUCHERS.filter(applicable).sort(byPriority)[0];
   return sbar(false) + `
   <div class="view">
     <div class="balance">
@@ -495,17 +681,17 @@ function scHome(){
 
     <div class="sec-title">Thẻ quà gợi ý dùng</div>
     <div class="ticket">
-      <div class="best">Phù hợp nhất</div>
+      <div class="best">Nên dùng trước</div>
       <div class="tk-div"></div><div class="tk-notch t"></div><div class="tk-notch b"></div>
       <div class="tk-left">
-        <div class="thumb"><b>got it<br>eGift</b></div>
-        <div class="cap">Got It</div>
+        <div class="thumb"><b>${top.split?'got it<br>eGift':'PHÚC<br>LONG'}</b></div>
+        <div class="cap">${top.split?'Got It':top.brandName}</div>
       </div>
       <div class="tk-right">
-        <div class="tag">Tách dùng nhiều lần</div>
-        <div class="nm">Quà Tặng Got It</div>
-        <div class="pr">25.000đ</div>
-        <div class="ex">HSD: 04/09/2026</div>
+        <div class="tag">${top.split?'Link E · tách dùng nhiều lần':'Link V · không tách'}</div>
+        <div class="nm">${top.name}</div>
+        <div class="pr">${money(top.value)}</div>
+        <div class="ex">HSD: ${top.exp}${soon(top)?' · sắp hết hạn':''}</div>
       </div>
     </div>
 
@@ -527,6 +713,15 @@ function scHome(){
 }
 
 function scScan(){
+  const live = qrLive();
+  const face = CH==='portal'
+    ? `<div class="tablet"><div class="tb-head">Got It Merchant WebPos</div>
+        ${live?`<div class="tb-amt">${money(S.amount)}</div><div class="tb-qr"><canvas id="scanqr"></canvas></div>`:'<div class="tb-empty">Chưa có mã QR</div>'}</div>`
+    : `<div class="standee"><div class="lft"></div><div class="rgt"><div class="posapp">PosApp</div>
+        ${live?'<div class="qrcard"><canvas id="scanqr"></canvas><div class="qrnum">46323141</div><div class="pw">Powered by</div></div>'
+              :'<div class="qrcard" style="width:92px;padding:34px 6px;font-size:9px;font-weight:700;color:#8A8F98">Chưa có QR</div>'}</div></div>`;
+  const hint = live ? `Chạm vào khung để mô phỏng quét mã trên ${CH==='portal'?'portal':'POS'}`
+             : CH==='portal' ? 'Thu ngân chưa tạo mã QR — làm bước bên máy thu ngân trước' : 'Màn hình quầy chưa có mã QR';
   return `<div class="scanner">
     <div class="cam">
       <div class="paper"></div>
@@ -537,19 +732,10 @@ function scScan(){
     <div class="scan-top">${I.flashoff}<span onclick="go('home')" style="cursor:pointer">${I.close}</span></div>
     <div class="scan-title">Vui lòng quét mã QR Got It</div>
     <div class="framewrap">
-      <div class="target" onclick="doScan()">
-        <div class="standee">
-          <div class="lft"></div>
-          <div class="rgt">
-            <div class="posapp">PosApp</div>
-            <div class="qrcard"><canvas id="scanqr"></canvas><div class="qrnum">46323141</div><div class="pw">Powered by</div></div>
-          </div>
-        </div>
-        <div class="scanline"></div>
-      </div>
+      <div class="target" ${live?'onclick="doScan()"':'style="cursor:default"'}>${face}${live?'<div class="scanline"></div>':''}</div>
       <div class="corners"><i></i><i></i><i></i><i></i></div>
     </div>
-    <div class="tap-hint">Chạm vào khung để mô phỏng quét mã trên POS</div>
+    <div class="tap-hint">${hint}</div>
     <div class="scan-bottom">
       <div><div class="ic">${I.image}</div>Chọn ảnh QR</div>
       <div><div class="ic">${I.history}</div>Lịch sử quét</div>
@@ -574,32 +760,36 @@ function scReview(){
       <div class="vinfo">
         <div class="n">${v.name}</div>
         <div class="s">${reason?`<span class="pill no">${reason}</span>`:''}
-          ${v.brand===MERCHANT.brand?'<span class="pill brand">Đúng thương hiệu</span>':''}
           ${sugIds.includes(v.id)&&!reason?'<span class="pill sug">Gợi ý</span>':''}
-          ${v.split?'<span class="pill split">Tách nhiều lần</span>':''}HSD ${v.exp}</div>
+          ${v.split?'<span class="pill linke">Link E · tách được</span>':'<span class="pill linkv">Link V · không tách</span>'}
+          ${soon(v)?'<span class="pill soon">Sắp hết hạn</span>':''}HSD ${v.exp}</div>
       </div>
-      <div class="vamt"><div class="a">${money(v.value)}</div>${on&&a?`<div class="u">dùng ${money(a.use)}</div>`:''}</div>
+      <div class="vamt"><div class="a">${money(v.value)}</div>${on&&a?`<div class="u">dùng ${money(a.use)}</div>${a.lost?`<div class="u lost">dư ${money(a.lost)}</div>`:''}`:''}</div>
     </div>`;
   };
-  const shown = S.picking ? VOUCHERS : VOUCHERS.filter(v=>S.selected.includes(v.id));
+  const all = [...VOUCHERS.filter(applicable).sort(byPriority), ...VOUCHERS.filter(v=>!applicable(v))];
+  const shown = S.picking ? all : S.selected.map(id=>VOUCHERS.find(v=>v.id===id));
+  const lostNames = k.applied.filter(a=>a.lost).map(a=>`${a.v.name} ${money(a.v.value)}`).join(', ');
   return sbar(false) + `
   <div class="topbar"><span onclick="go('scan')" style="cursor:pointer">${I.back}</span><h3>Thanh toán bằng voucher</h3></div>
   <div class="view">
     <div class="merchant"><div class="mlogo">${MERCHANT.code}</div>
-      <div><div class="nm">${MERCHANT.name}</div><div class="ad">${MERCHANT.addr}</div></div></div>
+      <div><div class="nm">${MERCHANT.name}</div><div class="ad">${MERCHANT.addr[CH]}</div></div></div>
     <div class="bigamt"><div class="lb">Số tiền cần thanh toán</div><div class="vl">${money(S.amount)}</div>
-      <div class="oid">Đơn ${S.orderId} · mã QR còn hiệu lực 4:32</div></div>
-    ${!S.picking?'<div class="info">Got It đã chọn sẵn voucher phù hợp nhất cho đơn này. Bạn có thể đổi nếu muốn dùng voucher khác.</div>':''}
+      <div class="oid">${CH==='portal'?`Hoá đơn ${S.billNo||'—'}`:`Đơn ${S.orderId}`} · mã QR còn hiệu lực 2:32</div></div>
+    ${!S.picking?'<div class="info">Got It đã chọn sẵn voucher: ưu tiên voucher <b>sắp hết hạn</b>, rồi voucher <b>không tách</b> (link V). Bạn có thể đổi nếu muốn dùng voucher khác.</div>':''}
     <div class="block">
       <div class="block-h"><span>Voucher áp dụng (${S.selected.length})</span>
         <button onclick="togglePick()">${S.picking?'Xong':'Đổi voucher'}</button></div>
       ${shown.map(row).join('') || '<div class="vrow"><div class="vinfo"><div class="s">Chưa chọn voucher nào</div></div></div>'}
     </div>
-    ${S.picking?'<div class="warn">Voucher có mệnh giá lớn hơn số tiền cần trả sẽ không dùng được cho đơn này, để bạn không bị mất phần dư.</div>':''}
+    ${k.lost>0?`<div class="warn">⚠ <b>${lostNames}</b> không tách được và lớn hơn số tiền cần trả <b>${money(k.lost)}</b>. Phần dư này <b>sẽ không được hoàn lại</b>. Bấm <b>Đổi voucher</b> nếu muốn dùng voucher khác.</div>`:''}
+    ${S.picking?'<div class="warn">Voucher không tách được (link V) chỉ dùng được khi lớn hơn số tiền cần trả tối đa 20.000đ — phần dư sẽ mất. Lớn hơn nữa thì không chọn được.</div>':''}
     <div style="margin:0 22px 8px">
       <div class="sumrow"><span>Tổng đơn</span><b>${money(S.amount)}</b></div>
       <div class="sumrow"><span>Voucher trừ</span><span class="green">−${money(k.paid)}</span></div>
       ${k.refund>0?`<div class="sumrow"><span>Giữ lại trong kho quà</span><span>${money(k.refund)}</span></div>`:''}
+      ${k.lost>0?`<div class="sumrow"><span>Phần dư không hoàn</span><span class="lostc">${money(k.lost)}</span></div>`:''}
       <div class="sumrow big"><span>Còn phải trả tại quầy</span><b>${money(k.rest)}</b></div>
     </div>
     ${k.rest>0?`<div class="warn">Voucher chưa đủ trả hết đơn. Phần còn lại <b>${money(k.rest)}</b> vui lòng thanh toán tiền mặt hoặc thẻ tại quầy.</div>`:''}
@@ -616,16 +806,17 @@ function modalConfirm(){
       <div class="m-head">
         <div class="ic">${I.shield}</div>
         <h3>Xác nhận thanh toán</h3>
-        <p>${MERCHANT.name}<br>Đơn ${S.orderId}</p>
+        <p>${MERCHANT.name}<br>${CH==='portal'?`Hoá đơn ${S.billNo||'—'}`:`Đơn ${S.orderId}`}</p>
       </div>
       <div class="m-amt"><div class="v">−${money(k.paid)}</div><div class="l">Số tiền trừ từ voucher</div></div>
       <div class="m-body">
         ${k.applied.map(a=>`<div class="m-row"><span>${a.v.name}</span><b>−${money(a.use)}</b></div>`).join('')}
         <div class="m-row" style="border-top:1px dashed #E2E4E8;margin-top:6px;padding-top:10px"><span>Tổng đơn</span><b>${money(S.amount)}</b></div>
         ${k.refund>0?`<div class="m-row"><span>Giữ lại trong kho quà</span><b class="g">${money(k.refund)}</b></div>`:''}
+        ${k.lost>0?`<div class="m-row"><span>Phần dư không hoàn</span><b style="color:#B26A00">${money(k.lost)}</b></div>`:''}
         <div class="m-row"><span>Còn phải trả tại quầy</span><b style="color:${k.rest>0?'var(--red)':'inherit'}">${money(k.rest)}</b></div>
       </div>
-      <div class="m-note">Voucher sẽ bị trừ ngay khi bạn xác nhận và không thể hoàn lại. Vui lòng đối chiếu số tiền với màn hình quầy trước khi tiếp tục.</div>
+      <div class="m-note">${k.lost>0?`Voucher không tách sẽ mất phần dư <b>${money(k.lost)}</b>. `:''}Voucher sẽ bị trừ ngay khi bạn xác nhận và không thể hoàn lại. Vui lòng đối chiếu số tiền với ${CH==='portal'?'hoá đơn và màn hình máy thu ngân':'màn hình quầy'} trước khi tiếp tục.</div>
       <div class="m-foot">
         <button class="cancel" onclick="closeModal()">Huỷ</button>
         <button class="ok" onclick="pay()">Xác nhận</button>
@@ -647,32 +838,38 @@ function scSuccess(){
     <div style="font-size:32px;font-weight:800;margin-top:16px">−${money(k.paid)}</div>
     <div class="rcpt">
       <div class="r"><span>Mã giao dịch</span><b>${S.orderId}</b></div>
+      ${CH==='portal'?`<div class="r"><span>Số hoá đơn</span><b>${S.billNo||'—'}</b></div>`:''}
       <div class="r"><span>Voucher đã dùng</span><b>${k.applied.map(a=>a.v.name).join('<br>')}</b></div>
       ${k.refund>0?`<div class="r"><span>Giữ lại trong kho quà</span><b style="color:var(--green)">${money(k.refund)}</b></div>`:''}
+      ${k.lost>0?`<div class="r"><span>Phần dư không hoàn</span><b style="color:#B26A00">${money(k.lost)}</b></div>`:''}
       ${k.rest>0?`<div class="r"><span>Trả thêm tại quầy</span><b>${money(k.rest)}</b></div>`:''}
-      <div class="r"><span>Số dư còn lại</span><b>${money(VOUCHERS.reduce((s,v)=>s+v.value,0)-k.paid)}</b></div>
-      <div class="r"><span>Thời gian</span><b>15:26 · 11/08/2026</b></div>
+      <div class="r"><span>Số dư còn lại</span><b>${money(VOUCHERS.reduce((s,v)=>s+v.value,0)-k.paid-k.lost)}</b></div>
+      <div class="r"><span>Thời gian</span><b>15:26 · ${TODAY}</b></div>
     </div></div>
-  <div class="cta"><button class="btn" onclick="reset()">Về trang chủ</button>
+  <div class="cta"><button class="btn" onclick="go('home')">Về trang chủ</button>
     <button class="btn ghost">Xem chi tiết giao dịch</button></div>`;
 }
 function scError(){
-  const t = S.err==='expired'
-    ? {i:'⏱',h:'Mã QR đã hết hạn',p:'Mã này chỉ có hiệu lực 5 phút. Nhờ thu ngân tạo lại mã QR rồi quét lần nữa.',b:'Quét lại'}
-    : {i:'✓',h:'Đơn hàng đã được thanh toán',p:`Đơn ${S.orderId} đã thanh toán lúc 15:21 hôm nay. Không có khoản nào bị trừ thêm.`,b:'Xem giao dịch cũ'};
+  const t = {
+    expired:  {i:'⏱',h:'Mã QR đã hết hạn',p:'Mã này chỉ có hiệu lực 3 phút. Nhờ thu ngân tạo lại mã QR rồi quét lần nữa.',b:'Quét lại'},
+    paid:     {i:'✓',h:'Đơn hàng đã được thanh toán',p:`Đơn ${S.orderId} đã thanh toán lúc 15:21 hôm nay. Không có khoản nào bị trừ thêm.`,b:'Xem giao dịch cũ'},
+    cancelled:{i:'✕',h:'Thu ngân đã huỷ mã QR',p:'Không có voucher nào bị trừ. Nếu vẫn muốn dùng voucher, nhờ thu ngân tạo mã mới rồi quét lại.',b:'Quét lại'},
+  }[S.phoneErr];
   return sbar(false)+`<div class="center"><div class="badmark">${t.i}</div>
     <h3 style="font-size:18px">${t.h}</h3><p>${t.p}</p></div>
   <div class="cta"><button class="btn" onclick="go('scan')">${t.b}</button>
-    <button class="btn ghost" onclick="reset()">Về trang chủ</button></div>`;
+    <button class="btn ghost" onclick="go('home')">Về trang chủ</button></div>`;
 }
 
 /* ================= HÀNH ĐỘNG ================= */
-function go(s){ S.screen=s; if(s==='home'&&S.posState!=='paid') S.posState='waiting'; render(); }
+function go(s){ S.screen=s; S.modal=false; if(s==='home'&&S.posState==='scanned') S.posState='waiting'; render(); }
 function doScan(){
+  if(!qrLive()) return;
   S.screen='verify'; S.posState='scanned'; render();
   setTimeout(()=>{
-    if(S.err){S.screen='error'; S.posState='waiting';}
-    else {S.screen='review'; S.selected=suggest();}
+    if(S.screen!=='verify') return;   // thu ngân đã huỷ hoặc demo đã chạy lại trong lúc chờ
+    if(S.err){S.phoneErr=S.err; S.screen='error'; S.posState=S.err==='expired'?'expired':'waiting';}
+    else {S.screen='review'; S.picking=false; S.selected=suggest();}
     render();
   },1100);
 }
@@ -683,43 +880,126 @@ function toggle(id){
 function togglePick(){S.picking=!S.picking; render()}
 function openModal(){S.modal=true; render()}
 function showPopup(){
+  if(CH==='portal'){ AUTH=true; if(!S.amount){S.amount=SCENARIOS[S.scenario].amount; S.amtStr=String(S.amount);} }
   S.screen='review'; S.posState='scanned'; S.picking=false;
   S.selected=suggest(); S.modal=true; render();
 }
 function closeModal(){S.modal=false; render()}
 function pay(){
   S.modal=false; S.screen='processing'; render();
-  setTimeout(()=>{S.screen='success'; S.posState='paid'; render()},1500);
+  setTimeout(()=>{ if(S.screen!=='processing') return; S.screen='success'; S.posState='paid'; render() },1500);
+}
+
+/* phía thu ngân */
+function login(){ AUTH=true; S.posState='create'; render(); }
+function keyIn(k){
+  if(k==='clr') S.amtStr='';
+  else if(k==='del') S.amtStr=S.amtStr.slice(0,-1);
+  else if((S.amtStr+k).length<=10) S.amtStr=(S.amtStr+k).replace(/^0+/,'');
+  S.amount=+S.amtStr||0; render();
+}
+function createQR(){ if(!S.amount) return; S.qrN++; S.posState='waiting'; S.selected=suggest(); render(); }
+function renewQR(){ S.err=null; S.qrN++; S.posState='waiting'; render(); }
+function cancelQR(){
+  if(S.screen==='processing') return;
+  S.posState = CH==='portal' ? 'create' : 'idle';
+  if(S.screen==='verify'||S.screen==='review'){ S.screen='error'; S.phoneErr='cancelled'; S.modal=false; S.picking=false; }
+  render();
+}
+function newOrder(){
+  S.orderId=newOrderId(); S.billNo='HD-'+rnd4(); S.qrN++;
+  S.err=null; S.selected=[]; S.picking=false; S.modal=false; S.screen='home';
+  if(CH==='portal'){ S.posState='create'; S.amtStr=''; S.amount=0; }
+  else S.posState='waiting';
+  render();
 }
 
 /* ================= NOTES ================= */
 const NOTES = {
-  home:`<b>Bước 0 — Trước khi quét.</b> Khách mở Got It App, kho quà có 5 voucher. Cách cũ tới đây là đọc mã cho thu ngân.
+  home:`<b>Trước khi quét.</b> Khách mở Got It App, kho quà có 5 voucher. Cách cũ tới đây là đọc mã cho thu ngân.
         <ul><li>Nhấn <b>Quét QR</b> ở thanh dưới để bắt đầu.</li></ul>`,
-  scan:`<b>Bước 2 — Khách quét mã.</b> Camera mở sẵn, không cần chọn thương hiệu hay nhập gì.
+  scan:`<b>Khách quét mã.</b> Camera mở sẵn, không cần chọn thương hiệu hay nhập gì.
         <ul><li>Chạm vào khung quét để mô phỏng.</li><li>Mã QR không chứa mã voucher, chỉ chứa <code>order_token</code> của đơn.</li></ul>`,
   verify:`<b>Đang xác thực.</b> App đổi <code>order_token</code> lấy thông tin đơn: quầy, số tiền, trạng thái. POS chuyển sang “khách đang chọn voucher”.`,
-  review:`<b>Bước 3 — App gợi ý voucher.</b> App chọn sẵn voucher phù hợp nhất.
-        <ul><li>Bấm <b>Đổi voucher</b> để xem toàn bộ kho quà.</li><li>Voucher lớn hơn số tiền cần trả bị khoá kèm lý do — khách không thể tự làm mình mất tiền.</li></ul>`,
+  review:`<b>App gợi ý voucher.</b> App chọn sẵn theo thứ tự ưu tiên: sắp hết hạn trước, rồi voucher không tách (link V).
+        <ul><li>Bấm <b>Đổi voucher</b> để xem toàn bộ kho quà.</li><li>Voucher không tách lớn hơn số cần trả tối đa 20.000đ vẫn chọn được, kèm cảnh báo mất phần dư; lớn hơn nữa thì bị khoá kèm lý do.</li></ul>`,
   processing:`<b>Đang xử lý.</b> Server trừ voucher trong transaction, ghi giao dịch với <code>Idempotency-Key</code>, rồi bắn webhook về POS.`,
-  success:`<b>Xong.</b> Hai màn hình cùng hiện kết quả. Phần dư của voucher tách được giữ lại trong kho quà, phần thiếu quầy thu tiếp.`,
-  error:`<b>Nhánh lỗi.</b> App nói rõ chuyện gì xảy ra và bước tiếp theo, không hiện mã lỗi kỹ thuật cho khách.`,
+  success:`<b>Xong.</b> Hai màn hình cùng hiện kết quả. Phần dư của voucher link E giữ lại trong kho quà, phần thiếu quầy thu tiếp.`,
+  error:`<b>Nhánh lỗi.</b> App nói rõ chuyện gì xảy ra và bước tiếp theo, không hiện mã lỗi kỹ thuật cho khách. Màn hình quầy có nút xử lý tương ứng.`,
+
+  p_login:`<b>Thu ngân đăng nhập portal.</b> Cửa hàng chưa tích hợp POS vẫn dùng được QR: thu ngân mở <code>pos.gotit.vn</code> trên máy tính hoặc máy tính bảng tại quầy, đăng nhập bằng ID, mật khẩu và mã PIN cửa hàng do Got It cấp — như hôm nay.
+        <ul><li>Bấm <b>Đăng nhập</b>.</li></ul>`,
+  p_create:`<b>Nhập số tiền, tạo QR.</b> Portal có thêm tab <b>Tạo QR</b>, nằm cạnh tab nhập mã cũ.
+        <ul><li>Thu ngân gõ <b>số tiền hoá đơn</b> và <b>số hoá đơn</b>, bấm <b>Tạo mã QR</b>.</li><li>Số tiền chỉ gõ một lần ở đây — app khách không có ô nhập số tiền.</li><li>Tab <b>Nhập mã voucher</b> giữ nguyên làm đường lùi.</li></ul>`,
+  p_home:`<b>Portal đang hiện QR.</b> Khách mở Got It App, nhấn <b>Quét QR</b> ở thanh dưới và quét mã trên màn hình máy thu ngân.
+        <ul><li>Màn hình portal cần quay về phía khách — hoặc thu ngân xoay máy tính bảng.</li><li>Cách cũ tới đây là khách đọc mã cho thu ngân gõ vào portal.</li></ul>`,
+  p_verify:`<b>Đang xác thực.</b> App đổi <code>order_token</code> lấy thông tin đơn: cửa hàng, số tiền thu ngân vừa gõ, số hoá đơn. Portal chuyển sang “khách đang chọn voucher”.`,
+  p_processing:`<b>Đang xử lý.</b> Server trừ voucher trong transaction rồi đẩy kết quả về portal qua kết nối đang mở (SSE/WebSocket). Rớt kết nối thì portal tự hỏi lại trạng thái.`,
+  p_success:`<b>Xong.</b> Portal hiện số voucher đã trừ và <b>số tiền thu ngân cần thu thêm</b>.
+        <ul><li>Giao dịch lên ngay report.gotit.vn kèm số hoá đơn — không còn bước “Đánh dấu sử dụng”.</li><li>Bấm <b>Tạo đơn mới</b> để phục vụ khách tiếp theo.</li></ul>`,
 };
-const STEP_OF = {home:1,scan:2,verify:2,review:3,processing:4,success:4,error:2};
+const TECH = {
+  pos:`<ul>
+        <li>QR mang <code>order_token</code> sống 3 phút, gắn cứng số tiền — không chứa mã voucher.</li>
+        <li>Xác nhận gửi kèm <code>Idempotency-Key</code>; trừ voucher chạy trong transaction, chặn double-spend ở tầng DB.</li>
+        <li>Server tự tính lại thứ tự ưu tiên và ngưỡng dư 20.000đ — không tin client.</li>
+        <li>Quét lại đơn đã trả trả về <code>ALREADY_PAID</code>, không tạo giao dịch mới.</li>
+      </ul>`,
+  portal:`<ul>
+        <li>Portal gọi chung API tạo yêu cầu với POS (<code>POST /v1/redeem-requests</code>), thêm <code>channel=PORTAL</code>. <code>store_id</code> và người thao tác lấy từ phiên đăng nhập, không do trình duyệt gửi.</li>
+        <li>Trình duyệt không nhận được webhook: portal nghe kết quả qua SSE/WebSocket, dự phòng bằng <code>GET /v1/redeem-requests/{id}</code> mỗi 2–3 giây.</li>
+        <li>Số tiền do thu ngân gõ tay nên có thể sai: hiện thật to trên portal và app, popup xác nhận nhắc khách đối chiếu hoá đơn; cân nhắc trần số tiền theo cửa hàng.</li>
+        <li><code>bill_number</code> đi vào cột Bill Number của report.gotit.vn — đối soát theo hoá đơn thay vì theo mã voucher.</li>
+        <li>Mỗi phiên portal chỉ mở một QR; tạo mã mới thì mã cũ bị huỷ.</li>
+      </ul>`,
+};
+const SUB = {
+  pos:'POS hiện mã QR · Khách quét bằng Got It App · Server xác thực &amp; trừ voucher',
+  portal:'Cửa hàng chưa tích hợp POS · Thu ngân tạo QR trên portal pos.gotit.vn · Khách quét bằng Got It App · Portal tự nhận kết quả',
+};
+const STEPS = {
+  pos:['Quầy hiện mã QR','Khách quét mã','App gợi ý voucher','Bấm xác nhận'],
+  portal:['Thu ngân đăng nhập portal','Nhập số tiền, tạo QR','Khách quét mã','Chọn voucher & xác nhận'],
+};
+function curStep(){
+  if(CH==='portal'){
+    if(S.posState==='login') return 1;
+    if(S.posState==='create') return 2;
+    return {home:3,scan:3,verify:3,error:3,review:4,processing:4,success:4}[S.screen];
+  }
+  return {home:1,scan:2,verify:2,review:3,processing:4,success:4,error:2}[S.screen];
+}
+function noteKey(){
+  if(CH==='portal'){
+    if(S.posState==='login') return 'p_login';
+    if(S.posState==='create') return S.screen==='error' ? 'error' : 'p_create';
+    if(S.posState==='paid') return 'p_success';
+    if(['home','verify','processing'].includes(S.screen)) return 'p_'+S.screen;
+    return S.screen;
+  }
+  return S.posState==='paid' ? 'success' : S.screen;
+}
 
 function render(){
-  renderPOS();
+  document.getElementById('sub').innerHTML = SUB[CH];
+  document.getElementById('chan').innerHTML =
+    `<button class="${CH==='pos'?'on':''}" onclick="setChannel('pos')">POS tích hợp</button>
+     <button class="${CH==='portal'?'on':''}" onclick="setChannel('portal')">Portal thu ngân <em>MỚI</em></button>`;
+  const cur=curStep(), done=S.posState==='paid';
+  document.getElementById('steps').innerHTML = STEPS[CH].map((t,i)=>{
+    const n=i+1; return `<div class="step${done||n<cur?' done':n===cur?' on':''}"><b>${n}</b> ${t}</div>`;
+  }).join('');
+  document.getElementById('stage').classList.toggle('portal', CH==='portal');
+  renderCashier();
   const el=document.getElementById('screen');
   el.innerHTML = ({home:scHome,scan:scScan,verify:scVerify,review:scReview,
                    processing:scProcessing,success:scSuccess,error:scError})[S.screen]();
-  if(S.screen==='scan'){const c=el.querySelector('#scanqr'); if(c) drawQR(c,92,20260811);}
-  const cur=STEP_OF[S.screen], done=S.screen==='success';
-  document.querySelectorAll('.step').forEach(e=>{
-    const n=+e.dataset.s; e.className='step'+(done||n<cur?' done':n===cur?' on':'');
-  });
+  if(S.screen==='scan'){const c=el.querySelector('#scanqr'); if(c) drawQR(c, CH==='portal'?116:92, qrSeed());}
   document.getElementById('scenarios').innerHTML = Object.entries(SCENARIOS).map(([k,v])=>
     `<button class="${S.scenario===k?'active':''}" onclick="reset('${k}')">${v.label}<small>${v.desc}</small></button>`).join('');
-  document.getElementById('note').innerHTML = NOTES[S.screen];
+  document.getElementById('note').innerHTML = NOTES[noteKey()];
+  document.getElementById('tech').innerHTML = TECH[CH];
+  document.getElementById('cmp-card').style.display = CH==='portal' ? '' : 'none';
   if(S.modal) document.querySelector('.modal').scrollIntoView({block:'nearest'});
 }
 reset('full');
