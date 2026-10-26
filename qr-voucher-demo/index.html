@@ -147,9 +147,6 @@
   /* ---- Scanner ---- */
   .scanner{position:absolute;inset:0;background:#15181D;z-index:70;display:flex;flex-direction:column;color:#fff}
   .cam{position:absolute;inset:0;background:linear-gradient(112deg,#575D66,#2A2E35 50%,#464B54);overflow:hidden}
-  .cam .doc{position:absolute;top:9%;left:22%;right:-4%;color:#0F1114;opacity:.55;font-size:17px;line-height:2.05;font-weight:500;filter:blur(.5px)}
-  .cam .doc .big{font-size:30px;font-weight:600;margin-top:14px;display:block}
-  .cam .paper{position:absolute;top:5%;left:20%;right:-6%;bottom:0;background:#D8DADD}
   .shade{position:absolute;inset:0;background:rgba(0,0,0,.52)}
   .hole{position:absolute;left:50%;transform:translateX(-50%);width:264px;height:264px;border-radius:20px;
     box-shadow:0 0 0 2000px rgba(0,0,0,.52);overflow:hidden}
@@ -165,13 +162,6 @@
   .target{position:absolute;left:50%;top:0;transform:translateX(-50%);width:264px;height:264px;border-radius:20px;
     overflow:hidden;cursor:pointer;transition:transform .16s}
   .target:active{transform:translateX(-50%) scale(.97)}
-  .standee{position:absolute;inset:0;background:#EFEFEF;display:flex}
-  .standee .lft{width:38%;background:linear-gradient(180deg,#F2EEE9,#CFCAC4 70%,#3A3A3A)}
-  .standee .rgt{flex:1;background:#1B7FD4;position:relative;display:flex;align-items:center;justify-content:flex-end;padding-right:6px}
-  .standee .posapp{position:absolute;top:16px;left:-58px;color:#F5A524;font-size:26px;font-weight:800;font-style:italic;transform:rotate(-2deg);text-shadow:1px 1px 0 rgba(0,0,0,.15)}
-  .standee .qrcard{background:#fff;padding:7px 7px 3px;border-radius:3px;text-align:center}
-  .standee .qrnum{font-size:9px;font-weight:700;color:#222;margin-top:3px;letter-spacing:.02em}
-  .standee .pw{font-size:7px;color:#1B7FD4;font-weight:700}
   .scanline{position:absolute;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.95),transparent);animation:sl 2.2s ease-in-out infinite;z-index:4}
   @keyframes sl{0%,100%{top:16px}50%{top:246px}}
   .scan-bottom{position:relative;z-index:3;margin-top:auto;display:flex;justify-content:space-around;padding:0 26px 46px;font-size:14px;text-align:center}
@@ -328,7 +318,7 @@
   .wp-center{text-align:center}
   .wp-big{font-size:28px;font-weight:800;letter-spacing:-.03em;margin-top:12px}
   .wp-sub{font-size:11.5px;color:var(--muted);margin-top:3px}
-  .wp-qr{border:1px solid var(--line);margin:12px 0 2px;padding:10px}
+  .wp-qr{display:inline-block;border:1px solid var(--line);border-radius:12px;margin:12px 0 2px}
   .wp-line{display:flex;justify-content:space-between;gap:10px;font-size:12.5px;padding:8px 0;border-top:1px dashed #E2E4E8;color:#5A616B}
   .wp-line b{color:var(--ink)}
   .wp-collect{margin-top:10px;border-radius:10px;padding:11px 12px;font-size:12.5px;line-height:1.5;background:#FFF8E6;border:1px solid #F7E2A8;color:#7A5A00}
@@ -342,9 +332,14 @@
 
   /* màn hình portal khi khách nhìn qua camera */
   .tablet{position:absolute;inset:0;background:#F4F5F7;display:flex;flex-direction:column;align-items:center}
-  .tb-head{align-self:stretch;background:#F25C54;color:#fff;font-size:11px;font-weight:800;padding:8px;text-align:center}
-  .tb-amt{font-size:18px;font-weight:800;color:#131313;margin:12px 0 8px}
-  .tb-qr{background:#fff;padding:6px;border-radius:6px;box-shadow:0 1px 4px rgba(0,0,0,.12)}
+  .tb-head{align-self:stretch;background:#F25C54;color:#fff;font-size:11px;font-weight:800;padding:8px;display:flex;align-items:center;justify-content:center;gap:6px}
+  .tb-amt{font-size:18px;font-weight:800;color:#131313;margin:8px 0 6px}
+  .tablet .qrbox{box-shadow:0 1px 4px rgba(0,0,0,.12)}
+  .tablet.dark{background:linear-gradient(180deg,#12161C,#0B0E13)}
+  .tablet.dark .tb-head{background:transparent;color:#C9D2DF;border-bottom:1px solid #2A313C}
+  .tablet.dark .tb-head i{width:16px;height:16px;border-radius:4px;background:#2F80ED;display:grid;place-items:center;font-style:normal;font-size:9px;color:#fff}
+  .tablet.dark .tb-amt{color:#fff}
+  .tablet.dark .tb-empty{color:#6E7887}
   .tb-empty{margin:auto;font-size:13px;color:#8A8F98;font-weight:600}
 
 </style>
@@ -501,6 +496,8 @@ function drawQR(cv,size,seed){
 }
 const qrSeed = () => +S.orderId.replace(/\D/g,'') + S.qrN*7919;
 const qrLive = () => S.posState==='waiting' || S.posState==='scanned';
+const QR_SIZE = 150;   // máy thu ngân và khung quét trên app vẽ cùng một QR, cùng kích thước
+const qrHTML = id => `<div class="qrbox"><canvas id="${id}"></canvas><div class="qrlogo"><span>got<br>it</span></div></div>`;
 
 /* ================= MÁY THU NGÂN ================= */
 function renderCashier(){
@@ -508,7 +505,7 @@ function renderCashier(){
   const box = document.getElementById('pos');
   box.className = CH==='portal' ? 'browser' : 'pos';
   box.innerHTML = CH==='portal' ? portalHTML() : posHTML();
-  const cv = document.getElementById('posqr'); if(cv) drawQR(cv, CH==='portal'?150:168, qrSeed());
+  const cv = document.getElementById('posqr'); if(cv) drawQR(cv, QR_SIZE, qrSeed());
 }
 
 function posHTML(){
@@ -553,7 +550,7 @@ function posHTML(){
   }else{
     body=`<div class="pos-amount">${money(S.amount)}</div>
       <div class="pos-order">Đơn ${S.orderId}</div>
-      <div class="qrbox"><canvas id="posqr"></canvas><div class="qrlogo"><span>got<br>it</span></div></div>
+      ${qrHTML('posqr')}
       <div class="qr-hint">Hết hạn sau 03:00</div>
       <button class="pos-btn ghost" onclick="cancelQR()">Huỷ mã QR</button>`;
   }
@@ -593,7 +590,7 @@ function portalHTML(){
       ${st==='scanned'?'<span class="pos-status live">● Khách đang chọn voucher</span>':'<span class="pos-status wait">● Chờ khách quét</span>'}
       <div class="wp-big">${money(S.amount)}</div>
       <div class="wp-sub">Hoá đơn ${S.billNo||'—'} · mã hết hạn sau 03:00</div>
-      <div class="qrbox wp-qr"><canvas id="posqr"></canvas><div class="qrlogo"><span>got<br>it</span></div></div>
+      <div class="wp-qr">${qrHTML('posqr')}</div>
       <button class="wp-btn ghost" onclick="cancelQR()">Huỷ mã QR</button></div>`;
   }else if(st==='paid'){
     const k=calc();
@@ -696,16 +693,11 @@ function scHome(){
 
 function scScan(){
   const live = qrLive();
-  const face = CH==='portal'
-    ? `<div class="tablet"><div class="tb-head">Got It Merchant WebPos</div>
-        ${live?`<div class="tb-amt">${money(S.amount)}</div><div class="tb-qr"><canvas id="scanqr"></canvas></div>`:'<div class="tb-empty">Chưa có mã QR</div>'}</div>`
-    : `<div class="standee"><div class="lft"></div><div class="rgt"><div class="posapp">PosApp</div>
-        ${live?'<div class="qrcard"><canvas id="scanqr"></canvas><div class="qrnum">46323141</div><div class="pw">Powered by</div></div>'
-              :'<div class="qrcard" style="width:92px;padding:34px 6px;font-size:9px;font-weight:700;color:#8A8F98">Chưa có QR</div>'}</div></div>`;
+  const face = `<div class="tablet ${CH==='portal'?'':'dark'}">
+      <div class="tb-head">${CH==='portal'?'Got It Merchant WebPos':'<i>H</i> HIPOS'}</div>
+      ${live?`<div class="tb-amt">${money(S.amount)}</div>${qrHTML('scanqr')}`:'<div class="tb-empty">Chưa có mã QR</div>'}</div>`;
   return `<div class="scanner">
     <div class="cam">
-      <div class="paper"></div>
-      <div class="doc">5.2/ Thiết bị hiển thị QR Kiotviet<br>5.3/ Thiết bị hiển thị QR Ipos<br>5.4/ Máy Pos bán hàng PAX2<br>5.5/ Kiosk tự order<br>6/ Nên mua thiết bị QR động ở đâu<span class="big">1/ Thiết bị hiển thị</span></div>
     </div>
     <div class="shade"></div>
     ${sbar(true)}<div class="camdot"></div>
@@ -912,7 +904,7 @@ function render(){
   const el=document.getElementById('screen');
   el.innerHTML = ({home:scHome,scan:scScan,verify:scVerify,review:scReview,
                    processing:scProcessing,success:scSuccess,error:scError})[S.screen]();
-  if(S.screen==='scan'){const c=el.querySelector('#scanqr'); if(c) drawQR(c, CH==='portal'?116:92, qrSeed());}
+  if(S.screen==='scan'){const c=el.querySelector('#scanqr'); if(c) drawQR(c, QR_SIZE, qrSeed());}
   document.getElementById('scenarios').innerHTML = Object.entries(SCENARIOS).map(([k,v])=>
     `<button class="${S.scenario===k?'on':''}" title="${v.desc}" onclick="reset('${k}')">${v.label}</button>`).join('');
   if(S.modal) document.querySelector('.modal').scrollIntoView({block:'nearest'});
