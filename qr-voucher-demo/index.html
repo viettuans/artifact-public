@@ -353,7 +353,7 @@ const IMG = {
 /* ================= DATA ================= */
 const TODAY = '01/11/2026';
 const SOON_DAYS = 30;     // "expiring soon" = ≤ 30 days left (demo assumption)
-const OVER_MAX = 20000;   // a non-splittable voucher may exceed the amount due by at most 20k
+const OVER_MAX = 10000;   // a non-splittable voucher may exceed the amount due by less than 10k
 /* split:true = Link E (no brand yet, splittable) · split:false = Link V (brand-bound, single-use) */
 const VOUCHERS = [
   {id:'v1', name:'Luon Tuoi Sach eGift',   value:50000,  split:false, exp:'10/11/2026', brand:'lts', brandName:'Luon Tuoi Sach'},
@@ -362,14 +362,14 @@ const VOUCHERS = [
 const SCENARIOS = {
   full:    {label:'Fully covered',  desc:'Bill 358.000đ · app suggests 2 vouchers, nothing left to pay',        amount:358000,  err:null},
   partial: {label:'Not enough',     desc:'Bill 1.850.000đ · vouchers cover part, customer pays the rest',      amount:1850000, err:null},
-  over:    {label:'Over by ≤ 20k',  desc:'Bill 40.000đ · Link V 50.000đ exceeds by 10.000đ, used with a warning', amount:40000, err:null},
+  over:    {label:'Over by < 10k',  desc:'Bill 45.000đ · Link V 50.000đ exceeds by 5.000đ, used with a warning', amount:45000, err:null},
   expired: {label:'QR expired',     desc:'Customer scans more than 3 minutes after the code was created',      amount:358000,  err:'expired'},
   paid:    {label:'Already paid',   desc:'Customer scans an old code again',                                     amount:358000,  err:'paid'},
 };
 const CART_358 = [['Shine Muscat Grapes 500g',1,159000],['Fuji Apples 1kg',1,89000],['Korean Melon',1,65000],['Fresh Orange Juice',1,45000]];
 const CARTS = {full:CART_358, expired:CART_358, paid:CART_358,
   partial:[['Imported Fruit Gift Basket',2,690000],['US Cherries 500g',1,380000],['Fresh Orange Juice',2,45000]],
-  over:[['Fresh Fruit Cup',1,40000]]};
+  over:[['Fresh Fruit Cup',1,45000]]};
 const MERCHANT = {name:'Luon Tuoi Sach', cat:'Flower, Fruit & Fresh Food', brand:'lts',
                   addr:{pos:'Le Loi St, District 1 · POS 02', portal:'Le Loi St, District 1 · Counter 02'}};
 const money = n => n.toLocaleString('vi-VN') + 'đ';
@@ -432,7 +432,7 @@ function suggest(){
   const picked=[]; let left=S.amount;
   for(const v of VOUCHERS.filter(applicable).sort(byPriority)){
     if(left<=0) break;
-    if(!v.split && v.value-left>OVER_MAX) continue;   // non-splittable and over by more than 20k → skip
+    if(!v.split && v.value-left>=OVER_MAX) continue;   // non-splittable and over by 10k or more → skip
     picked.push(v.id); left -= Math.min(v.value,left);
   }
   return picked;
@@ -442,7 +442,7 @@ function suggest(){
 function blockReason(v, restBefore){
   if(!applicable(v)) return 'Only at '+v.brandName;
   if(restBefore<=0) return 'Bill already covered';
-  if(!v.split && v.value-restBefore>OVER_MAX) return 'Over the amount due by > 20.000đ';
+  if(!v.split && v.value-restBefore>=OVER_MAX) return 'Over the amount due by ≥ 10.000đ';
   return null;
 }
 function restExcluding(id){
