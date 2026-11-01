@@ -408,7 +408,7 @@ const I = {
 };
 
 /* ================= STATE ================= */
-let CH = location.hash==='#portal' ? 'portal' : 'pos';   // channel: integrated POS | cashier Portal
+let CH = location.hash==='#pos' ? 'pos' : 'portal';      // channel: cashier Portal (default) | integrated POS
 let AUTH = false;                                         // Portal logged in — kept when switching scenarios
 let S = {};
 /* posState — POS: cart|method|waiting|scanned|paid|expired · Portal: login|create|waiting|scanned|paid|expired */
@@ -423,7 +423,7 @@ function reset(sc){
 }
 function restart(){ AUTH=false; reset(); }
 function setChannel(c){
-  CH=c; history.replaceState(null,'',c==='portal'?'#portal':location.pathname+location.search);
+  CH=c; history.replaceState(null,'',c==='pos'?'#pos':location.pathname+location.search);
   reset();
 }
 
@@ -845,8 +845,8 @@ function curStep(){
 }
 function render(){
   document.getElementById('chan').innerHTML =
-    `<button class="${CH==='pos'?'on':''}" onclick="setChannel('pos')">Integrated POS</button>
-     <button class="${CH==='portal'?'on':''}" onclick="setChannel('portal')">Cashier Portal <em>NEW</em></button>`;
+    `<button class="${CH==='portal'?'on':''}" onclick="setChannel('portal')">Cashier Portal <em>NEW</em></button>
+     <button class="${CH==='pos'?'on':''}" onclick="setChannel('pos')">Integrated POS</button>`;
   const cur=curStep(), done=S.posState==='paid';
   document.getElementById('steps').innerHTML = STEPS[CH].map((t,i)=>{
     const n=i+1; return `<div class="step${done||n<cur?' done':n===cur?' on':''}"><b>${n}</b> ${t}</div>`;
