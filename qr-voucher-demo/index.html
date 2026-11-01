@@ -60,8 +60,8 @@
   .pos-amount{font-size:32px;font-weight:800;letter-spacing:-.01em;color:#fff}
   .pos-order{font-size:12px;color:#6E7887;margin-bottom:16px}
   .qrbox{background:#fff;border-radius:12px;padding:12px;display:inline-block;position:relative}
-  .qrbox .qrlogo{position:absolute;inset:0;margin:auto;width:36px;height:36px;border-radius:9px;background:#fff;display:grid;place-items:center;box-shadow:0 0 0 3px #fff}
-  .qrlogo span{width:28px;height:28px;border-radius:7px;background:var(--red);color:#fff;display:grid;place-items:center;font-size:8.5px;font-weight:800;line-height:1.05}
+  .qrbox .qrlogo{position:absolute;inset:0;margin:auto;width:62px;height:34px;border-radius:8px;background:#fff;display:grid;place-items:center;box-shadow:0 0 0 3px #fff}
+  .qrlogo img,.pay.gotit .pi img{display:block;width:48px;height:auto}
   .qr-hint{font-size:12px;color:#6E7887;margin-top:12px;line-height:1.5}
   .pos-done{padding:26px 8px}
   .pos-done .tick{width:52px;height:52px;border-radius:50%;background:rgba(18,161,80,.15);color:#4ADE80;display:grid;place-items:center;margin:0 auto 12px;font-size:26px}
@@ -94,7 +94,7 @@
   .pay.gotit{border-color:rgba(232,33,43,.6);background:rgba(232,33,43,.12);color:#FFCFCC;box-shadow:0 0 0 3px rgba(232,33,43,.12)}
   .pay.gotit:hover{background:rgba(232,33,43,.22)}
   .pay .pi{width:30px;height:30px;border-radius:8px;display:grid;place-items:center;background:#2A313C}
-  .pay.gotit .pi{background:var(--red);color:#fff;font-size:8.5px;font-weight:800;line-height:1.05}
+  .pay.gotit .pi{width:56px;background:#fff}
 
   /* ================= CASHIER · GOT IT PORTAL ================= */
   .browser{background:#fff;border-radius:12px;overflow:hidden;color:var(--ink);box-shadow:0 10px 30px rgba(0,0,0,.35)}
@@ -486,7 +486,8 @@ function drawQR(cv,size,seed){
 const qrSeed = () => +S.orderId.replace(/\D/g,'') + S.qrN*7919;
 const qrLive = () => S.posState==='waiting' || S.posState==='scanned';
 const QR_SIZE = 150;   // cashier screen and in-app scanner draw the same QR at the same size
-const qrHTML = id => `<div class="qrbox"><canvas id="${id}"></canvas><div class="qrlogo"><span>got<br>it</span></div></div>`;
+const GOTIT_LOGO = 'data:image/png;base64,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';   // official Got It logo, used as-is (do not redraw)
+const qrHTML = id => `<div class="qrbox"><canvas id="${id}"></canvas><div class="qrlogo"><img src="${GOTIT_LOGO}" alt="Got It"></div></div>`;
 
 /* ================= CASHIER ================= */
 function renderCashier(){
@@ -521,7 +522,7 @@ function posHTML(){
         <button class="pay dis" title="Out of demo scope"><span class="pi">${pi.cash}</span>Cash</button>
         <button class="pay dis" title="Out of demo scope"><span class="pi">${pi.card}</span>Card</button>
         <button class="pay dis" title="Out of demo scope"><span class="pi">${pi.bank}</span>Bank transfer</button>
-        <button class="pay gotit" onclick="createQR()"><span class="pi">got<br>it</span>Got It Voucher</button>
+        <button class="pay gotit" onclick="createQR()"><span class="pi"><img src="${GOTIT_LOGO}" alt="Got It"></span>Got It Voucher</button>
       </div>
       <button class="pos-btn ghost" onclick="S.posState='cart';render()">‹ Back to order</button>`;
   }else if(st==='paid'){
