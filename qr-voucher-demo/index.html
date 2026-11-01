@@ -356,14 +356,11 @@ const SOON_DAYS = 30;     // "expiring soon" = ≤ 30 days left (demo assumption
 const OVER_MAX = 20000;   // a non-splittable voucher may exceed the amount due by at most 20k
 /* split:true = Link E (no brand yet, splittable) · split:false = Link V (brand-bound, single-use) */
 const VOUCHERS = [
-  {id:'v1', name:'Got It Gift',            value:25000,  split:true,  exp:'05/11/2026', brand:'any'},
+  {id:'v1', name:'Luon Tuoi Sach eGift',   value:50000,  split:false, exp:'10/11/2026', brand:'lts', brandName:'Luon Tuoi Sach'},
   {id:'v2', name:'Got It eGift',           value:500000, split:true,  exp:'31/12/2026', brand:'any'},
-  {id:'v3', name:'Luon Tuoi Sach eGift',   value:100000, split:false, exp:'15/01/2027', brand:'lts',       brandName:'Luon Tuoi Sach'},
-  {id:'v4', name:'Luon Tuoi Sach eGift',   value:50000,  split:false, exp:'10/11/2026', brand:'lts',       brandName:'Luon Tuoi Sach'},
-  {id:'v5', name:'Highlands Coffee eGift', value:96000,  split:false, exp:'20/12/2026', brand:'highlands', brandName:'Highlands Coffee'},
 ];
 const SCENARIOS = {
-  full:    {label:'Fully covered',  desc:'Bill 358.000đ · app suggests 4 vouchers, nothing left to pay',        amount:358000,  err:null},
+  full:    {label:'Fully covered',  desc:'Bill 358.000đ · app suggests 2 vouchers, nothing left to pay',        amount:358000,  err:null},
   partial: {label:'Not enough',     desc:'Bill 1.850.000đ · vouchers cover part, customer pays the rest',      amount:1850000, err:null},
   over:    {label:'Over by ≤ 20k',  desc:'Bill 40.000đ · Link V 50.000đ exceeds by 10.000đ, used with a warning', amount:40000, err:null},
   expired: {label:'QR expired',     desc:'Customer scans more than 3 minutes after the code was created',      amount:358000,  err:'expired'},
@@ -764,7 +761,6 @@ function scSuccess(){
       ${k.refund>0?`<div class="r"><span>Kept in your wallet</span><b style="color:var(--green)">${money(k.refund)}</b></div>`:''}
       ${k.lost>0?`<div class="r"><span>Unused, non-refundable</span><b style="color:var(--amber)">${money(k.lost)}</b></div>`:''}
       ${k.rest>0?`<div class="r"><span>Pay at counter</span><b>${money(k.rest)}</b></div>`:''}
-      <div class="r"><span>Remaining balance</span><b>${money(VOUCHERS.reduce((s,v)=>s+v.value,0)-k.paid-k.lost)}</b></div>
       <div class="r foot"><span>Time</span><b>16:02 · ${TODAY}</b></div>
     </div></div>
   <div class="cta"><button class="btn" onclick="go('home')">Back to Home</button>
