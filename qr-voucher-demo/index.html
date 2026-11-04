@@ -827,18 +827,14 @@ function newOrder(){
 }
 
 const STEPS = {
-  pos:['Ring up','Choose Got It','Customer scans QR','Pick vouchers','Confirm'],
-  portal:['Log in','Enter amount','Customer scans QR','Pick vouchers','Confirm'],
+  pos:['POS generates QR','Customer scans QR','Confirm payment'],
+  portal:['Portal generates QR','Customer scans QR','Confirm payment'],
 };
+/* 1 = cashier makes the QR · 2 = customer scans, app picks vouchers · 3 = confirm popup → paid */
 function curStep(){
-  if(CH==='portal'){
-    if(S.posState==='login') return 1;
-    if(S.posState==='create') return 2;
-    return {home:3,scan:3,verify:3,error:3,review:4,processing:5,success:5}[S.screen];
-  }
-  if(S.posState==='cart') return 1;
-  if(S.posState==='method') return 2;
-  return {home:2,scan:3,verify:3,error:3,review:4,processing:5,success:5}[S.screen];
+  if(['login','create','cart','method'].includes(S.posState)) return 1;
+  if(S.modal || S.screen==='processing' || S.screen==='success') return 3;
+  return 2;
 }
 function render(){
   document.getElementById('chan').innerHTML =
