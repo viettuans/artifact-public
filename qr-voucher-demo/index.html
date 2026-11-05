@@ -360,14 +360,12 @@ const VOUCHERS = [
   {id:'v2', name:'Got It eGift',           value:500000, split:true,  exp:'31/12/2026', brand:'any'},
 ];
 const SCENARIOS = {
-  full:    {label:'Fully covered',  desc:'Bill 358.000đ · app suggests 2 vouchers, nothing left to pay',        amount:358000,  err:null},
-  partial: {label:'Not enough',     desc:'Bill 1.850.000đ · vouchers cover part, customer pays the rest',      amount:1850000, err:null},
-  over:    {label:'Voucher a bit over', desc:'Bill 45.000đ · Link V 50.000đ exceeds by 5.000đ, used with a warning', amount:45000, err:null},
-  expired: {label:'QR expired',     desc:'Customer scans more than 3 minutes after the code was created',      amount:358000,  err:'expired'},
-  paid:    {label:'Already paid',   desc:'Customer scans an old code again',                                     amount:358000,  err:'paid'},
+  full:    {label:'Fully covered',  desc:'Bill 358.000đ · app suggests 2 vouchers, nothing left to pay',        amount:358000},
+  partial: {label:'Not enough',     desc:'Bill 1.850.000đ · vouchers cover part, customer pays the rest',      amount:1850000},
+  over:    {label:'Voucher a bit over', desc:'Bill 45.000đ · Link V 50.000đ exceeds by 5.000đ, used with a warning', amount:45000},
 };
 const CART_358 = [['Shine Muscat Grapes 500g',1,159000],['Fuji Apples 1kg',1,89000],['Korean Melon',1,65000],['Fresh Orange Juice',1,45000]];
-const CARTS = {full:CART_358, expired:CART_358, paid:CART_358,
+const CARTS = {full:CART_358,
   partial:[['Imported Fruit Gift Basket',2,690000],['US Cherries 500g',1,380000],['Fresh Orange Juice',2,45000]],
   over:[['Fresh Fruit Cup',1,45000]]};
 const MERCHANT = {name:'Luon Tuoi Sach', cat:'Flower, Fruit & Fresh Food', brand:'lts',
@@ -407,11 +405,11 @@ const I = {
 /* ================= STATE ================= */
 let CH = location.hash==='#pos' ? 'pos' : 'portal';      // channel: cashier Portal (default) | integrated POS
 let S = {};
-/* posState — POS: cart|method|waiting|scanned|paid|expired · Portal: create|waiting|scanned|paid|expired */
+/* posState — POS: cart|method|waiting|scanned|paid · Portal: create|waiting|scanned|paid */
 /* withQR (scenario chips): skip step 1, the cashier screen already shows the QR */
 function reset(sc, withQR){
   const key = sc || S.scenario || 'full', amt = SCENARIOS[key].amount;
-  S = {scenario:key, amount:amt, amtStr:String(amt), err:SCENARIOS[key].err, phoneErr:null,
+  S = {scenario:key, amount:amt, amtStr:String(amt), phoneErr:null,
        orderId:newOrderId(), billNo:'INV-'+rnd4(), qrN:withQR?1:0, wpTab:'qr',
        screen:'home', picking:false, selected:[], modal:false,
        posState: withQR ? 'waiting' : CH==='portal' ? 'create' : 'cart'};
@@ -500,8 +498,7 @@ function posHTML(){
               : st==='method'?'<span class="pos-status wait">● Choose payment</span>'
               : st==='waiting'?'<span class="pos-status wait">● Waiting for scan</span>'
               : st==='scanned'?'<span class="pos-status live">● Customer choosing vouchers</span>'
-              : st==='paid'?'<span class="pos-status ok">● Paid</span>'
-              : '<span class="pos-status">● QR expired</span>';
+              : '<span class="pos-status ok">● Paid</span>';
   let body;
   if(st==='cart'){
     body=`<div class="pos-order" style="text-align:left;margin-bottom:10px">${MERCHANT.name} · Order ${S.orderId}</div>
@@ -530,9 +527,6 @@ function posHTML(){
         <div class="pos-line"><span>Order total</span><b>${money(S.amount)}</b></div>
       </div>
       <button class="pos-btn ghost" onclick="newOrder()">New order</button>`;
-  }else if(st==='expired'){
-    body=`<div class="pos-done"><div class="tick" style="background:rgba(232,33,43,.15);color:#FF8A84">⏱</div><h4>QR code expired</h4><p>No voucher was charged</p></div>
-      <button class="pos-btn" onclick="renewQR()">New QR code</button> <button class="pos-btn ghost" onclick="cancelQR()">Other payment method</button>`;
   }else{
     body=`<div class="pos-amount">${money(S.amount)}</div>
       <div class="pos-order">Order ${S.orderId}</div>
@@ -585,12 +579,6 @@ function portalHTML(){
       <div class="wp-collect ${k.rest?'':'ok'}">${k.rest?`Collect <b>${money(k.rest)}</b> more by cash or card.`:'Bill fully paid by vouchers — nothing more to collect.'}</div>
       <button class="wp-btn" onclick="newOrder()">New bill</button>
 </div>`;
-  }else{
-    body = `<div class="wp-body wp-center"><div class="wp-tick bad">⏱</div>
-      <div class="wp-title" style="margin:0">QR code expired</div>
-      <div class="wp-sub">No voucher was charged.</div>
-      <button class="wp-btn" onclick="renewQR()">New code · ${money(S.amount)}</button>
-      <button class="wp-btn ghost" onclick="cancelQR()">Cancel, take normal payment</button></div>`;
   }
   return bar + store + body;
 }
@@ -761,8 +749,6 @@ function scSuccess(){
 }
 function scError(){
   const t = {
-    expired:  {i:'⏱',h:'QR code expired',p:'This code is only valid for 3 minutes. Ask the cashier to create a new QR code, then scan again.',b:'Scan again'},
-    paid:     {i:'✓',h:'Order already paid',p:`Order ${S.orderId} was paid at 15:51 today. Nothing more was charged.`,b:'View past transaction'},
     cancelled:{i:'✕',h:'Cashier cancelled the QR code',p:'No voucher was charged. To pay with vouchers, ask the cashier for a new code and scan again.',b:'Scan again'},
   }[S.phoneErr];
   return sbar(false)+`<div class="center"><div class="badmark">${t.i}</div>
@@ -778,8 +764,7 @@ function doScan(){
   S.screen='verify'; S.posState='scanned'; render();
   setTimeout(()=>{
     if(S.screen!=='verify') return;   // cashier cancelled or demo restarted meanwhile
-    if(S.err){S.phoneErr=S.err; S.screen='error'; S.posState=S.err==='expired'?'expired':'waiting';}
-    else {S.screen='review'; S.picking=false; S.selected=suggest();}
+    S.screen='review'; S.picking=false; S.selected=suggest();
     render();
   },1100);
 }
@@ -803,7 +788,6 @@ function keyIn(k){
   S.amount=+S.amtStr||0; render();
 }
 function createQR(){ if(!S.amount) return; S.qrN++; S.posState='waiting'; S.selected=suggest(); render(); }
-function renewQR(){ S.err=null; S.qrN++; S.posState='waiting'; render(); }
 function cancelQR(){
   if(S.screen==='processing') return;
   S.posState = CH==='portal' ? 'create' : 'method';
@@ -812,7 +796,7 @@ function cancelQR(){
 }
 function newOrder(){
   S.orderId=newOrderId(); S.billNo='INV-'+rnd4(); S.qrN++;
-  S.err=null; S.selected=[]; S.picking=false; S.modal=false; S.screen='home';
+  S.selected=[]; S.picking=false; S.modal=false; S.screen='home';
   if(CH==='portal'){ S.posState='create'; S.amtStr=''; S.amount=0; }
   else S.posState='cart';
   render();
