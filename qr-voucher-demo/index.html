@@ -806,10 +806,10 @@ const STEPS = {
   pos:['POS generates QR','Customer scans QR','Confirm payment'],
   portal:['Portal generates QR','Customer scans QR','Confirm payment'],
 };
-/* 1 = cashier makes the QR · 2 = customer scans, app picks vouchers · 3 = confirm popup → paid */
+/* 1 = cashier makes the QR · 2 = customer scans · 3 = app picks vouchers, customer confirms → paid */
 function curStep(){
   if(['create','cart','method'].includes(S.posState)) return 1;
-  if(S.modal || S.screen==='processing' || S.screen==='success') return 3;
+  if(['review','processing','success'].includes(S.screen)) return 3;
   return 2;
 }
 function render(){
