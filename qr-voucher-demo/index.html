@@ -326,7 +326,7 @@
   <div class="bar">
     <div class="chan" id="chan"></div>
     <div class="scen" id="scenarios"></div>
-    <button class="reset" onclick="restart()" title="Restart">↺</button>
+    <button class="reset" onclick="reset()" title="Restart">↺</button>
   </div>
   <div class="steps" id="steps"></div>
 </div>
@@ -406,19 +406,18 @@ const I = {
 
 /* ================= STATE ================= */
 let CH = location.hash==='#pos' ? 'pos' : 'portal';      // channel: cashier Portal (default) | integrated POS
-let AUTH = false;                                         // Portal logged in — kept when switching scenarios
 let S = {};
-/* posState — POS: cart|method|waiting|scanned|paid|expired · Portal: login|create|waiting|scanned|paid|expired */
-function reset(sc){
+/* posState — POS: cart|method|waiting|scanned|paid|expired · Portal: create|waiting|scanned|paid|expired */
+/* withQR (scenario chips): skip step 1, the cashier screen already shows the QR */
+function reset(sc, withQR){
   const key = sc || S.scenario || 'full', amt = SCENARIOS[key].amount;
   S = {scenario:key, amount:amt, amtStr:String(amt), err:SCENARIOS[key].err, phoneErr:null,
-       orderId:newOrderId(), billNo:'INV-'+rnd4(), qrN:0, wpTab:'qr',
+       orderId:newOrderId(), billNo:'INV-'+rnd4(), qrN:withQR?1:0, wpTab:'qr',
        screen:'home', picking:false, selected:[], modal:false,
-       posState: CH==='portal' ? (AUTH?'create':'login') : 'cart'};
+       posState: withQR ? 'waiting' : CH==='portal' ? 'create' : 'cart'};
   S.selected = suggest();
   render();
 }
-function restart(){ AUTH=false; reset(); }
 function setChannel(c){
   CH=c; history.replaceState(null,'',c==='pos'?'#pos':location.pathname+location.search);
   reset();
@@ -548,12 +547,6 @@ function portalHTML(){
   const st=S.posState;
   const bar = `<div class="br-bar"><i></i><i></i><i></i><div class="br-url">🔒 pos.gotit.vn</div></div>
     <div class="wp-head"><b>Got It Merchant WebPos</b><span><u>EN</u> · VN</span></div>`;
-  if(st==='login') return bar + `<div class="wp-body">
-      <div class="wp-title">Store login</div>
-      <div class="wp-label">Store ID</div><input class="wp-text" value="LTS-LELOI-02">
-      <div class="wp-label">Password</div><input class="wp-text" type="password" value="gotit2026">
-      <div class="wp-label">Store PIN</div><input class="wp-text" type="password" value="2468">
-      <button class="wp-btn" onclick="login()">Log in</button></div>`;
 
   const store = `<div class="wp-store">${mlogo()}
     <div><div class="nm">${MERCHANT.name}</div><div class="ad">${MERCHANT.addr.portal}</div></div></div>`;
@@ -803,7 +796,6 @@ function pay(){
 }
 
 /* cashier side */
-function login(){ AUTH=true; S.posState='create'; render(); }
 function keyIn(k){
   if(k==='clr') S.amtStr='';
   else if(k==='del') S.amtStr=S.amtStr.slice(0,-1);
@@ -832,7 +824,7 @@ const STEPS = {
 };
 /* 1 = cashier makes the QR · 2 = customer scans, app picks vouchers · 3 = confirm popup → paid */
 function curStep(){
-  if(['login','create','cart','method'].includes(S.posState)) return 1;
+  if(['create','cart','method'].includes(S.posState)) return 1;
   if(S.modal || S.screen==='processing' || S.screen==='success') return 3;
   return 2;
 }
@@ -851,7 +843,7 @@ function render(){
                    processing:scProcessing,success:scSuccess,error:scError})[S.screen]();
   if(S.screen==='scan'){const c=el.querySelector('#scanqr'); if(c) drawQR(c, QR_SIZE, qrSeed());}
   document.getElementById('scenarios').innerHTML = Object.entries(SCENARIOS).map(([k,v])=>
-    `<button class="${S.scenario===k?'on':''}" title="${v.desc}" onclick="reset('${k}')">${v.label}</button>`).join('');
+    `<button class="${S.scenario===k?'on':''}" title="${v.desc}" onclick="reset('${k}',true)">${v.label}</button>`).join('');
   if(S.modal) document.querySelector('.modal').scrollIntoView({block:'nearest'});
 }
 /* scale the device area to fit one screen when presenting */
